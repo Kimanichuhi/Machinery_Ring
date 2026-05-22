@@ -1,3 +1,5 @@
+-- Migration: 20260509081947_0893047e-aae2-41b1-9fa3-4908fe39a4f5.sql
+--
 
 -- Update commission calc to zero out commissions when recorder is office_employee
 CREATE OR REPLACE FUNCTION public.calculate_sale_commission()

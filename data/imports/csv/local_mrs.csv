@@ -1,0 +1,11 @@
+id;name;region;county;sub_county;ward;contact_phone;contact_email;coordinator_id;status;created_at;updated_at
+a327a5c0-08e8-4831-951a-6e26742caae1;Rurii;Lower region;Nyandarua;Olkalou;Rurii;;;;active;2026-02-03 14:38:30.069957+00;2026-02-03 14:38:30.069957+00
+0dc36d12-5bc6-4541-9925-5e45a6f63b46;Weru MR;Lower region ;Nyandarua;Ol Joro Orok;Gatimu;;;;active;2026-02-06 12:49:22.26531+00;2026-02-06 12:49:22.26531+00
+24ac350e-1978-44c6-a1cd-8d269b0325e7;Matura MR;Lower region ;Nyandarua;Olkalou;Rurii;;;;active;2026-02-06 12:50:15.244413+00;2026-02-06 12:50:15.244413+00
+407dfb1d-c9ee-4346-833c-dda3becf9287;Kaimbaga MR;Lower region ;Nyandarua;Olkalou;Kaimbaga;;;;active;2026-02-06 12:50:40.522537+00;2026-02-06 12:50:40.522537+00
+bb953367-d245-4fdf-9904-147062ed507b;Tumaini MR;Upper region;Nyandarua;Olkalou;Kanjuiri;;;;active;2026-02-06 12:52:14.146525+00;2026-02-06 12:52:14.146525+00
+e3a21d57-5eb7-498b-8a43-7896ace66f37;Kihoto MR;Upper region ;Nyandarua;Olkalou;Kanjuiri;;;;active;2026-02-06 12:52:45.241101+00;2026-02-06 12:52:45.241101+00
+ac8b1bba-f1a8-43dc-9535-608804f6eafe;Kanjuiri MR;Upper region ;Nyandarua;Olkalou;Kanjuiri;;;;active;2026-02-06 12:53:06.79462+00;2026-02-06 12:53:06.79462+00
+5c9def3c-7eaf-45bd-b17d-55af9b86b068;Ngorika MR;Upper region ;Nyandarua;Olkalou;Kanjuiri;;;;active;2026-02-06 12:53:38.609557+00;2026-02-06 12:53:38.609557+00
+d93ebb86-dbe6-4e37-a514-4d8f8d66b55d;Mirangine MR;Upper region ;Nyandarua;Olkalou;Mirangine;;;;active;2026-02-06 12:54:01.310996+00;2026-02-06 12:54:01.310996+00
+20ecccba-25b9-45b9-832b-3abcbae214e9;Mawingu MR;Lower region ;Nyandarua;Olkalou;Karau;;;;active;2026-02-06 12:54:26.814355+00;2026-02-06 12:54:26.814355+00

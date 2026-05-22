@@ -1,3 +1,5 @@
+-- Migration: 20260102122412_bcf9a76f-d664-4057-ae8c-5173aaddad6e.sql
+--
 -- ============================================================
 -- ADD EXPLICIT DENY POLICIES FOR ANONYMOUS (UNAUTHENTICATED) USERS
 -- This ensures the anon role cannot access any data even if other policies exist

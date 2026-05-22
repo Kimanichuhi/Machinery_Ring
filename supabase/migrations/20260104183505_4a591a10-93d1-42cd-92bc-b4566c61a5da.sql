@@ -1,3 +1,5 @@
+-- Migration: 20260104183505_4a591a10-93d1-42cd-92bc-b4566c61a5da.sql
+--
 -- Create notification_settings table for system-wide notification preferences
 CREATE TABLE public.notification_settings (
   id UUID NOT NULL DEFAULT gen_random_uuid() PRIMARY KEY,

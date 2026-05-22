@@ -1,3 +1,5 @@
+-- Migration: 20251231112917_9bf4ad1b-91fc-4b19-9c75-0f7e540b9e4a.sql
+--
 -- =============================================
 -- MACHINERY RING NYANDARUA OPERATIONS DASHBOARD
 -- Complete Database Schema with RLS

@@ -1,0 +1,630 @@
+# Monorepo Migration Report
+
+Generated: 2026-05-23
+
+## Summary
+
+Refactored the project into a monorepo-style layout while preserving existing frontend routes, Supabase configuration, backend API behavior, and root npm commands.
+
+## New Runtime Layout
+
+- `apps/frontend` - active React/Vite dashboard application.
+- `apps/backend` - Express dashboard API, with source under `apps/backend/src`.
+- `packages/shared-types` - reusable type package boundary.
+- `packages/shared-utils` - reusable utility package boundary.
+- `packages/ui` - reusable UI package boundary for incremental promotion.
+- `supabase` - canonical Supabase migrations, functions, policies, schemas, seeders, triggers, backups, and config.
+- `data/imports/csv` - CSV import data moved from root `csv`.
+- `data/backups/legacy-root-frontend` - migration-safe snapshot of the old duplicate root frontend tree.
+
+## Preserved Behavior
+
+- Root `npm run dev` starts the frontend from `apps/frontend`.
+- Root `npm run build` builds the frontend from `apps/frontend`.
+- Root `npm run backend:dev` starts the backend from `apps/backend`.
+- Frontend alias `@/*` still resolves to the active frontend `src` directory.
+- Frontend environment variables still load from the repository root `.env` via `envDir`.
+- Backend Supabase service client loads `apps/backend/.env` first, then root `.env` for backward compatibility.
+- Supabase project ref in `supabase/config.toml` is aligned to the active app project `dgxtxtcmyhbgpewmdcvc`.
+
+## Validation Results
+
+- Frontend production build: passed with `npm.cmd run build`.
+- Frontend dev server: passed with `npm.cmd run dev`, served `http://127.0.0.1:8080`.
+- Route probes: 27/27 returned HTTP 200 and served the SPA root.
+- Backend syntax checks: passed for `apps/backend/src/server.js`, `apps/backend/src/supabaseClient.js`, and `scripts/import-csv.js`.
+- Backend health check: passed at `/health` during isolated test startup.
+- Supabase client import: passed using root `.env` fallback.
+- Broken import detection: 0 in `docs/architecture/broken-imports.json`.
+- Circular dependency detection: 0 in `docs/architecture/circular-dependencies.json`.
+
+## Generated Architecture Artifacts
+
+- `docs/architecture/import-map.json`
+- `docs/architecture/dependency-graph.json`
+- `docs/architecture/broken-imports.json`
+- `docs/architecture/circular-dependencies.json`
+
+## Notes
+
+- `npm install --package-lock-only --ignore-scripts --legacy-peer-deps --prefer-offline` completed successfully and refreshed workspace lock metadata.
+- The frontend dev server was validated at `http://127.0.0.1:8080`; background processes in this shell do not persist reliably after validation, so start it with `npm run dev` when needed.
+
+## Changed Paths
+
+```text
+D  .env
+ M .gitignore
+ M README.md
+ D backend/api/controllers/.gitkeep
+ D backend/api/index.ts
+ D backend/api/middlewares/.gitkeep
+ D backend/api/repositories/.gitkeep
+ D backend/api/routes/.gitkeep
+ D backend/api/services/.gitkeep
+ D backend/api/validators/.gitkeep
+ D backend/auth/.gitkeep
+ D backend/auth/guards/.gitkeep
+ D backend/auth/permissions/.gitkeep
+ D backend/auth/strategies/.gitkeep
+ D backend/config/constants.ts
+ D backend/config/database.ts
+ D backend/config/env.ts
+ D backend/config/supabase.ts
+ D backend/jobs/.gitkeep
+ D backend/jobs/cleanup/.gitkeep
+ D backend/jobs/notifications/.gitkeep
+ D backend/jobs/reminders/.gitkeep
+ D backend/modules/.gitkeep
+ D backend/modules/farmers/.gitkeep
+ D backend/modules/machinery/.gitkeep
+ D backend/modules/notifications/.gitkeep
+ D backend/modules/products/.gitkeep
+ D backend/modules/reports/.gitkeep
+ D backend/modules/sales/.gitkeep
+ D backend/modules/tots/.gitkeep
+ D backend/modules/trainings/.gitkeep
+ D backend/modules/users/.gitkeep
+ D backend/modules/visits/.gitkeep
+ D backend/package.json
+ D backend/shared/.gitkeep
+ D backend/shared/errors/.gitkeep
+ D backend/shared/helpers/.gitkeep
+ D backend/shared/logger/.gitkeep
+ D backend/shared/types/.gitkeep
+ D backend/shared/utils/.gitkeep
+ D backend/tests/.gitkeep
+ D backend/tests/e2e/.gitkeep
+ D backend/tests/integration/.gitkeep
+ D backend/tests/unit/.gitkeep
+ D backend/tsconfig.json
+ D components.json
+ D database/README.md
+ D database/backups/.gitkeep
+ D database/functions/.gitkeep
+ D database/migrations/.gitkeep
+ D database/policies/.gitkeep
+ D database/schemas/.gitkeep
+ D database/seeders/.gitkeep
+ D database/triggers/.gitkeep
+ D eslint.config.js
+ D frontend/components.json
+ D frontend/eslint.config.js
+ D frontend/index.html
+ D frontend/package.json
+ D frontend/postcss.config.js
+ D frontend/public/favicon.ico.jpg
+ D frontend/public/icons/.gitkeep
+ D frontend/public/images/.gitkeep
+ D frontend/public/logos/.gitkeep
+ D frontend/public/manifest/.gitkeep
+ D frontend/public/mrlogo.jpg
+ D frontend/public/mrlogo.png
+ D frontend/public/placeholder.svg
+ D frontend/public/pwa-icon-192.jpg
+ D frontend/public/pwa-icon-192.png
+ D frontend/public/pwa-icon-512.jpg
+ D frontend/public/pwa-icon-512.png
+ D frontend/public/robots.txt
+ D frontend/src/App.css
+ D frontend/src/App.tsx
+ D frontend/src/app/.gitkeep
+ D frontend/src/app/layouts/.gitkeep
+ D frontend/src/app/providers/.gitkeep
+ D frontend/src/app/routes/.gitkeep
+ D frontend/src/app/store/.gitkeep
+ D frontend/src/components/NavLink.tsx
+ D frontend/src/components/auth/ProtectedRoute.tsx
+ D frontend/src/components/bulk-upload/BulkUploadDialog.tsx
+ D frontend/src/components/common/.gitkeep
+ D frontend/src/components/dashboard/AddTOTDialog.tsx
+ D frontend/src/components/dashboard/CommissionSummary.tsx
+ D frontend/src/components/dashboard/DashboardStats.tsx
+ D frontend/src/components/dashboard/EditTOTDialog.tsx
+ D frontend/src/components/dashboard/GlobalRecentActivity.tsx
+ D frontend/src/components/dashboard/LocalMRPerformanceTable.tsx
+ D frontend/src/components/dashboard/MarkFollowUpCompleteDialog.tsx
+ D frontend/src/components/dashboard/MechanisationOverview.tsx
+ D frontend/src/components/dashboard/OverdueFollowUps.tsx
+ D frontend/src/components/dashboard/PerformanceSummary.tsx
+ D frontend/src/components/dashboard/ProductChart.tsx
+ D frontend/src/components/dashboard/RecentActivity.tsx
+ D frontend/src/components/dashboard/SalesChart.tsx
+ D frontend/src/components/dashboard/StatCard.tsx
+ D frontend/src/components/dashboard/TOTPerformanceOverview.tsx
+ D frontend/src/components/dashboard/TopPerformers.tsx
+ D frontend/src/components/errors/RouteErrorBoundary.tsx
+ D frontend/src/components/forms/EditSaleDialog.tsx
+ D frontend/src/components/forms/FarmerFormDialog.tsx
+ D frontend/src/components/forms/SaleFormDialog.tsx
+ D frontend/src/components/forms/TrainingFormDialog.tsx
+ D frontend/src/components/forms/VisitFormDialog.tsx
+ D frontend/src/components/layout/DashboardLayout.tsx
+ D frontend/src/components/layout/FloatingActions.tsx
+ D frontend/src/components/layout/Header.tsx
+ D frontend/src/components/layout/MobileNav.tsx
+ D frontend/src/components/layout/OfflineBanner.tsx
+ D frontend/src/components/layout/RouteTransition.tsx
+ D frontend/src/components/layout/Sidebar.tsx
+ D frontend/src/components/machinery/BookingDialog.tsx
+ D frontend/src/components/machinery/EditMachineryDialog.tsx
+ D frontend/src/components/machinery/MachineryBookingsList.tsx
+ D frontend/src/components/machinery/MachineryServiceHistory.tsx
+ D frontend/src/components/machinery/ServiceDialog.tsx
+ D frontend/src/components/machinery/UpcomingMaintenance.tsx
+ D frontend/src/components/notifications/NotificationBell.tsx
+ D frontend/src/components/trainings/AttendanceModal.tsx
+ D frontend/src/components/ui/accordion.tsx
+ D frontend/src/components/ui/alert-dialog.tsx
+ D frontend/src/components/ui/alert.tsx
+ D frontend/src/components/ui/aspect-ratio.tsx
+ D frontend/src/components/ui/avatar.tsx
+ D frontend/src/components/ui/badge.tsx
+ D frontend/src/components/ui/breadcrumb.tsx
+ D frontend/src/components/ui/button.tsx
+ D frontend/src/components/ui/calendar.tsx
+ D frontend/src/components/ui/card.tsx
+ D frontend/src/components/ui/carousel.tsx
+ D frontend/src/components/ui/chart.tsx
+ D frontend/src/components/ui/checkbox.tsx
+ D frontend/src/components/ui/collapsible.tsx
+ D frontend/src/components/ui/command.tsx
+ D frontend/src/components/ui/context-menu.tsx
+ D frontend/src/components/ui/dialog.tsx
+ D frontend/src/components/ui/drawer.tsx
+ D frontend/src/components/ui/dropdown-menu.tsx
+ D frontend/src/components/ui/form.tsx
+ D frontend/src/components/ui/hover-card.tsx
+ D frontend/src/components/ui/input-otp.tsx
+ D frontend/src/components/ui/input.tsx
+ D frontend/src/components/ui/label.tsx
+ D frontend/src/components/ui/menubar.tsx
+ D frontend/src/components/ui/mobile-card.tsx
+ D frontend/src/components/ui/navigation-menu.tsx
+ D frontend/src/components/ui/pagination.tsx
+ D frontend/src/components/ui/password-strength.tsx
+ D frontend/src/components/ui/popover.tsx
+ D frontend/src/components/ui/progress.tsx
+ D frontend/src/components/ui/radio-group.tsx
+ D frontend/src/components/ui/resizable.tsx
+ D frontend/src/components/ui/responsive-table.tsx
+ D frontend/src/components/ui/scroll-area.tsx
+ D frontend/src/components/ui/select.tsx
+ D frontend/src/components/ui/separator.tsx
+ D frontend/src/components/ui/sheet.tsx
+ D frontend/src/components/ui/sidebar.tsx
+ D frontend/src/components/ui/skeleton.tsx
+ D frontend/src/components/ui/slider.tsx
+ D frontend/src/components/ui/sonner.tsx
+ D frontend/src/components/ui/switch.tsx
+ D frontend/src/components/ui/table-pagination.tsx
+ D frontend/src/components/ui/table.tsx
+ D frontend/src/components/ui/tabs.tsx
+ D frontend/src/components/ui/textarea.tsx
+ D frontend/src/components/ui/toast.tsx
+ D frontend/src/components/ui/toaster.tsx
+ D frontend/src/components/ui/toggle-group.tsx
+ D frontend/src/components/ui/toggle.tsx
+ D frontend/src/components/ui/tooltip.tsx
+ D frontend/src/components/ui/use-toast.ts
+ D frontend/src/contexts/AuthContext.tsx
+ D frontend/src/contexts/NotificationContext.tsx
+ D frontend/src/features/README.md
+ D frontend/src/features/commission/README.md
+ D frontend/src/features/dashboard/README.md
+ D frontend/src/features/farmers/README.md
+ D frontend/src/features/local-mrs/README.md
+ D frontend/src/features/machinery/README.md
+ D frontend/src/features/notifications/README.md
+ D frontend/src/features/products/README.md
+ D frontend/src/features/reports/README.md
+ D frontend/src/features/sales/README.md
+ D frontend/src/features/tots/README.md
+ D frontend/src/features/trainings/README.md
+ D frontend/src/features/users/README.md
+ D frontend/src/features/visits/README.md
+ D frontend/src/hooks/api/index.ts
+ D frontend/src/hooks/api/useDashboard.ts
+ D frontend/src/hooks/api/useDashboardRealtime.ts
+ D frontend/src/hooks/api/useFarmerTrainings.ts
+ D frontend/src/hooks/api/useFarmers.ts
+ D frontend/src/hooks/api/useFarmersAndTots.ts
+ D frontend/src/hooks/api/useGlobalActivity.ts
+ D frontend/src/hooks/api/useGlobalActivityRealtime.ts
+ D frontend/src/hooks/api/useGlobalSearch.ts
+ D frontend/src/hooks/api/useLocalMRs.ts
+ D frontend/src/hooks/api/useMachinery.ts
+ D frontend/src/hooks/api/useMachineryBookings.ts
+ D frontend/src/hooks/api/useMachineryService.ts
+ D frontend/src/hooks/api/useMechanisation.ts
+ D frontend/src/hooks/api/useMechanisationRealtime.ts
+ D frontend/src/hooks/api/useNotificationSettings.ts
+ D frontend/src/hooks/api/useNotifications.ts
+ D frontend/src/hooks/api/useOverdueFollowUps.ts
+ D frontend/src/hooks/api/usePaginatedFarmers.ts
+ D frontend/src/hooks/api/useProducts.ts
+ D frontend/src/hooks/api/useProductsRealtime.ts
+ D frontend/src/hooks/api/useSales.ts
+ D frontend/src/hooks/api/useSupabaseDashboard.ts
+ D frontend/src/hooks/api/useSyncStatus.ts
+ D frontend/src/hooks/api/useSystemLogs.ts
+ D frontend/src/hooks/api/useTotsByLocalMR.ts
+ D frontend/src/hooks/api/useTrainings.ts
+ D frontend/src/hooks/api/useUsers.ts
+ D frontend/src/hooks/api/useVisits.ts
+ D frontend/src/hooks/state/.gitkeep
+ D frontend/src/hooks/use-mobile.tsx
+ D frontend/src/hooks/use-toast.ts
+ D frontend/src/hooks/useNotificationAlerts.ts
+ D frontend/src/hooks/useRoutePrefetch.ts
+ D frontend/src/hooks/utilities/.gitkeep
+ D frontend/src/index.css
+ D frontend/src/integrations/.gitkeep
+ D frontend/src/integrations/supabase/client.ts
+ D frontend/src/integrations/supabase/types.ts
+ D frontend/src/lib/api/index.ts
+ D frontend/src/lib/excelUtils.ts
+ D frontend/src/lib/exportUtils.ts
+ D frontend/src/lib/getTotStats.ts
+ D frontend/src/lib/pdfChartUtils.tsx
+ D frontend/src/lib/supabase/dashboardQueries.ts
+ D frontend/src/lib/utils.ts
+ D frontend/src/main.tsx
+ D frontend/src/modules/.gitkeep
+ D frontend/src/modules/auth/.gitkeep
+ D frontend/src/modules/dashboard/.gitkeep
+ D frontend/src/modules/farmers/.gitkeep
+ D frontend/src/modules/machinery/.gitkeep
+ D frontend/src/modules/notifications/.gitkeep
+ D frontend/src/modules/products/.gitkeep
+ D frontend/src/modules/reports/.gitkeep
+ D frontend/src/modules/sales/.gitkeep
+ D frontend/src/modules/tots/.gitkeep
+ D frontend/src/modules/trainings/.gitkeep
+ D frontend/src/modules/users/.gitkeep
+ D frontend/src/modules/visits/.gitkeep
+ D frontend/src/pages/Auth.tsx
+ D frontend/src/pages/Commission.tsx
+ D frontend/src/pages/Dashboard.tsx
+ D frontend/src/pages/FarmerProfile.tsx
+ D frontend/src/pages/Farmers.tsx
+ D frontend/src/pages/ForgotPassword.tsx
+ D frontend/src/pages/Install.tsx
+ D frontend/src/pages/Machinery.tsx
+ D frontend/src/pages/NotFound.tsx
+ D frontend/src/pages/Notifications.tsx
+ D frontend/src/pages/Products.tsx
+ D frontend/src/pages/Reports.tsx
+ D frontend/src/pages/ResetPassword.tsx
+ D frontend/src/pages/Sales.tsx
+ D frontend/src/pages/Settings.tsx
+ D frontend/src/pages/Support.tsx
+ D frontend/src/pages/TOTManagement.tsx
+ D frontend/src/pages/TrainingDetails.tsx
+ D frontend/src/pages/Trainings.tsx
+ D frontend/src/pages/VisitDetails.tsx
+ D frontend/src/pages/Visits.tsx
+ D frontend/src/pages/admin/AuditLog.tsx
+ D frontend/src/pages/admin/CreateUserForm.tsx
+ D frontend/src/pages/admin/LocalMRDetails.tsx
+ D frontend/src/pages/admin/LocalMRs.tsx
+ D frontend/src/pages/admin/SystemLogs.tsx
+ D frontend/src/pages/admin/Users.tsx
+ D frontend/src/pages/dashboard/AdminDashboard.tsx
+ D frontend/src/pages/dashboard/CoordinatorDashboard.tsx
+ D frontend/src/pages/dashboard/ManagerDashboard.tsx
+ D frontend/src/pages/dashboard/TotDashboard.tsx
+ D frontend/src/services/.gitkeep
+ D frontend/src/services/api/.gitkeep
+ D frontend/src/services/auth/.gitkeep
+ D frontend/src/services/notifications/.gitkeep
+ D frontend/src/services/storage/.gitkeep
+ D frontend/src/styles/.gitkeep
+ D frontend/src/types/index.ts
+ D frontend/src/types/supabase-js-shim.d.ts
+ D frontend/src/utils/.gitkeep
+ D frontend/src/vite-env.d.ts
+ D frontend/tailwind.config.ts
+ D frontend/tests/.gitkeep
+ D frontend/tsconfig.app.json
+ D frontend/tsconfig.json
+ D frontend/tsconfig.node.json
+ D frontend/vercel.json
+ D frontend/vite.config.ts
+ D index.html
+ M package-lock.json
+ M package.json
+ D postcss.config.js
+ D public/favicon.ico.jpg
+ D public/mrlogo.jpg
+ D public/mrlogo.png
+ D public/placeholder.svg
+ D public/pwa-icon-192.jpg
+ D public/pwa-icon-192.png
+ D public/pwa-icon-512.jpg
+ D public/pwa-icon-512.png
+ D public/robots.txt
+ D shared/constants/.gitkeep
+ D shared/interfaces/.gitkeep
+ D shared/types/.gitkeep
+ D shared/utilities/.gitkeep
+ D shared/validation/.gitkeep
+ D src/App.css
+ D src/App.tsx
+ D src/components/NavLink.tsx
+ D src/components/auth/ProtectedRoute.tsx
+ D src/components/bulk-upload/BulkUploadDialog.tsx
+ D src/components/dashboard/AddTOTDialog.tsx
+ D src/components/dashboard/CommissionSummary.tsx
+ D src/components/dashboard/DashboardStats.tsx
+ D src/components/dashboard/EditTOTDialog.tsx
+ D src/components/dashboard/GlobalRecentActivity.tsx
+ D src/components/dashboard/LocalMRPerformanceTable.tsx
+ D src/components/dashboard/MarkFollowUpCompleteDialog.tsx
+ D src/components/dashboard/MechanisationOverview.tsx
+ D src/components/dashboard/OverdueFollowUps.tsx
+ D src/components/dashboard/PerformanceSummary.tsx
+ D src/components/dashboard/ProductChart.tsx
+ D src/components/dashboard/RecentActivity.tsx
+ D src/components/dashboard/SalesChart.tsx
+ D src/components/dashboard/StatCard.tsx
+ D src/components/dashboard/TOTPerformanceOverview.tsx
+ D src/components/dashboard/TopPerformers.tsx
+ D src/components/errors/RouteErrorBoundary.tsx
+ D src/components/forms/EditSaleDialog.tsx
+ D src/components/forms/FarmerFormDialog.tsx
+ D src/components/forms/SaleFormDialog.tsx
+ D src/components/forms/TrainingFormDialog.tsx
+ D src/components/forms/VisitFormDialog.tsx
+ D src/components/layout/DashboardLayout.tsx
+ D src/components/layout/FloatingActions.tsx
+ D src/components/layout/Header.tsx
+ D src/components/layout/MobileNav.tsx
+ D src/components/layout/OfflineBanner.tsx
+ D src/components/layout/RouteTransition.tsx
+ D src/components/layout/Sidebar.tsx
+ D src/components/machinery/BookingDialog.tsx
+ D src/components/machinery/EditMachineryDialog.tsx
+ D src/components/machinery/MachineryBookingsList.tsx
+ D src/components/machinery/MachineryServiceHistory.tsx
+ D src/components/machinery/ServiceDialog.tsx
+ D src/components/machinery/UpcomingMaintenance.tsx
+ D src/components/notifications/NotificationBell.tsx
+ D src/components/trainings/AttendanceModal.tsx
+ D src/components/ui/accordion.tsx
+ D src/components/ui/alert-dialog.tsx
+ D src/components/ui/alert.tsx
+ D src/components/ui/aspect-ratio.tsx
+ D src/components/ui/avatar.tsx
+ D src/components/ui/badge.tsx
+ D src/components/ui/breadcrumb.tsx
+ D src/components/ui/button.tsx
+ D src/components/ui/calendar.tsx
+ D src/components/ui/card.tsx
+ D src/components/ui/carousel.tsx
+ D src/components/ui/chart.tsx
+ D src/components/ui/checkbox.tsx
+ D src/components/ui/collapsible.tsx
+ D src/components/ui/command.tsx
+ D src/components/ui/context-menu.tsx
+ D src/components/ui/dialog.tsx
+ D src/components/ui/drawer.tsx
+ D src/components/ui/dropdown-menu.tsx
+ D src/components/ui/form.tsx
+ D src/components/ui/hover-card.tsx
+ D src/components/ui/input-otp.tsx
+ D src/components/ui/input.tsx
+ D src/components/ui/label.tsx
+ D src/components/ui/menubar.tsx
+ D src/components/ui/mobile-card.tsx
+ D src/components/ui/navigation-menu.tsx
+ D src/components/ui/pagination.tsx
+ D src/components/ui/password-strength.tsx
+ D src/components/ui/popover.tsx
+ D src/components/ui/progress.tsx
+ D src/components/ui/radio-group.tsx
+ D src/components/ui/resizable.tsx
+ D src/components/ui/responsive-table.tsx
+ D src/components/ui/scroll-area.tsx
+ D src/components/ui/select.tsx
+ D src/components/ui/separator.tsx
+ D src/components/ui/sheet.tsx
+ D src/components/ui/sidebar.tsx
+ D src/components/ui/skeleton.tsx
+ D src/components/ui/slider.tsx
+ D src/components/ui/sonner.tsx
+ D src/components/ui/switch.tsx
+ D src/components/ui/table-pagination.tsx
+ D src/components/ui/table.tsx
+ D src/components/ui/tabs.tsx
+ D src/components/ui/textarea.tsx
+ D src/components/ui/toast.tsx
+ D src/components/ui/toaster.tsx
+ D src/components/ui/toggle-group.tsx
+ D src/components/ui/toggle.tsx
+ D src/components/ui/tooltip.tsx
+ D src/components/ui/use-toast.ts
+ D src/contexts/AuthContext.tsx
+ D src/contexts/NotificationContext.tsx
+ D src/features/README.md
+ D src/features/commission/README.md
+ D src/features/dashboard/README.md
+ D src/features/farmers/README.md
+ D src/features/local-mrs/README.md
+ D src/features/machinery/README.md
+ D src/features/notifications/README.md
+ D src/features/products/README.md
+ D src/features/reports/README.md
+ D src/features/sales/README.md
+ D src/features/tots/README.md
+ D src/features/trainings/README.md
+ D src/features/users/README.md
+ D src/features/visits/README.md
+ D src/hooks/api/index.ts
+ D src/hooks/api/useDashboard.ts
+ D src/hooks/api/useDashboardRealtime.ts
+ D src/hooks/api/useFarmerTrainings.ts
+ D src/hooks/api/useFarmers.ts
+ D src/hooks/api/useFarmersAndTots.ts
+ D src/hooks/api/useGlobalActivity.ts
+ D src/hooks/api/useGlobalActivityRealtime.ts
+ D src/hooks/api/useGlobalSearch.ts
+ D src/hooks/api/useLocalMRs.ts
+ D src/hooks/api/useMachinery.ts
+ D src/hooks/api/useMachineryBookings.ts
+ D src/hooks/api/useMachineryService.ts
+ D src/hooks/api/useMechanisation.ts
+ D src/hooks/api/useMechanisationRealtime.ts
+ D src/hooks/api/useNotificationSettings.ts
+ D src/hooks/api/useNotifications.ts
+ D src/hooks/api/useOverdueFollowUps.ts
+ D src/hooks/api/usePaginatedFarmers.ts
+ D src/hooks/api/useProducts.ts
+ D src/hooks/api/useProductsRealtime.ts
+ D src/hooks/api/useSales.ts
+ D src/hooks/api/useSupabaseDashboard.ts
+ D src/hooks/api/useSyncStatus.ts
+ D src/hooks/api/useSystemLogs.ts
+ D src/hooks/api/useTotsByLocalMR.ts
+ D src/hooks/api/useTrainings.ts
+ D src/hooks/api/useUsers.ts
+ D src/hooks/api/useVisits.ts
+ D src/hooks/use-mobile.tsx
+ D src/hooks/use-toast.ts
+ D src/hooks/useNotificationAlerts.ts
+ D src/hooks/useRoutePrefetch.ts
+ D src/index.css
+ D src/integrations/supabase/client.ts
+ D src/integrations/supabase/types.ts
+ D src/lib/api/index.ts
+ D src/lib/excelUtils.ts
+ D src/lib/exportUtils.ts
+ D src/lib/getTotStats.ts
+ D src/lib/pdfChartUtils.tsx
+ D src/lib/supabase/dashboardQueries.ts
+ D src/lib/utils.ts
+ D src/main.tsx
+ D src/pages/Auth.tsx
+ D src/pages/Commission.tsx
+ D src/pages/Dashboard.tsx
+ D src/pages/FarmerProfile.tsx
+ D src/pages/Farmers.tsx
+ D src/pages/ForgotPassword.tsx
+ D src/pages/Install.tsx
+ D src/pages/Machinery.tsx
+ D src/pages/NotFound.tsx
+ D src/pages/Notifications.tsx
+ D src/pages/Products.tsx
+ D src/pages/Reports.tsx
+ D src/pages/ResetPassword.tsx
+ D src/pages/Sales.tsx
+ D src/pages/Settings.tsx
+ D src/pages/Support.tsx
+ D src/pages/TOTManagement.tsx
+ D src/pages/TrainingDetails.tsx
+ D src/pages/Trainings.tsx
+ D src/pages/VisitDetails.tsx
+ D src/pages/Visits.tsx
+ D src/pages/admin/AuditLog.tsx
+ D src/pages/admin/CreateUserForm.tsx
+ D src/pages/admin/LocalMRDetails.tsx
+ D src/pages/admin/LocalMRs.tsx
+ D src/pages/admin/SystemLogs.tsx
+ D src/pages/admin/Users.tsx
+ D src/pages/dashboard/AdminDashboard.tsx
+ D src/pages/dashboard/CoordinatorDashboard.tsx
+ D src/pages/dashboard/ManagerDashboard.tsx
+ D src/pages/dashboard/TotDashboard.tsx
+ D src/types/index.ts
+ D src/types/supabase-js-shim.d.ts
+ D src/vite-env.d.ts
+ M supabase/config.toml
+ M supabase/migrations/20251231112917_9bf4ad1b-91fc-4b19-9c75-0f7e540b9e4a.sql
+ M supabase/migrations/20251231113112_93d3689a-b9a7-4cc7-bab4-a5e8f41002c5.sql
+ M supabase/migrations/20260101093411_e75e6861-7bea-470c-afaf-d9ae73688f97.sql
+ M supabase/migrations/20260102095317_c108b147-759e-4692-bb0d-127a7c58e669.sql
+ M supabase/migrations/20260102102340_c8857891-63bb-47e6-a00c-a3f9313c9f44.sql
+ M supabase/migrations/20260102110017_7a82adf1-9b42-4798-89dc-dc59a06371e8.sql
+ M supabase/migrations/20260102110501_cae311da-de27-43ed-baef-aa053e4d06e9.sql
+ M supabase/migrations/20260102112226_72656105-269c-4467-a42e-70a234835579.sql
+ M supabase/migrations/20260102112750_143a5f50-0c92-4625-9969-351f65f2cf9b.sql
+ M supabase/migrations/20260102121528_b102c79a-4a4a-46f0-a565-b3c18087a5dc.sql
+ M supabase/migrations/20260102121803_3f6b0c45-e9fb-4025-a812-831c77c90988.sql
+ M supabase/migrations/20260102121957_d5bf7d75-3281-4331-a2a6-2657fc1a9a29.sql
+ M supabase/migrations/20260102122146_b40f28a8-2092-4156-b910-dd8acc0328cc.sql
+ M supabase/migrations/20260102122412_bcf9a76f-d664-4057-ae8c-5173aaddad6e.sql
+ M supabase/migrations/20260102122639_c9190e2b-8435-41d5-94c6-5017c768d5d9.sql
+ M supabase/migrations/20260103104420_3295844f-447b-4820-bc23-c59cd57ee54f.sql
+ M supabase/migrations/20260103123021_708497ef-66a0-4b61-9d23-6555a15ce2b7.sql
+ M supabase/migrations/20260104183505_4a591a10-93d1-42cd-92bc-b4566c61a5da.sql
+ M supabase/migrations/20260104185155_99c8c5ef-a315-43a6-8e9c-2b59cca5b57e.sql
+ M supabase/migrations/20260104185226_2b6e9206-55cf-4e5d-88e8-56cfb0d43407.sql
+ M supabase/migrations/20260105100350_aa8397c8-ba74-4e53-817d-c5be2b17dca4.sql
+ M supabase/migrations/20260105110617_e080c537-f78f-4507-a5a5-1481d964748e.sql
+ M supabase/migrations/20260106080456_c135445f-df71-42bc-9293-076ea41f39d2.sql
+ M supabase/migrations/20260108153018_ddef6621-facd-437a-a9a2-7fb30b9a97d8.sql
+ M supabase/migrations/20260114205757_e8ebff83-4479-48eb-9df6-13e99836e4ab.sql
+ M supabase/migrations/20260114210033_17fd3d91-c487-477f-87ac-e7b406618cc4.sql
+ M supabase/migrations/20260115065536_5265f7d7-e5dd-4391-9a16-b9f62f0e297b.sql
+ M supabase/migrations/20260116202541_4066f4ef-b587-4090-b056-8d663313432f.sql
+ M supabase/migrations/20260116202741_490e1c8b-1ddc-49d4-9d42-31ff98ecca45.sql
+ M supabase/migrations/20260120091248_bbaa2c8a-e26d-4454-a569-a512f5bee461.sql
+ M supabase/migrations/20260120092231_275d552b-0f1a-47c3-90ef-d0d955da3eb0.sql
+ M supabase/migrations/20260121083837_3565577a-7e63-4abf-abc2-4eceadc5b0bd.sql
+ M supabase/migrations/20260212204451_f4ad0636-bf94-4233-a44d-2294e8f1f8f0.sql
+ M supabase/migrations/20260215192216_4a853083-3771-426f-b24f-d96ce080a745.sql
+ M supabase/migrations/20260506105752_5d864ad4-f72a-4f62-b45f-9fc80769a8cd.sql
+ M supabase/migrations/20260507071852_005b9459-b04c-432b-a327-1e7a745efcd9.sql
+ M supabase/migrations/20260508203731_be84efe3-126a-417e-a87e-e747ae39fbe3.sql
+ M supabase/migrations/20260509081902_5d7c0cc0-c950-4759-a47b-5b124d3bb690.sql
+ M supabase/migrations/20260509081947_0893047e-aae2-41b1-9fa3-4908fe39a4f5.sql
+ D tailwind.config.ts
+ D tsconfig.app.json
+ M tsconfig.json
+ D tsconfig.node.json
+ D vercel.json
+ D vite.config.ts
+?? .devserver.pid
+?? .env.example
+?? apps/
+?? data/
+?? docs/README.md
+?? docs/architecture/broken-imports.json
+?? docs/architecture/circular-dependencies.json
+?? docs/architecture/dependency-graph.json
+?? docs/architecture/import-map.json
+?? docs/architecture/monorepo-migration-report.md
+?? infrastructure/README.md
+?? packages/
+?? scripts/
+?? supabase/README.md
+?? supabase/backups/
+?? supabase/functions/.gitkeep
+?? supabase/migrations/.gitkeep
+?? supabase/policies/
+?? supabase/schemas/
+?? supabase/seeders/
+?? supabase/triggers/
+?? turbo.json
+
+```

@@ -1,3 +1,5 @@
+-- Migration: 20260116202541_4066f4ef-b587-4090-b056-8d663313432f.sql
+--
 -- Add profile_id column to training_attendees for TOT attendance
 ALTER TABLE public.training_attendees 
 ADD COLUMN profile_id uuid REFERENCES public.profiles(id) ON DELETE CASCADE;

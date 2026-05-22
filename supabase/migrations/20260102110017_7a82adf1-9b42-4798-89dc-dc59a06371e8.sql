@@ -1,3 +1,5 @@
+-- Migration: 20260102110017_7a82adf1-9b42-4798-89dc-dc59a06371e8.sql
+--
 -- Add commission_per_acre and tot_commission to mechanisation_jobs
 ALTER TABLE public.mechanisation_jobs 
 ADD COLUMN IF NOT EXISTS commission_per_acre numeric DEFAULT 100,

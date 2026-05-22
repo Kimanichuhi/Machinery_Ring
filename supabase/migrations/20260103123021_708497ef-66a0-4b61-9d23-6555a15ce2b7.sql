@@ -1,3 +1,5 @@
+-- Migration: 20260103123021_708497ef-66a0-4b61-9d23-6555a15ce2b7.sql
+--
 -- Create function to auto-deduct stock on sale creation
 CREATE OR REPLACE FUNCTION public.deduct_stock_on_sale()
 RETURNS TRIGGER

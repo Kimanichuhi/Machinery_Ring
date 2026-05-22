@@ -1,3 +1,5 @@
+-- Migration: 20251231113112_93d3689a-b9a7-4cc7-bab4-a5e8f41002c5.sql
+--
 -- Fix security definer views by recreating them with SECURITY INVOKER
 DROP VIEW IF EXISTS public.sales_summary;
 DROP VIEW IF EXISTS public.tot_performance;

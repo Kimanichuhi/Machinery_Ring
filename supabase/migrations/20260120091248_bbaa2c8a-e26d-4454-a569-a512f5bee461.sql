@@ -1,3 +1,5 @@
+-- Migration: 20260120091248_bbaa2c8a-e26d-4454-a569-a512f5bee461.sql
+--
 -- Add columns to track follow-up completion and link to original visit
 ALTER TABLE public.visits 
 ADD COLUMN IF NOT EXISTS follow_up_completed boolean NOT NULL DEFAULT false;

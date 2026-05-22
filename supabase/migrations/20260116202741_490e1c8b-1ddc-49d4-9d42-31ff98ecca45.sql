@@ -1,3 +1,5 @@
+-- Migration: 20260116202741_490e1c8b-1ddc-49d4-9d42-31ff98ecca45.sql
+--
 -- Add profile_id column to visits for TOT visits
 ALTER TABLE public.visits 
 ADD COLUMN profile_id uuid REFERENCES public.profiles(id) ON DELETE SET NULL;

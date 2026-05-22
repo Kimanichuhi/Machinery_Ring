@@ -1,3 +1,5 @@
+-- Migration: 20260102122639_c9190e2b-8435-41d5-94c6-5017c768d5d9.sql
+--
 -- ============================================================
 -- AUDIT LOGGING TRIGGERS FOR SENSITIVE TABLES
 -- Automatically tracks INSERT, UPDATE, DELETE on sensitive data

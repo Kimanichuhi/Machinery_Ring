@@ -1,3 +1,5 @@
+-- Migration: 20260106080456_c135445f-df71-42bc-9293-076ea41f39d2.sql
+--
 -- Add trainer text field to trainings table for manual trainer name entry
 ALTER TABLE public.trainings ADD COLUMN IF NOT EXISTS trainer TEXT;
 

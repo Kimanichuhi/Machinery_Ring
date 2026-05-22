@@ -1,3 +1,5 @@
+-- Migration: 20260102121528_b102c79a-4a4a-46f0-a565-b3c18087a5dc.sql
+--
 -- ============================================================
 -- COMPREHENSIVE SECURITY HARDENING MIGRATION
 -- Addresses all 11 security findings

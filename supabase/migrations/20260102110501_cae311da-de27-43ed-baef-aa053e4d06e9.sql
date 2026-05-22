@@ -1,3 +1,5 @@
+-- Migration: 20260102110501_cae311da-de27-43ed-baef-aa053e4d06e9.sql
+--
 -- Fix function search path for calculate_mechanisation_commission
 CREATE OR REPLACE FUNCTION public.calculate_mechanisation_commission()
 RETURNS TRIGGER AS $$

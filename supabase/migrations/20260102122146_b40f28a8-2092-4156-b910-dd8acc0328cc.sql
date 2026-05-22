@@ -1,3 +1,5 @@
+-- Migration: 20260102122146_b40f28a8-2092-4156-b910-dd8acc0328cc.sql
+--
 -- ============================================================
 -- REMOVE OVERLY PERMISSIVE AUTHENTICATION POLICIES
 -- The role-based policies already require authentication via auth.uid()

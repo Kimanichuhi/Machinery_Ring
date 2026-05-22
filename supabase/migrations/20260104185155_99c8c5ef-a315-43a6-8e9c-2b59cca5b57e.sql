@@ -1,3 +1,5 @@
+-- Migration: 20260104185155_99c8c5ef-a315-43a6-8e9c-2b59cca5b57e.sql
+--
 
 -- Create notification triggers for sales, trainings, and bookings
 

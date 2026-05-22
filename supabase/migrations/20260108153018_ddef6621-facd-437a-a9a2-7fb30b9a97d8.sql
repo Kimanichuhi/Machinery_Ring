@@ -1,3 +1,5 @@
+-- Migration: 20260108153018_ddef6621-facd-437a-a9a2-7fb30b9a97d8.sql
+--
 -- Create function to clean up user data when profile is deleted
 CREATE OR REPLACE FUNCTION public.cleanup_user_data()
 RETURNS TRIGGER

@@ -1,3 +1,5 @@
+-- Migration: 20260114210033_17fd3d91-c487-477f-87ac-e7b406618cc4.sql
+--
 -- Create function to update farmer visits_count
 CREATE OR REPLACE FUNCTION public.update_farmer_visits_count()
 RETURNS TRIGGER AS $$

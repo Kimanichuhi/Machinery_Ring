@@ -1,3 +1,5 @@
+-- Migration: 20260507071852_005b9459-b04c-432b-a327-1e7a745efcd9.sql
+--
 
 -- 1. Products: add buying & selling prices
 ALTER TABLE public.products

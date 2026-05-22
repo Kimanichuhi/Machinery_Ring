@@ -1,3 +1,5 @@
+-- Migration: 20260102112226_72656105-269c-4467-a42e-70a234835579.sql
+--
 -- Fix: Restrict profiles table access based on roles
 -- Drop the overly permissive policy
 DROP POLICY IF EXISTS "Users can view all profiles" ON public.profiles;

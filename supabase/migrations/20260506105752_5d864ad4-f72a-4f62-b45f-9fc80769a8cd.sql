@@ -1,3 +1,5 @@
+-- Migration: 20260506105752_5d864ad4-f72a-4f62-b45f-9fc80769a8cd.sql
+--
 -- Replace ineffective permissive "deny anon" policies with proper RESTRICTIVE policies.
 -- A permissive policy returning false does not deny access; only restrictive policies enforce denial.
 

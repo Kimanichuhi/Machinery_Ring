@@ -1,4 +1,4 @@
-project_id = "zdykomfdrpfwitdrbhuk"
+project_id = "dgxtxtcmyhbgpewmdcvc"
 
 [functions.bootstrap-admin]
 verify_jwt = false
@@ -9,10 +9,13 @@ verify_jwt = false
 [functions.delete-user]
 verify_jwt = false
 
-[functions.purge-user-by-email]
+[functions.followup-reminders]
 verify_jwt = false
 
-[functions.sales-insights]
+[functions.purge-farmer]
+verify_jwt = false
+
+[functions.purge-user-by-email]
 verify_jwt = false
 
 [functions.send-notification-email]

@@ -1,3 +1,5 @@
+-- Migration: 20260102112750_143a5f50-0c92-4625-9969-351f65f2cf9b.sql
+--
 -- Fix 1: Add RLS to monthly_trends view (materialized as table for RLS support)
 -- Views in PostgreSQL don't support RLS directly, so we need to use security_invoker
 -- The monthly_trends view already has security_invoker = on, but we need to ensure

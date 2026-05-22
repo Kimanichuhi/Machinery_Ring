@@ -76,75 +76,32 @@ The frontend protects routes through `ProtectedRoute`, while Supabase database p
 
 ```text
 .
-|-- backend/                    Future API/server-side service layer
-|   |-- api/
-|   |-- auth/
-|   |-- config/
-|   |-- modules/
-|   |-- shared/
-|   |-- jobs/
-|   `-- tests/
-|-- frontend/                   Active React/Vite dashboard application
-|   |-- public/
-|   |-- src/
-|   |   |-- app/
-|   |   |-- modules/
-|   |   |-- components/
-|   |   |-- contexts/
-|   |   |-- hooks/
-|   |   |-- integrations/
-|   |   |-- lib/
-|   |   |-- pages/
-|   |   |-- services/
-|   |   |-- styles/
-|   |   |-- types/
-|   |   `-- utils/
-|   |-- tests/
-|   |-- package.json
-|   `-- vite.config.ts
-|-- database/                   Database organization mirror
-|   |-- migrations/
-|   |-- seeders/
-|   |-- schemas/
-|   |-- functions/
-|   |-- triggers/
-|   |-- policies/
-|   |-- backups/
-|   `-- README.md
-|-- shared/                     Cross-app shared contracts and utilities
+|-- apps/
+|   |-- frontend/               Active React/Vite dashboard application
+|   `-- backend/                Express dashboard API
+|-- packages/
+|   |-- shared-types/
+|   |-- shared-utils/
+|   `-- ui/
+|-- supabase/                   Migrations, Edge Functions, policies, schemas
+|-- data/                       Imports, exports, and migration backups
 |-- infrastructure/             Docker, nginx, monitoring, scripts, and CI/CD assets
 |-- docs/                       API, architecture, deployment, and user guides
+|-- scripts/                    Local automation and seed scripts
 |-- .github/workflows/
-|-- supabase/
-|   |-- functions/              Supabase Edge Functions kept for Supabase CLI compatibility
-|   `-- migrations/             Database schema migrations kept for Supabase CLI compatibility
 |-- package.json
+|-- turbo.json
 `-- README.md
 ```
 
 ## Modular Architecture
 
-The app now uses a v2 monorepo-style structure. The active frontend application lives in `frontend/`, while backend, database, shared, infrastructure, and docs areas are separated for future growth.
+The app uses a monorepo structure. The active frontend application lives in `apps/frontend`, the optional Express API lives in `apps/backend`, Supabase assets live in `supabase`, and reusable package boundaries live in `packages`.
 
-Frontend module areas:
-
-- `auth`
-- `dashboard`
-- `farmers`
-- `machinery`
-- `trainings`
-- `reports`
-- `notifications`
-- `visits`
-- `products`
-- `sales`
-- `tots`
-- `users`
-
-Recommended structure for each feature:
+Recommended structure for each frontend feature:
 
 ```text
-frontend/src/modules/module-name/
+apps/frontend/src/features/feature-name/
 |-- components/   Components used only by this feature
 |-- hooks/        Feature-specific hooks
 |-- pages/        Route screens owned by this feature
@@ -155,16 +112,17 @@ frontend/src/modules/module-name/
 
 Architecture rules:
 
-- Keep shared UI in `frontend/src/components/ui`.
-- Keep layout components in `frontend/src/components/layout`.
-- Keep global providers in `frontend/src/contexts`.
-- Keep Supabase client setup in `frontend/src/integrations`.
-- Keep cross-feature helpers in `frontend/src/lib`.
+- Keep shared UI in `apps/frontend/src/components/ui`.
+- Keep layout components in `apps/frontend/src/components/layout`.
+- Keep global providers in `apps/frontend/src/contexts`.
+- Keep Supabase client setup in `apps/frontend/src/integrations`.
+- Keep cross-feature helpers in `apps/frontend/src/lib`.
+- Move only genuinely reusable contracts/utilities into `packages`.
 - Avoid importing another feature's internal files directly. Use that feature's `index.ts` when sharing is needed.
 
-The app also uses route-level error boundaries through `frontend/src/components/errors/RouteErrorBoundary.tsx`. Each main route is wrapped independently, so if Farmers, Sales, Reports, or another section fails during rendering, the user sees a contained error message for that section while the rest of the dashboard remains available.
+The app also uses route-level error boundaries through `apps/frontend/src/components/errors/RouteErrorBoundary.tsx`. Each main route is wrapped independently, so if Farmers, Sales, Reports, or another section fails during rendering, the user sees a contained error message for that section while the rest of the dashboard remains available.
 
-The original root-level `src/`, `public/`, and config files are temporarily retained as a compatibility copy. Root npm scripts now target `frontend/`, so the v2 structure is the active application path.
+The previous root-level frontend tree was removed from runtime paths. A migration-safe snapshot is kept under `data/backups/legacy-root-frontend`.
 
 ## Prerequisites
 
@@ -179,9 +137,10 @@ Optional tools:
 
 ## Environment Variables
 
-Create a `.env` file in the project root.
+Copy `.env.example` to `.env` in the project root and update the values for your Supabase project.
 
 ```env
+VITE_SUPABASE_PROJECT_ID=your_supabase_project_id
 VITE_SUPABASE_URL=your_supabase_project_url
 VITE_SUPABASE_PUBLISHABLE_KEY=your_supabase_publishable_key
 ```
@@ -195,7 +154,64 @@ SUPABASE_URL=your_supabase_project_url
 SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
 ```
 
+The project includes `supabase/config.toml` with the linked Supabase project ID, so the app is ready to use the dashboard once your local `.env` is configured.
+
 Keep `SUPABASE_SERVICE_ROLE_KEY` only in Supabase function secrets or trusted server environments.
+
+## CSV Data Seeding
+
+If you have exported app data in CSV format, place the supported files under `data/imports/csv` or point the seeder at another directory.
+
+Supported file names:
+- `local_mrs.csv`
+- `machinery-export.csv`
+- `products-export.csv`
+- `profiles-export.csv`
+- `sales-export.csv`
+- `tot_assignments.csv`
+- `user_roles.csv`
+
+Run the importer from the repository root:
+
+```sh
+npm run seed:csv
+```
+
+To perform a dry run without inserting data:
+
+```sh
+npm run seed:csv -- --dry-run
+```
+
+To import a single file by name or full path:
+
+```sh
+npm run seed:csv -- --file profiles-export.csv
+```
+
+## Manual Supabase Migrations
+
+If you want to apply migrations manually in the Supabase dashboard, copy each SQL file from `supabase/migrations/` into the dashboard migration editor in the order of their timestamps.
+
+The canonical source of truth is `supabase/`, and you should edit `supabase/` directly.
+
+To create a new migration file on your machine without choosing a custom name, run:
+
+```sh
+npm run new:migration -- "optional-description"
+```
+
+This creates a timestamp-prefixed file like `YYYYMMDDHHMMSS_optional-description.sql` in `supabase/migrations/`.
+
+If you do not pass a description, the script creates a file named `YYYYMMDDHHMMSS_auto.sql`.
+
+Each migration SQL file also now includes a top comment line in the form:
+
+```sql
+-- Migration: YYYYMMDDHHMMSS_optional-description.sql
+```
+
+This makes it easier to track the intended migration name when copying SQL into the Supabase dashboard.
 
 ## Local Development
 
@@ -234,6 +250,8 @@ Then reopen PowerShell and run `npm run dev` again.
 | `npm run build:dev` | Create a development-mode build. |
 | `npm run lint` | Run ESLint across the codebase. |
 | `npm run preview` | Preview the production build locally. |
+| `npm run backend:dev` | Start the Express dashboard API. |
+| `npm run seed:csv` | Import CSV seed data into the Supabase database with service-role access. |
 
 ## Supabase Backend
 
@@ -353,7 +371,7 @@ Before deploying:
 5. Configure Supabase function secrets for service-role operations.
 6. Confirm authentication redirect URLs include the deployed domain.
 
-For Vercel or similar static hosting, serve the generated `dist` folder after `npm run build`.
+Serve the generated `dist` folder after `npm run build`.
 
 ## Troubleshooting
 

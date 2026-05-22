@@ -1,3 +1,5 @@
+-- Migration: 20260121083837_3565577a-7e63-4abf-abc2-4eceadc5b0bd.sql
+--
 -- Fix: Reduce exposure of highly sensitive farmer PII by moving it out of the main farmers table.
 -- Strategy:
 -- 1) Create a new RLS-protected table for highly sensitive fields

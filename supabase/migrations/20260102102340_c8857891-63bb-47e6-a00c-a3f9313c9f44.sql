@@ -1,3 +1,5 @@
+-- Migration: 20260102102340_c8857891-63bb-47e6-a00c-a3f9313c9f44.sql
+--
 -- Create machinery bookings table
 CREATE TABLE public.machinery_bookings (
   id UUID NOT NULL DEFAULT gen_random_uuid() PRIMARY KEY,

@@ -1,3 +1,5 @@
+-- Migration: 20260215192216_4a853083-3771-426f-b24f-d96ce080a745.sql
+--
 -- Create a trigger function that calls the edge function on notification insert
 CREATE OR REPLACE FUNCTION public.trigger_notification_email()
 RETURNS trigger

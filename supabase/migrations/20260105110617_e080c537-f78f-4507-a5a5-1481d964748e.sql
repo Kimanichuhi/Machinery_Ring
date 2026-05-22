@@ -1,3 +1,5 @@
+-- Migration: 20260105110617_e080c537-f78f-4507-a5a5-1481d964748e.sql
+--
 -- Drop existing restrictive policies for Coordinators and TOTs
 DROP POLICY IF EXISTS "Coordinators can view their local_mr machinery" ON public.machinery;
 DROP POLICY IF EXISTS "TOTs can view their local_mr machinery" ON public.machinery;

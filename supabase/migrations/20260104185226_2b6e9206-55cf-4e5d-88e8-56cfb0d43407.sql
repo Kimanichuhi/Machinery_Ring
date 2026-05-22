@@ -1,3 +1,5 @@
+-- Migration: 20260104185226_2b6e9206-55cf-4e5d-88e8-56cfb0d43407.sql
+--
 
 -- Fix function search path for security
 

@@ -1,3 +1,5 @@
+-- Migration: 20260102121957_d5bf7d75-3281-4331-a2a6-2657fc1a9a29.sql
+--
 -- ============================================================
 -- ADD AUTHENTICATION REQUIREMENT POLICIES TO ALL TABLES
 -- These ensure no unauthenticated access is possible

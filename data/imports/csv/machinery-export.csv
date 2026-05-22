@@ -1,0 +1,12 @@
+id;name;category;model;registration_number;local_mr_id;hourly_rate;daily_rate;status;condition;last_service_date;next_service_date;created_at;updated_at
+23a0833f-8f0f-4730-855b-0ff8f18e42b6;New Holland ;Tractor;TD80;KTCB 129K;;0.00;0.00;available;good;;;2026-02-06 13:19:05.982486+00;2026-02-06 13:19:05.982486+00
+ae7546d7-b53d-452e-a4f1-a8ef002a8965;Zoomlion;Tractor ;PM-200;;;0.00;0.00;available;good;;;2026-02-06 13:19:05.982486+00;2026-02-06 13:19:05.982486+00
+8844b3fe-00c3-4c08-9fa4-c30686ca1253;Atespar pneumatic planter;Planter ;;;;0.00;0.00;available;good;;;2026-02-06 13:19:05.982486+00;2026-02-06 13:19:05.982486+00
+6ce92755-6060-463c-8884-ef52217c6536;Farmworld agrotech seeder;potato seeder;;;;0.00;0.00;available;good;;;2026-02-06 13:19:05.982486+00;2026-02-06 13:19:05.982486+00
+cac79722-8344-4c2d-b75f-4d28995f8d2a;Farmworld agrotech harvester;potato harvester;;;;0.00;0.00;available;good;;;2026-02-06 13:19:05.982486+00;2026-02-06 13:19:05.982486+00
+a2540245-60d3-4d4a-b09c-af0fda81c3d6;Ozbil chisel plough;land preparation ;;;;0.00;0.00;available;good;;;2026-02-06 13:19:05.982486+00;2026-02-06 13:19:05.982486+00
+84da8e2b-b01f-4bbc-ad8f-a716dd348554;Lemken chisel plough ;land preparation ;;;;0.00;0.00;available;good;;;2026-02-06 13:19:05.982486+00;2026-02-06 13:19:05.982486+00
+02f9a1cd-f9c2-43d8-9c12-6648307bb105;Ndume standard chisel plough ;land preparation ;;;;0.00;0.00;available;good;;;2026-02-06 13:19:05.982486+00;2026-02-06 13:19:05.982486+00
+48344ad3-3824-420d-91da-50adf48050fc;Ndume inline chisel plough ;land preparation ;;;;0.00;0.00;available;good;;;2026-02-06 13:19:05.982486+00;2026-02-06 13:19:05.982486+00
+9df24af7-be8e-4429-a7eb-7d3f018f82ad;Ndume disc harrow ;land preparation ;;;;0.00;0.00;available;good;;;2026-02-06 13:19:05.982486+00;2026-02-06 13:19:05.982486+00
+f60c38a1-ad5f-4de3-8212-6566da0601d2;Rotavator ;land preparation ;;;;0.00;0.00;available;good;;;2026-02-06 13:19:05.982486+00;2026-02-06 13:19:05.982486+00

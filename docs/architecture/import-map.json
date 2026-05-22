@@ -1,0 +1,6164 @@
+{
+  "apps/frontend/src/App.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/toaster",
+      "resolved": "apps/frontend/src/components/ui/toaster.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/sonner",
+      "resolved": "apps/frontend/src/components/ui/sonner.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/tooltip",
+      "resolved": "apps/frontend/src/components/ui/tooltip.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@tanstack/react-query",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "react-router-dom",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "next-themes",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/contexts/AuthContext",
+      "resolved": "apps/frontend/src/contexts/AuthContext.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/contexts/NotificationContext",
+      "resolved": "apps/frontend/src/contexts/NotificationContext.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/layout/DashboardLayout",
+      "resolved": "apps/frontend/src/components/layout/DashboardLayout.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/auth/ProtectedRoute",
+      "resolved": "apps/frontend/src/components/auth/ProtectedRoute.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/errors/RouteErrorBoundary",
+      "resolved": "apps/frontend/src/components/errors/RouteErrorBoundary.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/Auth",
+      "resolved": "apps/frontend/src/pages/Auth.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/ForgotPassword",
+      "resolved": "apps/frontend/src/pages/ForgotPassword.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/ResetPassword",
+      "resolved": "apps/frontend/src/pages/ResetPassword.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/Dashboard",
+      "resolved": "apps/frontend/src/pages/Dashboard",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/dashboard/AdminDashboard",
+      "resolved": "apps/frontend/src/pages/dashboard/AdminDashboard.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/dashboard/ManagerDashboard",
+      "resolved": "apps/frontend/src/pages/dashboard/ManagerDashboard.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/dashboard/CoordinatorDashboard",
+      "resolved": "apps/frontend/src/pages/dashboard/CoordinatorDashboard.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/dashboard/TotDashboard",
+      "resolved": "apps/frontend/src/pages/dashboard/TotDashboard.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/Farmers",
+      "resolved": "apps/frontend/src/pages/Farmers.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/FarmerProfile",
+      "resolved": "apps/frontend/src/pages/FarmerProfile.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/Sales",
+      "resolved": "apps/frontend/src/pages/Sales.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/Machinery",
+      "resolved": "apps/frontend/src/pages/Machinery.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/Products",
+      "resolved": "apps/frontend/src/pages/Products.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/Visits",
+      "resolved": "apps/frontend/src/pages/Visits.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/VisitDetails",
+      "resolved": "apps/frontend/src/pages/VisitDetails.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/Trainings",
+      "resolved": "apps/frontend/src/pages/Trainings.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/TrainingDetails",
+      "resolved": "apps/frontend/src/pages/TrainingDetails.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/Reports",
+      "resolved": "apps/frontend/src/pages/Reports.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/Settings",
+      "resolved": "apps/frontend/src/pages/Settings.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/Support",
+      "resolved": "apps/frontend/src/pages/Support.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/admin/Users",
+      "resolved": "apps/frontend/src/pages/admin/Users.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/admin/LocalMRs",
+      "resolved": "apps/frontend/src/pages/admin/LocalMRs.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/admin/LocalMRDetails",
+      "resolved": "apps/frontend/src/pages/admin/LocalMRDetails.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/admin/AuditLog",
+      "resolved": "apps/frontend/src/pages/admin/AuditLog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/admin/SystemLogs",
+      "resolved": "apps/frontend/src/pages/admin/SystemLogs.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/Commission",
+      "resolved": "apps/frontend/src/pages/Commission.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/TOTManagement",
+      "resolved": "apps/frontend/src/pages/TOTManagement.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/Notifications",
+      "resolved": "apps/frontend/src/pages/Notifications.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/NotFound",
+      "resolved": "apps/frontend/src/pages/NotFound.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/Install",
+      "resolved": "apps/frontend/src/pages/Install.tsx",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/auth/ProtectedRoute.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "react-router-dom",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/contexts/AuthContext",
+      "resolved": "apps/frontend/src/contexts/AuthContext.tsx",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/components/bulk-upload/BulkUploadDialog.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/dialog",
+      "resolved": "apps/frontend/src/components/ui/dialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/input",
+      "resolved": "apps/frontend/src/components/ui/input.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/label",
+      "resolved": "apps/frontend/src/components/ui/label.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/badge",
+      "resolved": "apps/frontend/src/components/ui/badge.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/scroll-area",
+      "resolved": "apps/frontend/src/components/ui/scroll-area.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/alert",
+      "resolved": "apps/frontend/src/components/ui/alert.tsx",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/excelUtils",
+      "resolved": "apps/frontend/src/lib/excelUtils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/dashboard/AddTOTDialog.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/dialog",
+      "resolved": "apps/frontend/src/components/ui/dialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/input",
+      "resolved": "apps/frontend/src/components/ui/input.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/label",
+      "resolved": "apps/frontend/src/components/ui/label.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/select",
+      "resolved": "apps/frontend/src/components/ui/select.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/password-strength",
+      "resolved": "apps/frontend/src/components/ui/password-strength.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useUsers",
+      "resolved": "apps/frontend/src/hooks/api/useUsers.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useSupabaseDashboard",
+      "resolved": "apps/frontend/src/hooks/api/useSupabaseDashboard.ts",
+      "external": false
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/components/dashboard/CommissionSummary.tsx": [
+    {
+      "specifier": "@tanstack/react-query",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/integrations/supabase/client",
+      "resolved": "apps/frontend/src/integrations/supabase/client.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/contexts/AuthContext",
+      "resolved": "apps/frontend/src/contexts/AuthContext.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/components/dashboard/DashboardStats.tsx": [
+    {
+      "specifier": "./StatCard",
+      "resolved": "apps/frontend/src/components/dashboard/StatCard.tsx",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/hooks/api/useDashboard",
+      "resolved": "apps/frontend/src/hooks/api/useDashboard.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/dashboard/EditTOTDialog.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/dialog",
+      "resolved": "apps/frontend/src/components/ui/dialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/input",
+      "resolved": "apps/frontend/src/components/ui/input.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/label",
+      "resolved": "apps/frontend/src/components/ui/label.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/select",
+      "resolved": "apps/frontend/src/components/ui/select.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useUsers",
+      "resolved": "apps/frontend/src/hooks/api/useUsers.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useSupabaseDashboard",
+      "resolved": "apps/frontend/src/hooks/api/useSupabaseDashboard.ts",
+      "external": false
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/components/dashboard/GlobalRecentActivity.tsx": [
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/scroll-area",
+      "resolved": "apps/frontend/src/components/ui/scroll-area.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/skeleton",
+      "resolved": "apps/frontend/src/components/ui/skeleton.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useGlobalActivity",
+      "resolved": "apps/frontend/src/hooks/api/useGlobalActivity.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useGlobalActivityRealtime",
+      "resolved": "apps/frontend/src/hooks/api/useGlobalActivityRealtime.ts",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/components/dashboard/LocalMRPerformanceTable.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/badge",
+      "resolved": "apps/frontend/src/components/ui/badge.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/input",
+      "resolved": "apps/frontend/src/components/ui/input.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/table",
+      "resolved": "apps/frontend/src/components/ui/table.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/dialog",
+      "resolved": "apps/frontend/src/components/ui/dialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/types",
+      "resolved": "apps/frontend/src/types",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/dashboard/MarkFollowUpCompleteDialog.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/dialog",
+      "resolved": "apps/frontend/src/components/ui/dialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/label",
+      "resolved": "apps/frontend/src/components/ui/label.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/textarea",
+      "resolved": "apps/frontend/src/components/ui/textarea.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/checkbox",
+      "resolved": "apps/frontend/src/components/ui/checkbox.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/calendar",
+      "resolved": "apps/frontend/src/components/ui/calendar.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/popover",
+      "resolved": "apps/frontend/src/components/ui/popover.tsx",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    },
+    {
+      "specifier": "date-fns",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/hooks/api/useOverdueFollowUps",
+      "resolved": "apps/frontend/src/hooks/api/useOverdueFollowUps.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useVisits",
+      "resolved": "apps/frontend/src/hooks/api/useVisits.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/dashboard/MechanisationOverview.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/badge",
+      "resolved": "apps/frontend/src/components/ui/badge.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/input",
+      "resolved": "apps/frontend/src/components/ui/input.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/select",
+      "resolved": "apps/frontend/src/components/ui/select.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/table",
+      "resolved": "apps/frontend/src/components/ui/table.tsx",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/types",
+      "resolved": "apps/frontend/src/types",
+      "external": false
+    },
+    {
+      "specifier": "date-fns",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/components/dashboard/OverdueFollowUps.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/badge",
+      "resolved": "apps/frontend/src/components/ui/badge.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/scroll-area",
+      "resolved": "apps/frontend/src/components/ui/scroll-area.tsx",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "react-router-dom",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/hooks/api/useOverdueFollowUps",
+      "resolved": "apps/frontend/src/hooks/api/useOverdueFollowUps.ts",
+      "external": false
+    },
+    {
+      "specifier": "./MarkFollowUpCompleteDialog",
+      "resolved": "apps/frontend/src/components/dashboard/MarkFollowUpCompleteDialog.tsx",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/dashboard/PerformanceSummary.tsx": [
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@tanstack/react-query",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/integrations/supabase/client",
+      "resolved": "apps/frontend/src/integrations/supabase/client.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/skeleton",
+      "resolved": "apps/frontend/src/components/ui/skeleton.tsx",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/dashboard/ProductChart.tsx": [
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "recharts",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/hooks/api/useDashboard",
+      "resolved": "apps/frontend/src/hooks/api/useDashboard.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/dashboard/RecentActivity.tsx": [
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/badge",
+      "resolved": "apps/frontend/src/components/ui/badge.tsx",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/components/dashboard/SalesChart.tsx": [
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "recharts",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/hooks/api/useDashboard",
+      "resolved": "apps/frontend/src/hooks/api/useDashboard.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/dashboard/StatCard.tsx": [
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "react-router-dom",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/dashboard/TopPerformers.tsx": [
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/badge",
+      "resolved": "apps/frontend/src/components/ui/badge.tsx",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/hooks/api/useDashboard",
+      "resolved": "apps/frontend/src/hooks/api/useDashboard.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/dashboard/TOTPerformanceOverview.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/badge",
+      "resolved": "apps/frontend/src/components/ui/badge.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/input",
+      "resolved": "apps/frontend/src/components/ui/input.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/select",
+      "resolved": "apps/frontend/src/components/ui/select.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/table",
+      "resolved": "apps/frontend/src/components/ui/table.tsx",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/types",
+      "resolved": "apps/frontend/src/types",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/errors/RouteErrorBoundary.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/forms/EditSaleDialog.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/dialog",
+      "resolved": "apps/frontend/src/components/ui/dialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/input",
+      "resolved": "apps/frontend/src/components/ui/input.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/label",
+      "resolved": "apps/frontend/src/components/ui/label.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/textarea",
+      "resolved": "apps/frontend/src/components/ui/textarea.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/select",
+      "resolved": "apps/frontend/src/components/ui/select.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useFarmers",
+      "resolved": "apps/frontend/src/hooks/api/useFarmers.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useSales",
+      "resolved": "apps/frontend/src/hooks/api/useSales.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/contexts/AuthContext",
+      "resolved": "apps/frontend/src/contexts/AuthContext.tsx",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/forms/FarmerFormDialog.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/dialog",
+      "resolved": "apps/frontend/src/components/ui/dialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/input",
+      "resolved": "apps/frontend/src/components/ui/input.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/label",
+      "resolved": "apps/frontend/src/components/ui/label.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/select",
+      "resolved": "apps/frontend/src/components/ui/select.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/use-toast",
+      "resolved": "apps/frontend/src/hooks/use-toast.ts",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/hooks/api/useLocalMRs",
+      "resolved": "apps/frontend/src/hooks/api/useLocalMRs.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useFarmers",
+      "resolved": "apps/frontend/src/hooks/api/useFarmers.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/integrations/supabase/client",
+      "resolved": "apps/frontend/src/integrations/supabase/client.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/forms/SaleFormDialog.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/dialog",
+      "resolved": "apps/frontend/src/components/ui/dialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/input",
+      "resolved": "apps/frontend/src/components/ui/input.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/label",
+      "resolved": "apps/frontend/src/components/ui/label.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/select",
+      "resolved": "apps/frontend/src/components/ui/select.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/use-toast",
+      "resolved": "apps/frontend/src/hooks/use-toast.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useFarmers",
+      "resolved": "apps/frontend/src/hooks/api/useFarmers.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useProducts",
+      "resolved": "apps/frontend/src/hooks/api/useProducts.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useLocalMRs",
+      "resolved": "apps/frontend/src/hooks/api/useLocalMRs.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useTotsByLocalMR",
+      "resolved": "apps/frontend/src/hooks/api/useTotsByLocalMR.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useUsers",
+      "resolved": "apps/frontend/src/hooks/api/useUsers.ts",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/hooks/api/useSales",
+      "resolved": "apps/frontend/src/hooks/api/useSales.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/forms/TrainingFormDialog.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/dialog",
+      "resolved": "apps/frontend/src/components/ui/dialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/input",
+      "resolved": "apps/frontend/src/components/ui/input.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/label",
+      "resolved": "apps/frontend/src/components/ui/label.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/textarea",
+      "resolved": "apps/frontend/src/components/ui/textarea.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/select",
+      "resolved": "apps/frontend/src/components/ui/select.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/use-toast",
+      "resolved": "apps/frontend/src/hooks/use-toast.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useLocalMRs",
+      "resolved": "apps/frontend/src/hooks/api/useLocalMRs.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/contexts/AuthContext",
+      "resolved": "apps/frontend/src/contexts/AuthContext.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useTrainings",
+      "resolved": "apps/frontend/src/hooks/api/useTrainings.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/forms/VisitFormDialog.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/dialog",
+      "resolved": "apps/frontend/src/components/ui/dialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/textarea",
+      "resolved": "apps/frontend/src/components/ui/textarea.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/label",
+      "resolved": "apps/frontend/src/components/ui/label.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/select",
+      "resolved": "apps/frontend/src/components/ui/select.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/checkbox",
+      "resolved": "apps/frontend/src/components/ui/checkbox.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/popover",
+      "resolved": "apps/frontend/src/components/ui/popover.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/scroll-area",
+      "resolved": "apps/frontend/src/components/ui/scroll-area.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/calendar",
+      "resolved": "apps/frontend/src/components/ui/calendar.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/use-toast",
+      "resolved": "apps/frontend/src/hooks/use-toast.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useFarmers",
+      "resolved": "apps/frontend/src/hooks/api/useFarmers.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useTotsByLocalMR",
+      "resolved": "apps/frontend/src/hooks/api/useTotsByLocalMR.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useLocalMRs",
+      "resolved": "apps/frontend/src/hooks/api/useLocalMRs.ts",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/hooks/api/useVisits",
+      "resolved": "apps/frontend/src/hooks/api/useVisits.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    },
+    {
+      "specifier": "date-fns",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/components/layout/DashboardLayout.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "react-router-dom",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "./Sidebar",
+      "resolved": "apps/frontend/src/components/layout/Sidebar.tsx",
+      "external": false
+    },
+    {
+      "specifier": "./Header",
+      "resolved": "apps/frontend/src/components/layout/Header.tsx",
+      "external": false
+    },
+    {
+      "specifier": "./FloatingActions",
+      "resolved": "apps/frontend/src/components/layout/FloatingActions.tsx",
+      "external": false
+    },
+    {
+      "specifier": "./OfflineBanner",
+      "resolved": "apps/frontend/src/components/layout/OfflineBanner.tsx",
+      "external": false
+    },
+    {
+      "specifier": "./RouteTransition",
+      "resolved": "apps/frontend/src/components/layout/RouteTransition.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/contexts/AuthContext",
+      "resolved": "apps/frontend/src/contexts/AuthContext.tsx",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/layout/FloatingActions.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "react-router-dom",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/forms/FarmerFormDialog",
+      "resolved": "apps/frontend/src/components/forms/FarmerFormDialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/forms/SaleFormDialog",
+      "resolved": "apps/frontend/src/components/forms/SaleFormDialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/forms/VisitFormDialog",
+      "resolved": "apps/frontend/src/components/forms/VisitFormDialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/forms/TrainingFormDialog",
+      "resolved": "apps/frontend/src/components/forms/TrainingFormDialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/contexts/AuthContext",
+      "resolved": "apps/frontend/src/contexts/AuthContext.tsx",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/layout/Header.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "react-router-dom",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/input",
+      "resolved": "apps/frontend/src/components/ui/input.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/badge",
+      "resolved": "apps/frontend/src/components/ui/badge.tsx",
+      "external": false
+    },
+    {
+      "specifier": "./MobileNav",
+      "resolved": "apps/frontend/src/components/layout/MobileNav.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/notifications/NotificationBell",
+      "resolved": "apps/frontend/src/components/notifications/NotificationBell.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/contexts/AuthContext",
+      "resolved": "apps/frontend/src/contexts/AuthContext.tsx",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/layout/MobileNav.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "react-router-dom",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/contexts/AuthContext",
+      "resolved": "apps/frontend/src/contexts/AuthContext.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/badge",
+      "resolved": "apps/frontend/src/components/ui/badge.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/useRoutePrefetch",
+      "resolved": "apps/frontend/src/hooks/useRoutePrefetch.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/sheet",
+      "resolved": "apps/frontend/src/components/ui/sheet.tsx",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/components/layout/OfflineBanner.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useSyncStatus",
+      "resolved": "apps/frontend/src/hooks/api/useSyncStatus.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/layout/RouteTransition.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "react-router-dom",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/components/layout/Sidebar.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "react-router-dom",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/contexts/AuthContext",
+      "resolved": "apps/frontend/src/contexts/AuthContext.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/badge",
+      "resolved": "apps/frontend/src/components/ui/badge.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/useRoutePrefetch",
+      "resolved": "apps/frontend/src/hooks/useRoutePrefetch.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/tooltip",
+      "resolved": "apps/frontend/src/components/ui/tooltip.tsx",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/components/machinery/BookingDialog.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/dialog",
+      "resolved": "apps/frontend/src/components/ui/dialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/input",
+      "resolved": "apps/frontend/src/components/ui/input.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/textarea",
+      "resolved": "apps/frontend/src/components/ui/textarea.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/select",
+      "resolved": "apps/frontend/src/components/ui/select.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/label",
+      "resolved": "apps/frontend/src/components/ui/label.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useFarmers",
+      "resolved": "apps/frontend/src/hooks/api/useFarmers.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useLocalMRs",
+      "resolved": "apps/frontend/src/hooks/api/useLocalMRs.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useUsers",
+      "resolved": "apps/frontend/src/hooks/api/useUsers.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useMachineryBookings",
+      "resolved": "apps/frontend/src/hooks/api/useMachineryBookings.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/machinery/EditMachineryDialog.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/dialog",
+      "resolved": "apps/frontend/src/components/ui/dialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/input",
+      "resolved": "apps/frontend/src/components/ui/input.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/textarea",
+      "resolved": "apps/frontend/src/components/ui/textarea.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/select",
+      "resolved": "apps/frontend/src/components/ui/select.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/label",
+      "resolved": "apps/frontend/src/components/ui/label.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useMachinery",
+      "resolved": "apps/frontend/src/hooks/api/useMachinery.ts",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/components/machinery/MachineryBookingsList.tsx": [
+    {
+      "specifier": "date-fns",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/badge",
+      "resolved": "apps/frontend/src/components/ui/badge.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/hooks/api/useMachineryBookings",
+      "resolved": "apps/frontend/src/hooks/api/useMachineryBookings.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/skeleton",
+      "resolved": "apps/frontend/src/components/ui/skeleton.tsx",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/machinery/MachineryServiceHistory.tsx": [
+    {
+      "specifier": "date-fns",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/badge",
+      "resolved": "apps/frontend/src/components/ui/badge.tsx",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/hooks/api/useMachineryService",
+      "resolved": "apps/frontend/src/hooks/api/useMachineryService.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/skeleton",
+      "resolved": "apps/frontend/src/components/ui/skeleton.tsx",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/machinery/ServiceDialog.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/dialog",
+      "resolved": "apps/frontend/src/components/ui/dialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/input",
+      "resolved": "apps/frontend/src/components/ui/input.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/textarea",
+      "resolved": "apps/frontend/src/components/ui/textarea.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/select",
+      "resolved": "apps/frontend/src/components/ui/select.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/label",
+      "resolved": "apps/frontend/src/components/ui/label.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useMachineryService",
+      "resolved": "apps/frontend/src/hooks/api/useMachineryService.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/machinery/UpcomingMaintenance.tsx": [
+    {
+      "specifier": "date-fns",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/badge",
+      "resolved": "apps/frontend/src/components/ui/badge.tsx",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/hooks/api/useMachineryService",
+      "resolved": "apps/frontend/src/hooks/api/useMachineryService.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/skeleton",
+      "resolved": "apps/frontend/src/components/ui/skeleton.tsx",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/NavLink.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "react-router-dom",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/notifications/NotificationBell.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/badge",
+      "resolved": "apps/frontend/src/components/ui/badge.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/popover",
+      "resolved": "apps/frontend/src/components/ui/popover.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/scroll-area",
+      "resolved": "apps/frontend/src/components/ui/scroll-area.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/contexts/NotificationContext",
+      "resolved": "apps/frontend/src/contexts/NotificationContext.tsx",
+      "external": false
+    },
+    {
+      "specifier": "date-fns",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "react-router-dom",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/trainings/AttendanceModal.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/dialog",
+      "resolved": "apps/frontend/src/components/ui/dialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/checkbox",
+      "resolved": "apps/frontend/src/components/ui/checkbox.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/input",
+      "resolved": "apps/frontend/src/components/ui/input.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/switch",
+      "resolved": "apps/frontend/src/components/ui/switch.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/label",
+      "resolved": "apps/frontend/src/components/ui/label.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/scroll-area",
+      "resolved": "apps/frontend/src/components/ui/scroll-area.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/badge",
+      "resolved": "apps/frontend/src/components/ui/badge.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/tabs",
+      "resolved": "apps/frontend/src/components/ui/tabs.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/alert",
+      "resolved": "apps/frontend/src/components/ui/alert.tsx",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/hooks/api/useFarmersAndTots",
+      "resolved": "apps/frontend/src/hooks/api/useFarmersAndTots.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useTrainings",
+      "resolved": "apps/frontend/src/hooks/api/useTrainings.ts",
+      "external": false
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/excelUtils",
+      "resolved": "apps/frontend/src/lib/excelUtils.ts",
+      "external": false
+    },
+    {
+      "specifier": "jspdf",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "jspdf-autotable",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/components/ui/accordion.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@radix-ui/react-accordion",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/alert-dialog.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@radix-ui/react-alert-dialog",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/alert.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "class-variance-authority",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/aspect-ratio.tsx": [
+    {
+      "specifier": "@radix-ui/react-aspect-ratio",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/components/ui/avatar.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@radix-ui/react-avatar",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/badge.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "class-variance-authority",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/breadcrumb.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@radix-ui/react-slot",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/button.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@radix-ui/react-slot",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "class-variance-authority",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/calendar.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "react-day-picker",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/card.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "class-variance-authority",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/carousel.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "embla-carousel-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/chart.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "recharts",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/checkbox.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@radix-ui/react-checkbox",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/collapsible.tsx": [
+    {
+      "specifier": "@radix-ui/react-collapsible",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/components/ui/command.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@radix-ui/react-dialog",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "cmdk",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/dialog",
+      "resolved": "apps/frontend/src/components/ui/dialog.tsx",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/context-menu.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@radix-ui/react-context-menu",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/dialog.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@radix-ui/react-dialog",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/drawer.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "vaul",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/dropdown-menu.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@radix-ui/react-dropdown-menu",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/form.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@radix-ui/react-label",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@radix-ui/react-slot",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "react-hook-form",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/label",
+      "resolved": "apps/frontend/src/components/ui/label.tsx",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/hover-card.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@radix-ui/react-hover-card",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/input-otp.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "input-otp",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/input.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/label.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@radix-ui/react-label",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "class-variance-authority",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/menubar.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@radix-ui/react-menubar",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/mobile-card.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/components/ui/navigation-menu.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@radix-ui/react-navigation-menu",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "class-variance-authority",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/pagination.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/password-strength.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/popover.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@radix-ui/react-popover",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/progress.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@radix-ui/react-progress",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/radio-group.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@radix-ui/react-radio-group",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/resizable.tsx": [
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "react-resizable-panels",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/responsive-table.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/use-mobile",
+      "resolved": "apps/frontend/src/hooks/use-mobile.tsx",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/scroll-area.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@radix-ui/react-scroll-area",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/select.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@radix-ui/react-select",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/separator.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@radix-ui/react-separator",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/sheet.tsx": [
+    {
+      "specifier": "@radix-ui/react-dialog",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "class-variance-authority",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/sidebar.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@radix-ui/react-slot",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "class-variance-authority",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/hooks/use-mobile",
+      "resolved": "apps/frontend/src/hooks/use-mobile.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/input",
+      "resolved": "apps/frontend/src/components/ui/input.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/separator",
+      "resolved": "apps/frontend/src/components/ui/separator.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/sheet",
+      "resolved": "apps/frontend/src/components/ui/sheet.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/skeleton",
+      "resolved": "apps/frontend/src/components/ui/skeleton.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/tooltip",
+      "resolved": "apps/frontend/src/components/ui/tooltip.tsx",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/skeleton.tsx": [
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/slider.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@radix-ui/react-slider",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/sonner.tsx": [
+    {
+      "specifier": "next-themes",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/components/ui/switch.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@radix-ui/react-switch",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/table-pagination.tsx": [
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/select",
+      "resolved": "apps/frontend/src/components/ui/select.tsx",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/components/ui/table.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/tabs.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@radix-ui/react-tabs",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/textarea.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/toast.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@radix-ui/react-toast",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "class-variance-authority",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/toaster.tsx": [
+    {
+      "specifier": "@/hooks/use-toast",
+      "resolved": "apps/frontend/src/hooks/use-toast.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/toast",
+      "resolved": "apps/frontend/src/components/ui/toast.tsx",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/toggle-group.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@radix-ui/react-toggle-group",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "class-variance-authority",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/toggle",
+      "resolved": "apps/frontend/src/components/ui/toggle.tsx",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/toggle.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@radix-ui/react-toggle",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "class-variance-authority",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/tooltip.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@radix-ui/react-tooltip",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/ui/use-toast.ts": [
+    {
+      "specifier": "@/hooks/use-toast",
+      "resolved": "apps/frontend/src/hooks/use-toast.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/contexts/AuthContext.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@supabase/supabase-js",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/integrations/supabase/client",
+      "resolved": "apps/frontend/src/integrations/supabase/client.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/integrations/supabase/types",
+      "resolved": "apps/frontend/src/integrations/supabase/types.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/contexts/NotificationContext.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@tanstack/react-query",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/integrations/supabase/client",
+      "resolved": "apps/frontend/src/integrations/supabase/client.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/types",
+      "resolved": "apps/frontend/src/types",
+      "external": false
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/hooks/useNotificationAlerts",
+      "resolved": "apps/frontend/src/hooks/useNotificationAlerts.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/hooks/api/index.ts": [
+    {
+      "specifier": "./useFarmersAndTots",
+      "resolved": "apps/frontend/src/hooks/api/useFarmersAndTots.ts",
+      "external": false
+    },
+    {
+      "specifier": "./useFarmers",
+      "resolved": "apps/frontend/src/hooks/api/useFarmers.ts",
+      "external": false
+    },
+    {
+      "specifier": "./useFarmerTrainings",
+      "resolved": "apps/frontend/src/hooks/api/useFarmerTrainings.ts",
+      "external": false
+    },
+    {
+      "specifier": "./useSales",
+      "resolved": "apps/frontend/src/hooks/api/useSales.ts",
+      "external": false
+    },
+    {
+      "specifier": "./useTrainings",
+      "resolved": "apps/frontend/src/hooks/api/useTrainings.ts",
+      "external": false
+    },
+    {
+      "specifier": "./useVisits",
+      "resolved": "apps/frontend/src/hooks/api/useVisits.ts",
+      "external": false
+    },
+    {
+      "specifier": "./useMachinery",
+      "resolved": "apps/frontend/src/hooks/api/useMachinery.ts",
+      "external": false
+    },
+    {
+      "specifier": "./useMachineryBookings",
+      "resolved": "apps/frontend/src/hooks/api/useMachineryBookings.ts",
+      "external": false
+    },
+    {
+      "specifier": "./useMachineryService",
+      "resolved": "apps/frontend/src/hooks/api/useMachineryService.ts",
+      "external": false
+    },
+    {
+      "specifier": "./useLocalMRs",
+      "resolved": "apps/frontend/src/hooks/api/useLocalMRs.ts",
+      "external": false
+    },
+    {
+      "specifier": "./useUsers",
+      "resolved": "apps/frontend/src/hooks/api/useUsers.ts",
+      "external": false
+    },
+    {
+      "specifier": "./useNotifications",
+      "resolved": "apps/frontend/src/hooks/api/useNotifications.ts",
+      "external": false
+    },
+    {
+      "specifier": "./useDashboard",
+      "resolved": "apps/frontend/src/hooks/api/useDashboard.ts",
+      "external": false
+    },
+    {
+      "specifier": "./useProducts",
+      "resolved": "apps/frontend/src/hooks/api/useProducts.ts",
+      "external": false
+    },
+    {
+      "specifier": "./useProductsRealtime",
+      "resolved": "apps/frontend/src/hooks/api/useProductsRealtime.ts",
+      "external": false
+    },
+    {
+      "specifier": "./useDashboardRealtime",
+      "resolved": "apps/frontend/src/hooks/api/useDashboardRealtime.ts",
+      "external": false
+    },
+    {
+      "specifier": "./useOverdueFollowUps",
+      "resolved": "apps/frontend/src/hooks/api/useOverdueFollowUps.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/hooks/api/useDashboard.ts": [
+    {
+      "specifier": "@tanstack/react-query",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/backend",
+      "resolved": "apps/frontend/src/lib/backend.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/hooks/api/useDashboardRealtime.ts": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@tanstack/react-query",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/integrations/supabase/client",
+      "resolved": "apps/frontend/src/integrations/supabase/client.ts",
+      "external": false
+    },
+    {
+      "specifier": "./useSupabaseDashboard",
+      "resolved": "apps/frontend/src/hooks/api/useSupabaseDashboard.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/hooks/api/useFarmers.ts": [
+    {
+      "specifier": "@tanstack/react-query",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/integrations/supabase/client",
+      "resolved": "apps/frontend/src/integrations/supabase/client.ts",
+      "external": false
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/hooks/api/useFarmersAndTots.ts": [
+    {
+      "specifier": "@tanstack/react-query",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/integrations/supabase/client",
+      "resolved": "apps/frontend/src/integrations/supabase/client.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/hooks/api/useFarmerTrainings.ts": [
+    {
+      "specifier": "@tanstack/react-query",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/integrations/supabase/client",
+      "resolved": "apps/frontend/src/integrations/supabase/client.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/hooks/api/useGlobalActivity.ts": [
+    {
+      "specifier": "@tanstack/react-query",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/integrations/supabase/client",
+      "resolved": "apps/frontend/src/integrations/supabase/client.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/hooks/api/useGlobalActivityRealtime.ts": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/integrations/supabase/client",
+      "resolved": "apps/frontend/src/integrations/supabase/client.ts",
+      "external": false
+    },
+    {
+      "specifier": "@tanstack/react-query",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/hooks/api/useGlobalSearch.ts": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "react-router-dom",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/hooks/api/useLocalMRs.ts": [
+    {
+      "specifier": "@tanstack/react-query",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/integrations/supabase/client",
+      "resolved": "apps/frontend/src/integrations/supabase/client.ts",
+      "external": false
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/hooks/api/useMachinery.ts": [
+    {
+      "specifier": "@tanstack/react-query",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/integrations/supabase/client",
+      "resolved": "apps/frontend/src/integrations/supabase/client.ts",
+      "external": false
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/hooks/api/useMachineryBookings.ts": [
+    {
+      "specifier": "@tanstack/react-query",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/integrations/supabase/client",
+      "resolved": "apps/frontend/src/integrations/supabase/client.ts",
+      "external": false
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/hooks/api/useMachineryService.ts": [
+    {
+      "specifier": "@tanstack/react-query",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/integrations/supabase/client",
+      "resolved": "apps/frontend/src/integrations/supabase/client.ts",
+      "external": false
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/hooks/api/useMechanisation.ts": [
+    {
+      "specifier": "@tanstack/react-query",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/integrations/supabase/client",
+      "resolved": "apps/frontend/src/integrations/supabase/client.ts",
+      "external": false
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/hooks/api/useMechanisationRealtime.ts": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@tanstack/react-query",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/integrations/supabase/client",
+      "resolved": "apps/frontend/src/integrations/supabase/client.ts",
+      "external": false
+    },
+    {
+      "specifier": "./useMechanisation",
+      "resolved": "apps/frontend/src/hooks/api/useMechanisation.ts",
+      "external": false
+    },
+    {
+      "specifier": "./useMachineryBookings",
+      "resolved": "apps/frontend/src/hooks/api/useMachineryBookings.ts",
+      "external": false
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/hooks/api/useNotifications.ts": [
+    {
+      "specifier": "@tanstack/react-query",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/integrations/supabase/client",
+      "resolved": "apps/frontend/src/integrations/supabase/client.ts",
+      "external": false
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/contexts/AuthContext",
+      "resolved": "apps/frontend/src/contexts/AuthContext.tsx",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/hooks/api/useNotificationSettings.ts": [
+    {
+      "specifier": "@tanstack/react-query",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/integrations/supabase/client",
+      "resolved": "apps/frontend/src/integrations/supabase/client.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/contexts/AuthContext",
+      "resolved": "apps/frontend/src/contexts/AuthContext.tsx",
+      "external": false
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/hooks/api/useOverdueFollowUps.ts": [
+    {
+      "specifier": "@tanstack/react-query",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/integrations/supabase/client",
+      "resolved": "apps/frontend/src/integrations/supabase/client.ts",
+      "external": false
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/hooks/api/usePaginatedFarmers.ts": [
+    {
+      "specifier": "@tanstack/react-query",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/integrations/supabase/client",
+      "resolved": "apps/frontend/src/integrations/supabase/client.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/hooks/api/useProducts.ts": [
+    {
+      "specifier": "@tanstack/react-query",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/integrations/supabase/client",
+      "resolved": "apps/frontend/src/integrations/supabase/client.ts",
+      "external": false
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/hooks/api/useProductsRealtime.ts": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@tanstack/react-query",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/integrations/supabase/client",
+      "resolved": "apps/frontend/src/integrations/supabase/client.ts",
+      "external": false
+    },
+    {
+      "specifier": "./useProducts",
+      "resolved": "apps/frontend/src/hooks/api/useProducts.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/hooks/api/useSales.ts": [
+    {
+      "specifier": "@tanstack/react-query",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/integrations/supabase/client",
+      "resolved": "apps/frontend/src/integrations/supabase/client.ts",
+      "external": false
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/hooks/api/useSupabaseDashboard.ts": [
+    {
+      "specifier": "@tanstack/react-query",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/supabase/dashboardQueries",
+      "resolved": "apps/frontend/src/lib/supabase/dashboardQueries.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/hooks/api/useSyncStatus.ts": [
+    {
+      "specifier": "@tanstack/react-query",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/hooks/api/useSystemLogs.ts": [
+    {
+      "specifier": "@tanstack/react-query",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/integrations/supabase/client",
+      "resolved": "apps/frontend/src/integrations/supabase/client.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/hooks/api/useTotsByLocalMR.ts": [
+    {
+      "specifier": "@tanstack/react-query",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/integrations/supabase/client",
+      "resolved": "apps/frontend/src/integrations/supabase/client.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/hooks/api/useTrainings.ts": [
+    {
+      "specifier": "@tanstack/react-query",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/integrations/supabase/client",
+      "resolved": "apps/frontend/src/integrations/supabase/client.ts",
+      "external": false
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/hooks/api/useUsers.ts": [
+    {
+      "specifier": "@tanstack/react-query",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/integrations/supabase/client",
+      "resolved": "apps/frontend/src/integrations/supabase/client.ts",
+      "external": false
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/hooks/api/useVisits.ts": [
+    {
+      "specifier": "@tanstack/react-query",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/integrations/supabase/client",
+      "resolved": "apps/frontend/src/integrations/supabase/client.ts",
+      "external": false
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/hooks/use-mobile.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/hooks/use-toast.ts": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/toast",
+      "resolved": "apps/frontend/src/components/ui/toast.tsx",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/hooks/useNotificationAlerts.ts": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/integrations/supabase/client",
+      "resolved": "apps/frontend/src/integrations/supabase/client.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/contexts/AuthContext",
+      "resolved": "apps/frontend/src/contexts/AuthContext.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@tanstack/react-query",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/hooks/useRoutePrefetch.ts": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/pages/Dashboard",
+      "resolved": "apps/frontend/src/pages/Dashboard",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/dashboard/AdminDashboard",
+      "resolved": "apps/frontend/src/pages/dashboard/AdminDashboard.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/dashboard/ManagerDashboard",
+      "resolved": "apps/frontend/src/pages/dashboard/ManagerDashboard.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/dashboard/CoordinatorDashboard",
+      "resolved": "apps/frontend/src/pages/dashboard/CoordinatorDashboard.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/dashboard/TotDashboard",
+      "resolved": "apps/frontend/src/pages/dashboard/TotDashboard.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/Farmers",
+      "resolved": "apps/frontend/src/pages/Farmers.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/Sales",
+      "resolved": "apps/frontend/src/pages/Sales.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/Machinery",
+      "resolved": "apps/frontend/src/pages/Machinery.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/Products",
+      "resolved": "apps/frontend/src/pages/Products.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/Visits",
+      "resolved": "apps/frontend/src/pages/Visits.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/Trainings",
+      "resolved": "apps/frontend/src/pages/Trainings.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/Reports",
+      "resolved": "apps/frontend/src/pages/Reports.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/Settings",
+      "resolved": "apps/frontend/src/pages/Settings.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/Commission",
+      "resolved": "apps/frontend/src/pages/Commission.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/Notifications",
+      "resolved": "apps/frontend/src/pages/Notifications.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/TOTManagement",
+      "resolved": "apps/frontend/src/pages/TOTManagement.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/admin/LocalMRs",
+      "resolved": "apps/frontend/src/pages/admin/LocalMRs.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/admin/Users",
+      "resolved": "apps/frontend/src/pages/admin/Users.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/admin/AuditLog",
+      "resolved": "apps/frontend/src/pages/admin/AuditLog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/admin/SystemLogs",
+      "resolved": "apps/frontend/src/pages/admin/SystemLogs.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/Support",
+      "resolved": "apps/frontend/src/pages/Support.tsx",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/integrations/supabase/client.ts": [
+    {
+      "specifier": "@supabase/supabase-js",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "./types",
+      "resolved": "apps/frontend/src/integrations/supabase/types.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/integrations/supabase/types.ts": [],
+  "apps/frontend/src/lib/api/index.ts": [
+    {
+      "specifier": "@/hooks/api/useDashboard",
+      "resolved": "apps/frontend/src/hooks/api/useDashboard.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/lib/backend.ts": [
+    {
+      "specifier": "@/integrations/supabase/client",
+      "resolved": "apps/frontend/src/integrations/supabase/client.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/lib/excelUtils.ts": [
+    {
+      "specifier": "exceljs",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/lib/exportUtils.ts": [
+    {
+      "specifier": "jspdf",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "jspdf-autotable",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/types",
+      "resolved": "apps/frontend/src/types",
+      "external": false
+    },
+    {
+      "specifier": "./pdfChartUtils",
+      "resolved": "apps/frontend/src/lib/pdfChartUtils.tsx",
+      "external": false
+    },
+    {
+      "specifier": "./excelUtils",
+      "resolved": "apps/frontend/src/lib/excelUtils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/lib/getTotStats.ts": [
+    {
+      "specifier": "@/types",
+      "resolved": "apps/frontend/src/types",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/lib/pdfChartUtils.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "react-dom/client",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "html2canvas",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "recharts",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/lib/supabase/dashboardQueries.ts": [
+    {
+      "specifier": "@/lib/backend",
+      "resolved": "apps/frontend/src/lib/backend.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/lib/utils.ts": [
+    {
+      "specifier": "clsx",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "tailwind-merge",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/main.tsx": [
+    {
+      "specifier": "react-dom/client",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "./App.tsx",
+      "resolved": "apps/frontend/src/App.tsx",
+      "external": false
+    },
+    {
+      "specifier": "./index.css",
+      "resolved": "apps/frontend/src/index.css",
+      "external": false
+    },
+    {
+      "specifier": "@/contexts/AuthContext",
+      "resolved": "apps/frontend/src/contexts/AuthContext.tsx",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/pages/admin/AuditLog.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/input",
+      "resolved": "apps/frontend/src/components/ui/input.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/badge",
+      "resolved": "apps/frontend/src/components/ui/badge.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/skeleton",
+      "resolved": "apps/frontend/src/components/ui/skeleton.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/select",
+      "resolved": "apps/frontend/src/components/ui/select.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/table",
+      "resolved": "apps/frontend/src/components/ui/table.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/dropdown-menu",
+      "resolved": "apps/frontend/src/components/ui/dropdown-menu.tsx",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/excelUtils",
+      "resolved": "apps/frontend/src/lib/excelUtils.ts",
+      "external": false
+    },
+    {
+      "specifier": "jspdf",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "jspdf-autotable",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/hooks/api/useSystemLogs",
+      "resolved": "apps/frontend/src/hooks/api/useSystemLogs.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/pages/admin/CreateUserForm.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/input",
+      "resolved": "apps/frontend/src/components/ui/input.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/label",
+      "resolved": "apps/frontend/src/components/ui/label.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/select",
+      "resolved": "apps/frontend/src/components/ui/select.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/use-toast",
+      "resolved": "apps/frontend/src/hooks/use-toast.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/types",
+      "resolved": "apps/frontend/src/types",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useUsers",
+      "resolved": "apps/frontend/src/hooks/api/useUsers.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useLocalMRs",
+      "resolved": "apps/frontend/src/hooks/api/useLocalMRs.ts",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/pages/admin/LocalMRDetails.tsx": [
+    {
+      "specifier": "react-router-dom",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/badge",
+      "resolved": "apps/frontend/src/components/ui/badge.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/tabs",
+      "resolved": "apps/frontend/src/components/ui/tabs.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/table",
+      "resolved": "apps/frontend/src/components/ui/table.tsx",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/hooks/api/useLocalMRs",
+      "resolved": "apps/frontend/src/hooks/api/useLocalMRs.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useFarmers",
+      "resolved": "apps/frontend/src/hooks/api/useFarmers.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useSales",
+      "resolved": "apps/frontend/src/hooks/api/useSales.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useTrainings",
+      "resolved": "apps/frontend/src/hooks/api/useTrainings.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useVisits",
+      "resolved": "apps/frontend/src/hooks/api/useVisits.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useMachineryBookings",
+      "resolved": "apps/frontend/src/hooks/api/useMachineryBookings.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useUsers",
+      "resolved": "apps/frontend/src/hooks/api/useUsers.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/pages/admin/LocalMRs.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "react-router-dom",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/input",
+      "resolved": "apps/frontend/src/components/ui/input.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/badge",
+      "resolved": "apps/frontend/src/components/ui/badge.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/label",
+      "resolved": "apps/frontend/src/components/ui/label.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/tabs",
+      "resolved": "apps/frontend/src/components/ui/tabs.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/select",
+      "resolved": "apps/frontend/src/components/ui/select.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/table",
+      "resolved": "apps/frontend/src/components/ui/table.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/dialog",
+      "resolved": "apps/frontend/src/components/ui/dialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/dropdown-menu",
+      "resolved": "apps/frontend/src/components/ui/dropdown-menu.tsx",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/hooks/api/useLocalMRs",
+      "resolved": "apps/frontend/src/hooks/api/useLocalMRs.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useSales",
+      "resolved": "apps/frontend/src/hooks/api/useSales.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useTrainings",
+      "resolved": "apps/frontend/src/hooks/api/useTrainings.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useVisits",
+      "resolved": "apps/frontend/src/hooks/api/useVisits.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useMachineryBookings",
+      "resolved": "apps/frontend/src/hooks/api/useMachineryBookings.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/pages/admin/SystemLogs.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/input",
+      "resolved": "apps/frontend/src/components/ui/input.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/badge",
+      "resolved": "apps/frontend/src/components/ui/badge.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/select",
+      "resolved": "apps/frontend/src/components/ui/select.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/table",
+      "resolved": "apps/frontend/src/components/ui/table.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/dropdown-menu",
+      "resolved": "apps/frontend/src/components/ui/dropdown-menu.tsx",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/excelUtils",
+      "resolved": "apps/frontend/src/lib/excelUtils.ts",
+      "external": false
+    },
+    {
+      "specifier": "jspdf",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "jspdf-autotable",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/hooks/api/useSystemLogs",
+      "resolved": "apps/frontend/src/hooks/api/useSystemLogs.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/pages/admin/Users.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/input",
+      "resolved": "apps/frontend/src/components/ui/input.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/badge",
+      "resolved": "apps/frontend/src/components/ui/badge.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/label",
+      "resolved": "apps/frontend/src/components/ui/label.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/table",
+      "resolved": "apps/frontend/src/components/ui/table.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/dialog",
+      "resolved": "apps/frontend/src/components/ui/dialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/dropdown-menu",
+      "resolved": "apps/frontend/src/components/ui/dropdown-menu.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/select",
+      "resolved": "apps/frontend/src/components/ui/select.tsx",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/alert-dialog",
+      "resolved": "apps/frontend/src/components/ui/alert-dialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/hooks/api",
+      "resolved": "apps/frontend/src/hooks/api",
+      "external": false
+    },
+    {
+      "specifier": "@/integrations/supabase/client",
+      "resolved": "apps/frontend/src/integrations/supabase/client.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/types",
+      "resolved": "apps/frontend/src/types",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/password-strength",
+      "resolved": "apps/frontend/src/components/ui/password-strength.tsx",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/pages/Auth.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "react-router-dom",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "zod",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/input",
+      "resolved": "apps/frontend/src/components/ui/input.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/label",
+      "resolved": "apps/frontend/src/components/ui/label.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/contexts/AuthContext",
+      "resolved": "apps/frontend/src/contexts/AuthContext.tsx",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/pages/Commission.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/badge",
+      "resolved": "apps/frontend/src/components/ui/badge.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/table",
+      "resolved": "apps/frontend/src/components/ui/table.tsx",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/contexts/AuthContext",
+      "resolved": "apps/frontend/src/contexts/AuthContext.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api",
+      "resolved": "apps/frontend/src/hooks/api",
+      "external": false
+    },
+    {
+      "specifier": "@/lib/excelUtils",
+      "resolved": "apps/frontend/src/lib/excelUtils.ts",
+      "external": false
+    },
+    {
+      "specifier": "jspdf",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/pages/dashboard/AdminDashboard.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/dashboard/StatCard",
+      "resolved": "apps/frontend/src/components/dashboard/StatCard.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/dashboard/GlobalRecentActivity",
+      "resolved": "apps/frontend/src/components/dashboard/GlobalRecentActivity.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/dashboard/SalesChart",
+      "resolved": "apps/frontend/src/components/dashboard/SalesChart.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/dashboard/ProductChart",
+      "resolved": "apps/frontend/src/components/dashboard/ProductChart.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/dashboard/TopPerformers",
+      "resolved": "apps/frontend/src/components/dashboard/TopPerformers.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/dashboard/OverdueFollowUps",
+      "resolved": "apps/frontend/src/components/dashboard/OverdueFollowUps.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/dashboard/TOTPerformanceOverview",
+      "resolved": "apps/frontend/src/components/dashboard/TOTPerformanceOverview.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/dashboard/PerformanceSummary",
+      "resolved": "apps/frontend/src/components/dashboard/PerformanceSummary.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/dashboard/AddTOTDialog",
+      "resolved": "apps/frontend/src/components/dashboard/AddTOTDialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useSupabaseDashboard",
+      "resolved": "apps/frontend/src/hooks/api/useSupabaseDashboard.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useUsers",
+      "resolved": "apps/frontend/src/hooks/api/useUsers.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useDashboardRealtime",
+      "resolved": "apps/frontend/src/hooks/api/useDashboardRealtime.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/badge",
+      "resolved": "apps/frontend/src/components/ui/badge.tsx",
+      "external": false
+    },
+    {
+      "specifier": "recharts",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/pages/dashboard/CoordinatorDashboard.tsx": [
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/dashboard/StatCard",
+      "resolved": "apps/frontend/src/components/dashboard/StatCard.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/dashboard/GlobalRecentActivity",
+      "resolved": "apps/frontend/src/components/dashboard/GlobalRecentActivity.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/dashboard/SalesChart",
+      "resolved": "apps/frontend/src/components/dashboard/SalesChart.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/dashboard/ProductChart",
+      "resolved": "apps/frontend/src/components/dashboard/ProductChart.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/dashboard/TopPerformers",
+      "resolved": "apps/frontend/src/components/dashboard/TopPerformers.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/dashboard/TOTPerformanceOverview",
+      "resolved": "apps/frontend/src/components/dashboard/TOTPerformanceOverview.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/dashboard/OverdueFollowUps",
+      "resolved": "apps/frontend/src/components/dashboard/OverdueFollowUps.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/dashboard/PerformanceSummary",
+      "resolved": "apps/frontend/src/components/dashboard/PerformanceSummary.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/contexts/AuthContext",
+      "resolved": "apps/frontend/src/contexts/AuthContext.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useDashboardRealtime",
+      "resolved": "apps/frontend/src/hooks/api/useDashboardRealtime.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/lib/backend",
+      "resolved": "apps/frontend/src/lib/backend.ts",
+      "external": false
+    },
+    {
+      "specifier": "@tanstack/react-query",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/badge",
+      "resolved": "apps/frontend/src/components/ui/badge.tsx",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/pages/dashboard/ManagerDashboard.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "react-router-dom",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@tanstack/react-query",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/dashboard/StatCard",
+      "resolved": "apps/frontend/src/components/dashboard/StatCard.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/dashboard/GlobalRecentActivity",
+      "resolved": "apps/frontend/src/components/dashboard/GlobalRecentActivity.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/dashboard/SalesChart",
+      "resolved": "apps/frontend/src/components/dashboard/SalesChart.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/dashboard/ProductChart",
+      "resolved": "apps/frontend/src/components/dashboard/ProductChart.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/dashboard/TopPerformers",
+      "resolved": "apps/frontend/src/components/dashboard/TopPerformers.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/dashboard/LocalMRPerformanceTable",
+      "resolved": "apps/frontend/src/components/dashboard/LocalMRPerformanceTable.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/dashboard/TOTPerformanceOverview",
+      "resolved": "apps/frontend/src/components/dashboard/TOTPerformanceOverview.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/dashboard/OverdueFollowUps",
+      "resolved": "apps/frontend/src/components/dashboard/OverdueFollowUps.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/dashboard/PerformanceSummary",
+      "resolved": "apps/frontend/src/components/dashboard/PerformanceSummary.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useSupabaseDashboard",
+      "resolved": "apps/frontend/src/hooks/api/useSupabaseDashboard.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useProducts",
+      "resolved": "apps/frontend/src/hooks/api/useProducts.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useDashboardRealtime",
+      "resolved": "apps/frontend/src/hooks/api/useDashboardRealtime.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useProductsRealtime",
+      "resolved": "apps/frontend/src/hooks/api/useProductsRealtime.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/useNotificationAlerts",
+      "resolved": "apps/frontend/src/hooks/useNotificationAlerts.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/badge",
+      "resolved": "apps/frontend/src/components/ui/badge.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/pages/dashboard/TotDashboard.tsx": [
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/dashboard/StatCard",
+      "resolved": "apps/frontend/src/components/dashboard/StatCard.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/dashboard/GlobalRecentActivity",
+      "resolved": "apps/frontend/src/components/dashboard/GlobalRecentActivity.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/dashboard/SalesChart",
+      "resolved": "apps/frontend/src/components/dashboard/SalesChart.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/dashboard/ProductChart",
+      "resolved": "apps/frontend/src/components/dashboard/ProductChart.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/dashboard/OverdueFollowUps",
+      "resolved": "apps/frontend/src/components/dashboard/OverdueFollowUps.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useSupabaseDashboard",
+      "resolved": "apps/frontend/src/hooks/api/useSupabaseDashboard.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/components/dashboard/PerformanceSummary",
+      "resolved": "apps/frontend/src/components/dashboard/PerformanceSummary.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/dashboard/CommissionSummary",
+      "resolved": "apps/frontend/src/components/dashboard/CommissionSummary.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/contexts/AuthContext",
+      "resolved": "apps/frontend/src/contexts/AuthContext.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useDashboardRealtime",
+      "resolved": "apps/frontend/src/hooks/api/useDashboardRealtime.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/pages/Dashboard.tsx": [
+    {
+      "specifier": "@/contexts/AuthContext",
+      "resolved": "apps/frontend/src/contexts/AuthContext.tsx",
+      "external": false
+    },
+    {
+      "specifier": "./dashboard/TotDashboard",
+      "resolved": "apps/frontend/src/pages/dashboard/TotDashboard.tsx",
+      "external": false
+    },
+    {
+      "specifier": "./dashboard/ManagerDashboard",
+      "resolved": "apps/frontend/src/pages/dashboard/ManagerDashboard.tsx",
+      "external": false
+    },
+    {
+      "specifier": "./dashboard/AdminDashboard",
+      "resolved": "apps/frontend/src/pages/dashboard/AdminDashboard.tsx",
+      "external": false
+    },
+    {
+      "specifier": "./dashboard/CoordinatorDashboard",
+      "resolved": "apps/frontend/src/pages/dashboard/CoordinatorDashboard.tsx",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/pages/FarmerProfile.tsx": [
+    {
+      "specifier": "react-router-dom",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/badge",
+      "resolved": "apps/frontend/src/components/ui/badge.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/tabs",
+      "resolved": "apps/frontend/src/components/ui/tabs.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api",
+      "resolved": "apps/frontend/src/hooks/api",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useMachineryBookings",
+      "resolved": "apps/frontend/src/hooks/api/useMachineryBookings.ts",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/types",
+      "resolved": "apps/frontend/src/types",
+      "external": false
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/excelUtils",
+      "resolved": "apps/frontend/src/lib/excelUtils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/pages/Farmers.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "react-router-dom",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/contexts/AuthContext",
+      "resolved": "apps/frontend/src/contexts/AuthContext.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/contexts/NotificationContext",
+      "resolved": "apps/frontend/src/contexts/NotificationContext.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/input",
+      "resolved": "apps/frontend/src/components/ui/input.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/badge",
+      "resolved": "apps/frontend/src/components/ui/badge.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/skeleton",
+      "resolved": "apps/frontend/src/components/ui/skeleton.tsx",
+      "external": false
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/exportUtils",
+      "resolved": "apps/frontend/src/lib/exportUtils.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/components/forms/FarmerFormDialog",
+      "resolved": "apps/frontend/src/components/forms/FarmerFormDialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/bulk-upload/BulkUploadDialog",
+      "resolved": "apps/frontend/src/components/bulk-upload/BulkUploadDialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/table-pagination",
+      "resolved": "apps/frontend/src/components/ui/table-pagination.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/types",
+      "resolved": "apps/frontend/src/types",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/usePaginatedFarmers",
+      "resolved": "apps/frontend/src/hooks/api/usePaginatedFarmers.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useFarmers",
+      "resolved": "apps/frontend/src/hooks/api/useFarmers.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api",
+      "resolved": "apps/frontend/src/hooks/api",
+      "external": false
+    },
+    {
+      "specifier": "@/integrations/supabase/client",
+      "resolved": "apps/frontend/src/integrations/supabase/client.ts",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/dialog",
+      "resolved": "apps/frontend/src/components/ui/dialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/dropdown-menu",
+      "resolved": "apps/frontend/src/components/ui/dropdown-menu.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/select",
+      "resolved": "apps/frontend/src/components/ui/select.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/alert-dialog",
+      "resolved": "apps/frontend/src/components/ui/alert-dialog.tsx",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/pages/ForgotPassword.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "react-router-dom",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/input",
+      "resolved": "apps/frontend/src/components/ui/input.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/label",
+      "resolved": "apps/frontend/src/components/ui/label.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/use-toast",
+      "resolved": "apps/frontend/src/hooks/use-toast.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/integrations/supabase/client",
+      "resolved": "apps/frontend/src/integrations/supabase/client.ts",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/pages/Install.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/pages/Machinery.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/input",
+      "resolved": "apps/frontend/src/components/ui/input.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/badge",
+      "resolved": "apps/frontend/src/components/ui/badge.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/skeleton",
+      "resolved": "apps/frontend/src/components/ui/skeleton.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/tabs",
+      "resolved": "apps/frontend/src/components/ui/tabs.tsx",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/contexts/AuthContext",
+      "resolved": "apps/frontend/src/contexts/AuthContext.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/contexts/NotificationContext",
+      "resolved": "apps/frontend/src/contexts/NotificationContext.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api",
+      "resolved": "apps/frontend/src/hooks/api",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/dialog",
+      "resolved": "apps/frontend/src/components/ui/dialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/dropdown-menu",
+      "resolved": "apps/frontend/src/components/ui/dropdown-menu.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/select",
+      "resolved": "apps/frontend/src/components/ui/select.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/alert-dialog",
+      "resolved": "apps/frontend/src/components/ui/alert-dialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/textarea",
+      "resolved": "apps/frontend/src/components/ui/textarea.tsx",
+      "external": false
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/machinery/BookingDialog",
+      "resolved": "apps/frontend/src/components/machinery/BookingDialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/machinery/ServiceDialog",
+      "resolved": "apps/frontend/src/components/machinery/ServiceDialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/machinery/MachineryBookingsList",
+      "resolved": "apps/frontend/src/components/machinery/MachineryBookingsList.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/machinery/MachineryServiceHistory",
+      "resolved": "apps/frontend/src/components/machinery/MachineryServiceHistory.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/machinery/UpcomingMaintenance",
+      "resolved": "apps/frontend/src/components/machinery/UpcomingMaintenance.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/machinery/EditMachineryDialog",
+      "resolved": "apps/frontend/src/components/machinery/EditMachineryDialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/bulk-upload/BulkUploadDialog",
+      "resolved": "apps/frontend/src/components/bulk-upload/BulkUploadDialog.tsx",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/pages/NotFound.tsx": [
+    {
+      "specifier": "react-router-dom",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/pages/Notifications.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/badge",
+      "resolved": "apps/frontend/src/components/ui/badge.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/checkbox",
+      "resolved": "apps/frontend/src/components/ui/checkbox.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/contexts/NotificationContext",
+      "resolved": "apps/frontend/src/contexts/NotificationContext.tsx",
+      "external": false
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/types",
+      "resolved": "apps/frontend/src/types",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/pages/Products.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/input",
+      "resolved": "apps/frontend/src/components/ui/input.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/badge",
+      "resolved": "apps/frontend/src/components/ui/badge.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/label",
+      "resolved": "apps/frontend/src/components/ui/label.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/textarea",
+      "resolved": "apps/frontend/src/components/ui/textarea.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/skeleton",
+      "resolved": "apps/frontend/src/components/ui/skeleton.tsx",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/contexts/AuthContext",
+      "resolved": "apps/frontend/src/contexts/AuthContext.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api",
+      "resolved": "apps/frontend/src/hooks/api",
+      "external": false
+    },
+    {
+      "specifier": "@/components/bulk-upload/BulkUploadDialog",
+      "resolved": "apps/frontend/src/components/bulk-upload/BulkUploadDialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/integrations/supabase/client",
+      "resolved": "apps/frontend/src/integrations/supabase/client.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/dialog",
+      "resolved": "apps/frontend/src/components/ui/dialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/select",
+      "resolved": "apps/frontend/src/components/ui/select.tsx",
+      "external": false
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/types",
+      "resolved": "apps/frontend/src/types",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/pages/Reports.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/badge",
+      "resolved": "apps/frontend/src/components/ui/badge.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/skeleton",
+      "resolved": "apps/frontend/src/components/ui/skeleton.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/input",
+      "resolved": "apps/frontend/src/components/ui/input.tsx",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/contexts/AuthContext",
+      "resolved": "apps/frontend/src/contexts/AuthContext.tsx",
+      "external": false
+    },
+    {
+      "specifier": "date-fns",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/hooks/api/useFarmers",
+      "resolved": "apps/frontend/src/hooks/api/useFarmers.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useSales",
+      "resolved": "apps/frontend/src/hooks/api/useSales.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useMachineryBookings",
+      "resolved": "apps/frontend/src/hooks/api/useMachineryBookings.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useTrainings",
+      "resolved": "apps/frontend/src/hooks/api/useTrainings.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useVisits",
+      "resolved": "apps/frontend/src/hooks/api/useVisits.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/lib/exportUtils",
+      "resolved": "apps/frontend/src/lib/exportUtils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/pages/ResetPassword.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "react-router-dom",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/input",
+      "resolved": "apps/frontend/src/components/ui/input.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/label",
+      "resolved": "apps/frontend/src/components/ui/label.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/use-toast",
+      "resolved": "apps/frontend/src/hooks/use-toast.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/integrations/supabase/client",
+      "resolved": "apps/frontend/src/integrations/supabase/client.ts",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/pages/Sales.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/input",
+      "resolved": "apps/frontend/src/components/ui/input.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/badge",
+      "resolved": "apps/frontend/src/components/ui/badge.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/skeleton",
+      "resolved": "apps/frontend/src/components/ui/skeleton.tsx",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/exportUtils",
+      "resolved": "apps/frontend/src/lib/exportUtils.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/components/forms/SaleFormDialog",
+      "resolved": "apps/frontend/src/components/forms/SaleFormDialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/forms/EditSaleDialog",
+      "resolved": "apps/frontend/src/components/forms/EditSaleDialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/bulk-upload/BulkUploadDialog",
+      "resolved": "apps/frontend/src/components/bulk-upload/BulkUploadDialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/contexts/NotificationContext",
+      "resolved": "apps/frontend/src/contexts/NotificationContext.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/contexts/AuthContext",
+      "resolved": "apps/frontend/src/contexts/AuthContext.tsx",
+      "external": false
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/types",
+      "resolved": "apps/frontend/src/types",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api",
+      "resolved": "apps/frontend/src/hooks/api",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useFarmers",
+      "resolved": "apps/frontend/src/hooks/api/useFarmers.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useUsers",
+      "resolved": "apps/frontend/src/hooks/api/useUsers.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useLocalMRs",
+      "resolved": "apps/frontend/src/hooks/api/useLocalMRs.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/integrations/supabase/client",
+      "resolved": "apps/frontend/src/integrations/supabase/client.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/dropdown-menu",
+      "resolved": "apps/frontend/src/components/ui/dropdown-menu.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/select",
+      "resolved": "apps/frontend/src/components/ui/select.tsx",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/pages/Settings.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/contexts/AuthContext",
+      "resolved": "apps/frontend/src/contexts/AuthContext.tsx",
+      "external": false
+    },
+    {
+      "specifier": "next-themes",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/hooks/api/useNotificationSettings",
+      "resolved": "apps/frontend/src/hooks/api/useNotificationSettings.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/input",
+      "resolved": "apps/frontend/src/components/ui/input.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/label",
+      "resolved": "apps/frontend/src/components/ui/label.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/switch",
+      "resolved": "apps/frontend/src/components/ui/switch.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/tabs",
+      "resolved": "apps/frontend/src/components/ui/tabs.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/select",
+      "resolved": "apps/frontend/src/components/ui/select.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/separator",
+      "resolved": "apps/frontend/src/components/ui/separator.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/badge",
+      "resolved": "apps/frontend/src/components/ui/badge.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/skeleton",
+      "resolved": "apps/frontend/src/components/ui/skeleton.tsx",
+      "external": false
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/pages/Support.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/input",
+      "resolved": "apps/frontend/src/components/ui/input.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/label",
+      "resolved": "apps/frontend/src/components/ui/label.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/textarea",
+      "resolved": "apps/frontend/src/components/ui/textarea.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/badge",
+      "resolved": "apps/frontend/src/components/ui/badge.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/select",
+      "resolved": "apps/frontend/src/components/ui/select.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/contexts/AuthContext",
+      "resolved": "apps/frontend/src/contexts/AuthContext.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/use-toast",
+      "resolved": "apps/frontend/src/hooks/use-toast.ts",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/pages/TOTManagement.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/input",
+      "resolved": "apps/frontend/src/components/ui/input.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/badge",
+      "resolved": "apps/frontend/src/components/ui/badge.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/table",
+      "resolved": "apps/frontend/src/components/ui/table.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/dropdown-menu",
+      "resolved": "apps/frontend/src/components/ui/dropdown-menu.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/dialog",
+      "resolved": "apps/frontend/src/components/ui/dialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/label",
+      "resolved": "apps/frontend/src/components/ui/label.tsx",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/contexts/AuthContext",
+      "resolved": "apps/frontend/src/contexts/AuthContext.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api",
+      "resolved": "apps/frontend/src/hooks/api",
+      "external": false
+    },
+    {
+      "specifier": "date-fns",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/dashboard/AddTOTDialog",
+      "resolved": "apps/frontend/src/components/dashboard/AddTOTDialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/dashboard/EditTOTDialog",
+      "resolved": "apps/frontend/src/components/dashboard/EditTOTDialog.tsx",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/pages/TrainingDetails.tsx": [
+    {
+      "specifier": "react-router-dom",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/badge",
+      "resolved": "apps/frontend/src/components/ui/badge.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/skeleton",
+      "resolved": "apps/frontend/src/components/ui/skeleton.tsx",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/hooks/api/useTrainings",
+      "resolved": "apps/frontend/src/hooks/api/useTrainings.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/contexts/AuthContext",
+      "resolved": "apps/frontend/src/contexts/AuthContext.tsx",
+      "external": false
+    },
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/trainings/AttendanceModal",
+      "resolved": "apps/frontend/src/components/trainings/AttendanceModal.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/integrations/supabase/client",
+      "resolved": "apps/frontend/src/integrations/supabase/client.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/pages/Trainings.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "react-router-dom",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/input",
+      "resolved": "apps/frontend/src/components/ui/input.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/badge",
+      "resolved": "apps/frontend/src/components/ui/badge.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/skeleton",
+      "resolved": "apps/frontend/src/components/ui/skeleton.tsx",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/exportUtils",
+      "resolved": "apps/frontend/src/lib/exportUtils.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/dropdown-menu",
+      "resolved": "apps/frontend/src/components/ui/dropdown-menu.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/select",
+      "resolved": "apps/frontend/src/components/ui/select.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/forms/TrainingFormDialog",
+      "resolved": "apps/frontend/src/components/forms/TrainingFormDialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/trainings/AttendanceModal",
+      "resolved": "apps/frontend/src/components/trainings/AttendanceModal.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/contexts/NotificationContext",
+      "resolved": "apps/frontend/src/contexts/NotificationContext.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/contexts/AuthContext",
+      "resolved": "apps/frontend/src/contexts/AuthContext.tsx",
+      "external": false
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/types",
+      "resolved": "apps/frontend/src/types",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useTrainings",
+      "resolved": "apps/frontend/src/hooks/api/useTrainings.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/pages/VisitDetails.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "react-router-dom",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/badge",
+      "resolved": "apps/frontend/src/components/ui/badge.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/skeleton",
+      "resolved": "apps/frontend/src/components/ui/skeleton.tsx",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/hooks/api/useVisits",
+      "resolved": "apps/frontend/src/hooks/api/useVisits.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/contexts/AuthContext",
+      "resolved": "apps/frontend/src/contexts/AuthContext.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/dashboard/MarkFollowUpCompleteDialog",
+      "resolved": "apps/frontend/src/components/dashboard/MarkFollowUpCompleteDialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useOverdueFollowUps",
+      "resolved": "apps/frontend/src/hooks/api/useOverdueFollowUps.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/pages/Visits.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "react-router-dom",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/input",
+      "resolved": "apps/frontend/src/components/ui/input.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/badge",
+      "resolved": "apps/frontend/src/components/ui/badge.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/skeleton",
+      "resolved": "apps/frontend/src/components/ui/skeleton.tsx",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/exportUtils",
+      "resolved": "apps/frontend/src/lib/exportUtils.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/dropdown-menu",
+      "resolved": "apps/frontend/src/components/ui/dropdown-menu.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/select",
+      "resolved": "apps/frontend/src/components/ui/select.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/forms/VisitFormDialog",
+      "resolved": "apps/frontend/src/components/forms/VisitFormDialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/contexts/NotificationContext",
+      "resolved": "apps/frontend/src/contexts/NotificationContext.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/contexts/AuthContext",
+      "resolved": "apps/frontend/src/contexts/AuthContext.tsx",
+      "external": false
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/types",
+      "resolved": "apps/frontend/src/types",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api",
+      "resolved": "apps/frontend/src/hooks/api",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/types/index.ts": [],
+  "apps/frontend/src/types/supabase-js-shim.d.ts": [],
+  "apps/frontend/src/vite-env.d.ts": [
+    {
+      "specifier": "./types/supabase-js-shim",
+      "resolved": "apps/frontend/src/types/supabase-js-shim.d.ts",
+      "external": false
+    }
+  ],
+  "apps/backend/src/config/constants.ts": [],
+  "apps/backend/src/config/database.ts": [],
+  "apps/backend/src/config/env.ts": [],
+  "apps/backend/src/config/supabase.ts": [],
+  "apps/backend/src/routes/dashboard.js": [
+    {
+      "specifier": "express",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "../supabaseClient.js",
+      "resolved": "apps/backend/src/supabaseClient.js",
+      "external": false
+    }
+  ],
+  "apps/backend/src/server.js": [
+    {
+      "specifier": "express",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "cors",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "./routes/dashboard.js",
+      "resolved": "apps/backend/src/routes/dashboard.js",
+      "external": false
+    }
+  ],
+  "apps/backend/src/supabaseClient.js": [
+    {
+      "specifier": "dotenv",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "path",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "url",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@supabase/supabase-js",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "packages/shared-types/src/index.ts": [],
+  "packages/shared-utils/src/index.ts": [],
+  "packages/ui/src/index.ts": [],
+  "supabase/functions/bootstrap-admin/index.ts": [
+    {
+      "specifier": "npm:@supabase/supabase-js@2",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "supabase/functions/create-user/index.ts": [
+    {
+      "specifier": "npm:@supabase/supabase-js@2",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "supabase/functions/delete-user/index.ts": [
+    {
+      "specifier": "npm:@supabase/supabase-js@2.90.0",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "supabase/functions/followup-reminders/index.ts": [
+    {
+      "specifier": "https://deno.land/std@0.168.0/http/server.ts",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "npm:@supabase/supabase-js@2",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "supabase/functions/purge-farmer/index.ts": [
+    {
+      "specifier": "npm:@supabase/supabase-js@2",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "supabase/functions/purge-user-by-email/index.ts": [
+    {
+      "specifier": "npm:@supabase/supabase-js@2",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "supabase/functions/send-notification-email/index.ts": [
+    {
+      "specifier": "https://deno.land/std@0.168.0/http/server.ts",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "npm:@supabase/supabase-js@2",
+      "resolved": null,
+      "external": true
+    }
+  ]
+}

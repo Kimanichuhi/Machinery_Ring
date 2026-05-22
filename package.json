@@ -3,16 +3,24 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "dev": "vite --config frontend/vite.config.ts",
-    "build": "vite build --config frontend/vite.config.ts",
-    "build:dev": "vite build --mode development --config frontend/vite.config.ts",
-    "lint": "npm --prefix frontend run lint",
-    "preview": "vite preview --config frontend/vite.config.ts",
-    "frontend:dev": "npm --prefix frontend run dev",
-    "frontend:build": "npm --prefix frontend run build",
-    "frontend:lint": "npm --prefix frontend run lint",
-    "frontend:preview": "npm --prefix frontend run preview"
+    "dev": "node ./scripts/dev.js",
+    "build": "npm --workspace apps/frontend run build",
+    "build:dev": "npm --workspace apps/frontend run build:dev",
+    "lint": "npm --workspace apps/frontend run lint",
+    "preview": "npm --workspace apps/frontend run preview",
+    "frontend:dev": "npm --workspace apps/frontend run dev",
+    "frontend:build": "npm --workspace apps/frontend run build",
+    "frontend:lint": "npm --workspace apps/frontend run lint",
+    "frontend:preview": "npm --workspace apps/frontend run preview",
+    "backend:dev": "npm --workspace apps/backend run dev",
+    "backend:start": "npm --workspace apps/backend run start",
+    "new:migration": "node ./scripts/new-migration.js",
+    "seed:csv": "node ./scripts/import-csv.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
