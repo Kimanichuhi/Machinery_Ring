@@ -27,6 +27,8 @@ import {
 } from '@/components/ui/select';
 import { toast } from 'sonner';
 import { Product, ProductCategory } from '@/types';
+import { TablePagination } from '@/components/ui/table-pagination';
+import { useClientPagination } from '@/hooks/useClientPagination';
 
 const productCategories: ProductCategory[] = ['Seeds', 'Fertilizers', 'Agrochemicals', 'Animal Feeds & Supplements', 'Services', 'Equipment', 'Others'];
 
@@ -64,6 +66,14 @@ export function Products() {
     const matchesCategory = categoryFilter === 'all' || product.category === categoryFilter;
     return matchesSearch && matchesCategory;
   });
+  const {
+    page,
+    pageSize,
+    totalPages,
+    paginatedItems: paginatedProducts,
+    setPage,
+    setPageSize,
+  } = useClientPagination(filteredProducts, 25);
   const lowStockProducts = products.filter(p => p.inStock < 100);
   const totalValue = products.reduce((acc, p) => acc + (p.inStock * p.unitPrice), 0);
   const categories = [...new Set([...productCategories, ...products.map(p => p.category)])];
@@ -281,7 +291,7 @@ export function Products() {
       </Card>
       {/* Products Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-4">
-        {filteredProducts.map((product, index) => {
+        {paginatedProducts.map((product, index) => {
           const stockStatus = getStockStatus(product.inStock);
           return (
             <Card
@@ -336,6 +346,15 @@ export function Products() {
           );
         })}
       </div>
+      <TablePagination
+        page={page}
+        pageSize={pageSize}
+        totalCount={filteredProducts.length}
+        totalPages={totalPages}
+        onPageChange={setPage}
+        onPageSizeChange={setPageSize}
+        pageSizeOptions={[25, 50, 100]}
+      />
       {/* Add Product Dialog */}
       <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
         <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">

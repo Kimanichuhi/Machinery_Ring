@@ -18,6 +18,8 @@ import { useFarmers } from '@/hooks/api/useFarmers';
 import { useUsers } from '@/hooks/api/useUsers';
 import { useLocalMRs } from '@/hooks/api/useLocalMRs';
 import { supabase } from '@/integrations/supabase/client';
+import { TablePagination } from '@/components/ui/table-pagination';
+import { useClientPagination } from '@/hooks/useClientPagination';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -100,6 +102,14 @@ export function Sales() {
 
   const totalRevenue = completedSales.reduce((acc, sale) => acc + sale.total, 0);
   const totalCommission = completedSales.reduce((acc, sale) => acc + sale.commissionAmount, 0);
+  const {
+    page,
+    pageSize,
+    totalPages,
+    paginatedItems: paginatedSales,
+    setPage,
+    setPageSize,
+  } = useClientPagination(filteredSales, 25);
 
   const handleAddSale = (data: any) => {
     if (!canEdit) {
@@ -412,7 +422,7 @@ export function Sales() {
                 </tr>
               </thead>
               <tbody>
-                {filteredSales.map((sale: any, index) => {
+                {paginatedSales.map((sale: any, index) => {
                   const farmerLabel = sale.farmerId ? (sale.farmerName || 'Unknown') : 'Walk-in';
                   return (
                   <tr
@@ -487,6 +497,15 @@ export function Sales() {
               </tbody>
             </table>
           </div>
+          <TablePagination
+            page={page}
+            pageSize={pageSize}
+            totalCount={filteredSales.length}
+            totalPages={totalPages}
+            onPageChange={setPage}
+            onPageSizeChange={setPageSize}
+            pageSizeOptions={[25, 50, 100]}
+          />
         </CardContent>
       </Card>
 

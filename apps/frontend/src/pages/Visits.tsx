@@ -26,6 +26,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 import { Visit } from '@/types';
 import { useVisits, useCreateVisit } from '@/hooks/api';
+import { TablePagination } from '@/components/ui/table-pagination';
+import { useClientPagination } from '@/hooks/useClientPagination';
 
 // Visit purposes per request (multi-select supported)
 const VISIT_PURPOSES = [
@@ -61,6 +63,14 @@ export function Visits() {
     const matchesPurpose = purposeFilter === 'all' || visit.purpose.toLowerCase().includes(purposeFilter.toLowerCase());
     return matchesSearch && matchesPurpose;
   });
+  const {
+    page,
+    pageSize,
+    totalPages,
+    paginatedItems: paginatedVisits,
+    setPage,
+    setPageSize,
+  } = useClientPagination(filteredVisits, 25);
 
   const handleAddVisit = (data: any) => {
     if (!canLogVisit) {
@@ -226,7 +236,7 @@ export function Visits() {
 
       {/* Visits List */}
       <div className="space-y-3 sm:space-y-4">
-        {filteredVisits.map((visit, index) => (
+        {paginatedVisits.map((visit, index) => (
           <Card 
             key={visit.id}
             variant="elevated"
@@ -278,6 +288,15 @@ export function Visits() {
           </Card>
         ))}
       </div>
+      <TablePagination
+        page={page}
+        pageSize={pageSize}
+        totalCount={filteredVisits.length}
+        totalPages={totalPages}
+        onPageChange={setPage}
+        onPageSizeChange={setPageSize}
+        pageSizeOptions={[25, 50, 100]}
+      />
 
       {/* Visit Form Dialog - Admin and TOT can log visits */}
       {canLogVisit && (

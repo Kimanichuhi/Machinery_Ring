@@ -43,6 +43,8 @@ import {
   PasswordStrengthIndicator,
   usePasswordValidation
 } from '@/components/ui/password-strength';
+import { TablePagination } from '@/components/ui/table-pagination';
+import { useClientPagination } from '@/hooks/useClientPagination';
 
 interface PurgeImpact {
   userId: string | null;
@@ -125,6 +127,14 @@ export function Users() {
     const matchesStatus = statusFilter === 'all' || user.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
+  const {
+    page,
+    pageSize,
+    totalPages,
+    paginatedItems: paginatedUsers,
+    setPage,
+    setPageSize,
+  } = useClientPagination(filteredUsers, 25);
 
   const getBranchName = (id?: string, role?: string) => {
     if (role === 'manager') return 'Regional MR';
@@ -477,7 +487,7 @@ export function Users() {
                   </TableCell>
                 </TableRow>
               ) : (
-                filteredUsers.map(user => (
+                paginatedUsers.map(user => (
                   <TableRow key={user.id}>
                     <TableCell className="font-medium">{user.name}</TableCell>
                     <TableCell>{user.email}</TableCell>
@@ -510,6 +520,15 @@ export function Users() {
               )}
             </TableBody>
           </Table>
+          <TablePagination
+            page={page}
+            pageSize={pageSize}
+            totalCount={filteredUsers.length}
+            totalPages={totalPages}
+            onPageChange={setPage}
+            onPageSizeChange={setPageSize}
+            pageSizeOptions={[25, 50, 100]}
+          />
         </CardContent>
       </Card>
 

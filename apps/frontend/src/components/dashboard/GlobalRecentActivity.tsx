@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Button } from '@/components/ui/button';
 import { useGlobalActivity, ActivityItem } from '@/hooks/api/useGlobalActivity';
 import { useGlobalActivityRealtime } from '@/hooks/api/useGlobalActivityRealtime';
 import { 
@@ -35,6 +37,8 @@ interface GlobalRecentActivityProps {
 
 export function GlobalRecentActivity({ limit = 15, className }: GlobalRecentActivityProps) {
   const { data: activities, isLoading } = useGlobalActivity(limit);
+  const [showAll, setShowAll] = useState(false);
+  const visibleActivities = showAll ? activities : activities?.slice(0, 5);
   
   // Enable real-time updates
   useGlobalActivityRealtime();
@@ -81,7 +85,7 @@ export function GlobalRecentActivity({ limit = 15, className }: GlobalRecentActi
             </p>
           ) : (
             <div className="space-y-4">
-              {activities.map((activity) => {
+              {visibleActivities?.map((activity) => {
                 const Icon = activityIcons[activity.type];
                 const colorClass = activityColors[activity.type];
 
@@ -107,6 +111,13 @@ export function GlobalRecentActivity({ limit = 15, className }: GlobalRecentActi
             </div>
           )}
         </ScrollArea>
+        {activities && activities.length > 5 && (
+          <div className="mt-4 flex justify-center">
+            <Button variant="outline" size="sm" onClick={() => setShowAll((value) => !value)}>
+              {showAll ? 'Show Latest 5' : `View More (${activities.length - 5})`}
+            </Button>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

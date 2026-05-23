@@ -27,6 +27,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 import { Training } from '@/types';
 import { useTrainings, useCreateTraining } from '@/hooks/api/useTrainings';
+import { TablePagination } from '@/components/ui/table-pagination';
+import { useClientPagination } from '@/hooks/useClientPagination';
 
 // Training types per request - removed Seminars, Online Training
 const TRAINING_TYPES = ['Field Day', 'Demonstration', 'Workshop'];
@@ -53,6 +55,14 @@ export function Trainings() {
     const matchesType = typeFilter === 'all' || trainingType.toLowerCase() === typeFilter.toLowerCase();
     return matchesSearch && matchesType;
   });
+  const {
+    page,
+    pageSize,
+    totalPages,
+    paginatedItems: paginatedTrainings,
+    setPage,
+    setPageSize,
+  } = useClientPagination(filteredTrainings, 25);
 
   // Stats - Total Trainings, Completed Trainings, Total Attendees
   const totalTrainings = trainings.length;
@@ -222,7 +232,7 @@ export function Trainings() {
 
       {/* Trainings List */}
       <div className="space-y-3 sm:space-y-4">
-        {filteredTrainings.map((training, index) => (
+        {paginatedTrainings.map((training, index) => (
           <Card 
             key={training.id}
             variant="elevated"
@@ -302,6 +312,15 @@ export function Trainings() {
           </Card>
         ))}
       </div>
+      <TablePagination
+        page={page}
+        pageSize={pageSize}
+        totalCount={filteredTrainings.length}
+        totalPages={totalPages}
+        onPageChange={setPage}
+        onPageSizeChange={setPageSize}
+        pageSizeOptions={[25, 50, 100]}
+      />
 
       {/* Training Form Dialog - Admin only */}
       {isAdmin && (

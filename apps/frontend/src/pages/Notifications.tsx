@@ -11,6 +11,8 @@ import {
   CheckSquare, X
 } from 'lucide-react';
 import { Notification } from '@/types';
+import { TablePagination } from '@/components/ui/table-pagination';
+import { useClientPagination } from '@/hooks/useClientPagination';
 
 export function Notifications() {
   const { notifications, markAsRead, markAllAsRead, deleteNotification, unreadCount } = useNotifications();
@@ -22,6 +24,14 @@ export function Notifications() {
   const filteredNotifications = filter === 'unread' 
     ? notifications.filter(n => !n.read)
     : notifications;
+  const {
+    page,
+    pageSize,
+    totalPages,
+    paginatedItems: paginatedNotifications,
+    setPage,
+    setPageSize,
+  } = useClientPagination(filteredNotifications, 25);
 
   const getNotificationIcon = (type: string) => {
     switch (type) {
@@ -286,7 +296,7 @@ export function Notifications() {
             </div>
           ) : (
             <div className="divide-y divide-border">
-              {filteredNotifications.map((notification) => {
+              {paginatedNotifications.map((notification) => {
                 const Icon = getNotificationIcon(notification.type);
                 const colorClass = getNotificationColor(notification.type);
                 const isSelected = selectedIds.has(notification.id);
@@ -359,6 +369,17 @@ export function Notifications() {
               })}
             </div>
           )}
+          <div className="px-4">
+            <TablePagination
+              page={page}
+              pageSize={pageSize}
+              totalCount={filteredNotifications.length}
+              totalPages={totalPages}
+              onPageChange={setPage}
+              onPageSizeChange={setPageSize}
+              pageSizeOptions={[25, 50, 100]}
+            />
+          </div>
         </CardContent>
       </Card>
     </div>

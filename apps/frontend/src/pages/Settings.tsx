@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from 'next-themes';
+import { supabase } from '@/integrations/supabase/client';
 import { useNotificationSettings, useUpdateNotificationSettings } from '@/hooks/api/useNotificationSettings';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -35,6 +36,8 @@ export function Settings() {
   const [activeTab, setActiveTab] = useState('profile');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [isSavingProfile, setIsSavingProfile] = useState(false);
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
   
   // Notification settings from database
   const { data: notificationSettings, isLoading: isLoadingSettings } = useNotificationSettings();
@@ -80,8 +83,62 @@ export function Settings() {
     confirmPassword: '',
   });
 
-  const handleSaveProfile = () => {
-    toast.success('Profile updated successfully');
+  useEffect(() => {
+    setProfileData({
+      name: user?.name || '',
+      email: user?.email || '',
+      phone: user?.phone || '',
+    });
+  }, [user?.email, user?.name, user?.phone]);
+
+  const handleSaveProfile = async () => {
+    if (!user?.id) {
+      toast.error('You must be signed in to update your profile');
+      return;
+    }
+
+    const name = profileData.name.trim();
+    const email = profileData.email.trim();
+    const phone = profileData.phone.trim();
+
+    if (!name) {
+      toast.error('Full name is required');
+      return;
+    }
+
+    if (!email) {
+      toast.error('Email address is required');
+      return;
+    }
+
+    setIsSavingProfile(true);
+    try {
+      if (email !== user.email) {
+        const { error: authError } = await supabase.auth.updateUser({ email });
+        if (authError) throw authError;
+      }
+
+      const { error } = await supabase
+        .from('profiles')
+        .update({
+          name,
+          email,
+          phone: phone || null,
+          ...(profileImage ? { avatar_url: profileImage } : {}),
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', user.id);
+
+      if (error) throw error;
+
+      toast.success(email !== user.email
+        ? 'Profile saved. Check your email to confirm the new address.'
+        : 'Profile updated successfully');
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Failed to update profile');
+    } finally {
+      setIsSavingProfile(false);
+    }
   };
 
   const handleSavePreferences = () => {
@@ -110,7 +167,15 @@ export function Settings() {
     }
   };
 
-  const handleChangePassword = () => {
+  const handleChangePassword = async () => {
+    if (!user?.email) {
+      toast.error('You must be signed in to change your password');
+      return;
+    }
+    if (!securityData.currentPassword) {
+      toast.error('Current password is required');
+      return;
+    }
     if (securityData.newPassword !== securityData.confirmPassword) {
       toast.error('Passwords do not match');
       return;
@@ -119,8 +184,31 @@ export function Settings() {
       toast.error('Password must be at least 8 characters');
       return;
     }
-    toast.success('Password changed successfully');
-    setSecurityData({ currentPassword: '', newPassword: '', confirmPassword: '' });
+
+    setIsChangingPassword(true);
+    try {
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: user.email,
+        password: securityData.currentPassword,
+      });
+
+      if (signInError) {
+        throw new Error('Current password is incorrect');
+      }
+
+      const { error } = await supabase.auth.updateUser({
+        password: securityData.newPassword,
+      });
+
+      if (error) throw error;
+
+      toast.success('Password changed successfully');
+      setSecurityData({ currentPassword: '', newPassword: '', confirmPassword: '' });
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Failed to change password');
+    } finally {
+      setIsChangingPassword(false);
+    }
   };
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -245,8 +333,8 @@ export function Settings() {
               </div>
 
               <div className="flex justify-end">
-                <Button onClick={handleSaveProfile} className="gap-2">
-                  <Save className="w-4 h-4" />
+                <Button onClick={handleSaveProfile} className="gap-2" disabled={isSavingProfile}>
+                  {isSavingProfile ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                   Save Changes
                 </Button>
               </div>
@@ -343,8 +431,8 @@ export function Settings() {
               </div>
 
               <div className="flex justify-end">
-                <Button onClick={handleSavePreferences} className="gap-2">
-                  <Save className="w-4 h-4" />
+                <Button onClick={handleSavePreferences} className="gap-2" disabled={updateSettings.isPending || isLoadingSettings}>
+                  {updateSettings.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                   Save Preferences
                 </Button>
               </div>
@@ -442,8 +530,8 @@ export function Settings() {
               </div>
 
               <div className="flex justify-end">
-                <Button onClick={handleSavePreferences} className="gap-2">
-                  <Save className="w-4 h-4" />
+                <Button onClick={handleSavePreferences} className="gap-2" disabled={updateSettings.isPending || isLoadingSettings}>
+                  {updateSettings.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                   Save Settings
                 </Button>
               </div>
@@ -492,8 +580,8 @@ export function Settings() {
                 </div>
               </div>
               <div className="flex justify-end">
-                <Button onClick={handleChangePassword} className="gap-2">
-                  <RefreshCw className="w-4 h-4" />
+                <Button onClick={handleChangePassword} className="gap-2" disabled={isChangingPassword}>
+                  {isChangingPassword ? <Loader2 className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}
                   Update Password
                 </Button>
               </div>

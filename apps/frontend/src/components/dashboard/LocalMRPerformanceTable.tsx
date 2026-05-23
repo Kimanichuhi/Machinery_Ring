@@ -46,6 +46,7 @@ export function LocalMRPerformanceTable({
 }: LocalMRPerformanceTableProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedMR, setSelectedMR] = useState<LocalMR | null>(null);
+  const [showAll, setShowAll] = useState(false);
 
   // Calculate metrics for each Local MR
   const mrMetrics = localMRs.map(mr => {
@@ -81,6 +82,7 @@ export function LocalMRPerformanceTable({
     mr.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     (mr.managerName || '').toLowerCase().includes(searchTerm.toLowerCase())
   );
+  const visibleMRs = showAll ? filteredMRs : filteredMRs.slice(0, 5);
 
   const formatCurrency = (value: number) => {
     if (value >= 1000000) return `KES ${(value / 1000000).toFixed(1)}M`;
@@ -131,7 +133,10 @@ export function LocalMRPerformanceTable({
               <Input
                 placeholder="Search Local MRs..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={(e) => {
+                  setSearchTerm(e.target.value);
+                  setShowAll(false);
+                }}
                 className="pl-9 w-[200px]"
               />
             </div>
@@ -156,7 +161,7 @@ export function LocalMRPerformanceTable({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredMRs.map((mr) => (
+                {visibleMRs.map((mr) => (
                   <TableRow key={mr.id} className="hover:bg-muted/50">
                     <TableCell className="font-medium">{mr.name}</TableCell>
                     <TableCell>{mr.managerName}</TableCell>
@@ -186,6 +191,13 @@ export function LocalMRPerformanceTable({
           {filteredMRs.length === 0 && (
             <div className="text-center py-12 text-muted-foreground">
               No Local MRs found matching your search.
+            </div>
+          )}
+          {filteredMRs.length > 5 && (
+            <div className="mt-4 flex justify-center">
+              <Button variant="outline" size="sm" onClick={() => setShowAll((value) => !value)}>
+                {showAll ? 'Show Top 5' : `View More (${filteredMRs.length - 5})`}
+              </Button>
             </div>
           )}
         </CardContent>

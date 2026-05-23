@@ -49,6 +49,8 @@ import { MachineryServiceHistory } from '@/components/machinery/MachineryService
 import { UpcomingMaintenance } from '@/components/machinery/UpcomingMaintenance';
 import { EditMachineryDialog } from '@/components/machinery/EditMachineryDialog';
 import { BulkUploadDialog } from '@/components/bulk-upload/BulkUploadDialog';
+import { TablePagination } from '@/components/ui/table-pagination';
+import { useClientPagination } from '@/hooks/useClientPagination';
 
 type MachineryStatus = 'available' | 'in_use' | 'maintenance' | 'retired';
 
@@ -143,6 +145,14 @@ export function Machinery() {
     const matchesCategory = categoryFilter === 'all' || m.category === categoryFilter;
     return matchesSearch && matchesCategory;
   });
+  const {
+    page,
+    pageSize,
+    totalPages,
+    paginatedItems: paginatedMachinery,
+    setPage,
+    setPageSize,
+  } = useClientPagination(filteredMachinery, 25);
 
   const availableCount = machinery.filter(m => m.status === 'available').length;
   const inUseCount = machinery.filter(m => m.status === 'in_use').length;
@@ -326,7 +336,7 @@ export function Machinery() {
               <div className="col-span-full text-center py-8 text-muted-foreground">
                 No machinery found matching your filters
               </div>
-            ) : filteredMachinery.map(machine => (
+            ) : paginatedMachinery.map(machine => (
               <Card key={machine.id}>
                 <CardContent className="p-4 space-y-3">
                   <div className="flex justify-between items-center">
@@ -406,6 +416,15 @@ export function Machinery() {
               </Card>
             ))}
           </div>
+          <TablePagination
+            page={page}
+            pageSize={pageSize}
+            totalCount={filteredMachinery.length}
+            totalPages={totalPages}
+            onPageChange={setPage}
+            onPageSizeChange={setPageSize}
+            pageSizeOptions={[25, 50, 100]}
+          />
         </TabsContent>
 
         {/* Bookings Tab */}

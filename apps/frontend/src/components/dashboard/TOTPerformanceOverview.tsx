@@ -62,6 +62,7 @@ export function TOTPerformanceOverview({
 }: TOTPerformanceOverviewProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterMR, setFilterMR] = useState<string>('all');
+  const [showAll, setShowAll] = useState(false);
 
   // Use pre-computed metrics from fetchUsers, or fallback to calculating from sales
   const totMetrics = tots.map(tot => {
@@ -98,6 +99,7 @@ export function TOTPerformanceOverview({
 
   // Sort by revenue (highest first)
   const sortedTots = [...filteredTots].sort((a, b) => b.totalRevenue - a.totalRevenue);
+  const visibleTots = showAll ? sortedTots : sortedTots.slice(0, 5);
 
   const formatCurrency = (value: number) => {
     if (value >= 1000000) return `KES ${(value / 1000000).toFixed(1)}M`;
@@ -166,11 +168,17 @@ export function TOTPerformanceOverview({
               <Input
                 placeholder="Search TOTs..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={(e) => {
+                  setSearchTerm(e.target.value);
+                  setShowAll(false);
+                }}
                 className="pl-9 w-[180px]"
               />
             </div>
-            <Select value={filterMR} onValueChange={setFilterMR}>
+            <Select value={filterMR} onValueChange={(value) => {
+              setFilterMR(value);
+              setShowAll(false);
+            }}>
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Filter by Local MR" />
               </SelectTrigger>
@@ -201,7 +209,7 @@ export function TOTPerformanceOverview({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {sortedTots.map((tot, index) => (
+                {visibleTots.map((tot, index) => (
                   <TableRow key={tot.id} className="hover:bg-muted/50">
                     <TableCell className="font-medium">#{index + 1}</TableCell>
                     <TableCell>
@@ -230,6 +238,13 @@ export function TOTPerformanceOverview({
           {sortedTots.length === 0 && (
             <div className="text-center py-12 text-muted-foreground">
               No TOTs found matching your filters.
+            </div>
+          )}
+          {sortedTots.length > 5 && (
+            <div className="mt-4 flex justify-center">
+              <Button variant="outline" size="sm" onClick={() => setShowAll((value) => !value)}>
+                {showAll ? 'Show Top 5' : `View More (${sortedTots.length - 5})`}
+              </Button>
             </div>
           )}
         </CardContent>

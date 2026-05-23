@@ -36,6 +36,8 @@ import { useLocalMRs, useUsers, useFarmers } from '@/hooks/api';
 import { format } from 'date-fns';
 import { AddTOTDialog } from '@/components/dashboard/AddTOTDialog';
 import { EditTOTDialog } from '@/components/dashboard/EditTOTDialog';
+import { TablePagination } from '@/components/ui/table-pagination';
+import { useClientPagination } from '@/hooks/useClientPagination';
 
 interface TOTPerformance {
   totId: string;
@@ -101,6 +103,14 @@ export function TOTManagement() {
     tot.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
     tot.localMrName.toLowerCase().includes(searchQuery.toLowerCase())
   );
+  const {
+    page,
+    pageSize,
+    totalPages,
+    paginatedItems: paginatedTOTs,
+    setPage,
+    setPageSize,
+  } = useClientPagination(filteredTOTs, 25);
 
   const activeTOTs = totsPerformance.filter(t => t.status === 'active').length;
   const inactiveTOTs = totsPerformance.filter(t => t.status === 'inactive').length;
@@ -290,7 +300,7 @@ export function TOTManagement() {
                   </TableCell>
                 </TableRow>
               ) : (
-                filteredTOTs.map((tot) => (
+                paginatedTOTs.map((tot) => (
                   <TableRow key={tot.totId}>
                     <TableCell>
                       <div className="flex items-center gap-3">
@@ -358,6 +368,15 @@ export function TOTManagement() {
               )}
             </TableBody>
           </Table>
+          <TablePagination
+            page={page}
+            pageSize={pageSize}
+            totalCount={filteredTOTs.length}
+            totalPages={totalPages}
+            onPageChange={setPage}
+            onPageSizeChange={setPageSize}
+            pageSizeOptions={[25, 50, 100]}
+          />
         </CardContent>
       </Card>
 

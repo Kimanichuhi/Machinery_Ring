@@ -37,6 +37,7 @@ interface MechanisationOverviewProps {
 export function MechanisationOverview({ jobs }: MechanisationOverviewProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [showAll, setShowAll] = useState(false);
 
   // Filter jobs
   const filteredJobs = jobs.filter(job => {
@@ -52,6 +53,7 @@ export function MechanisationOverview({ jobs }: MechanisationOverviewProps) {
   const sortedJobs = [...filteredJobs].sort((a, b) => 
     new Date(b.scheduledDate).getTime() - new Date(a.scheduledDate).getTime()
   );
+  const visibleJobs = showAll ? sortedJobs : sortedJobs.slice(0, 5);
 
   // Status counts
   const statusCounts = {
@@ -181,11 +183,17 @@ export function MechanisationOverview({ jobs }: MechanisationOverviewProps) {
               <Input
                 placeholder="Search jobs..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={(e) => {
+                  setSearchTerm(e.target.value);
+                  setShowAll(false);
+                }}
                 className="pl-9 w-[180px]"
               />
             </div>
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
+            <Select value={statusFilter} onValueChange={(value) => {
+              setStatusFilter(value);
+              setShowAll(false);
+            }}>
               <SelectTrigger className="w-[150px]">
                 <SelectValue placeholder="Filter by status" />
               </SelectTrigger>
@@ -217,7 +225,7 @@ export function MechanisationOverview({ jobs }: MechanisationOverviewProps) {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {sortedJobs.slice(0, 20).map((job) => (
+                {visibleJobs.map((job) => (
                   <TableRow key={job.id} className="hover:bg-muted/50">
                     <TableCell className="font-medium">{job.farmerName || 'N/A'}</TableCell>
                     <TableCell>{job.machineryName}</TableCell>
@@ -243,11 +251,11 @@ export function MechanisationOverview({ jobs }: MechanisationOverviewProps) {
             </div>
           )}
           
-          {sortedJobs.length > 20 && (
-            <div className="text-center py-4">
-              <p className="text-sm text-muted-foreground">
-                Showing 20 of {sortedJobs.length} jobs
-              </p>
+          {sortedJobs.length > 5 && (
+            <div className="mt-4 flex justify-center">
+              <Button variant="outline" size="sm" onClick={() => setShowAll((value) => !value)}>
+                {showAll ? 'Show Latest 5' : `View More (${sortedJobs.length - 5})`}
+              </Button>
             </div>
           )}
         </CardContent>

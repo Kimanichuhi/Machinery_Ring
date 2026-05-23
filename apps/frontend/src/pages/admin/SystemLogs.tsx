@@ -19,6 +19,8 @@ import { exportToExcelFile } from '@/lib/excelUtils';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { useSystemLogs } from '@/hooks/api/useSystemLogs';
+import { TablePagination } from '@/components/ui/table-pagination';
+import { useClientPagination } from '@/hooks/useClientPagination';
 
 interface SystemLog {
   id: string;
@@ -47,6 +49,14 @@ export function SystemLogs() {
 
     return matchesSearch && matchesLevel && matchesModule;
   });
+  const {
+    page,
+    pageSize,
+    totalPages,
+    paginatedItems: paginatedLogs,
+    setPage,
+    setPageSize,
+  } = useClientPagination(filteredLogs, 25);
 
   const getLevelIcon = (level: string) => {
     switch (level) {
@@ -139,7 +149,7 @@ export function SystemLogs() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredLogs.map((log: SystemLog) => (
+              {paginatedLogs.map((log: SystemLog) => (
                 <TableRow key={log.id}>
                   <TableCell>{getLevelIcon(log.level)}</TableCell>
                   <TableCell>{log.timestamp}</TableCell>
@@ -151,6 +161,15 @@ export function SystemLogs() {
               ))}
             </TableBody>
           </Table>
+          <TablePagination
+            page={page}
+            pageSize={pageSize}
+            totalCount={filteredLogs.length}
+            totalPages={totalPages}
+            onPageChange={setPage}
+            onPageSizeChange={setPageSize}
+            pageSizeOptions={[25, 50, 100]}
+          />
         </CardContent>
       </Card>
     </div>
