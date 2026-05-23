@@ -15,7 +15,7 @@ import { PerformanceSummary } from '@/components/dashboard/PerformanceSummary';
 
 import { useAuth } from '@/contexts/AuthContext';
 import { useDashboardRealtime, useFarmersRealtime, useMechanisationRealtime } from '@/hooks/api/useDashboardRealtime';
-import { fetchCoordinatorStats, fetchCoordinatorTots, fetchCoordinatorSales } from '@/lib/backend';
+import { fetchCoordinatorStats, fetchCoordinatorTots, fetchCoordinatorSales } from '@/lib/supabase/dashboardQueries';
 import { useQuery } from '@tanstack/react-query';
 
 import { Card } from '@/components/ui/card';
@@ -38,7 +38,7 @@ interface CoordinatorStats {
 function useCoordinatorStats(userId: string) {
   return useQuery({
     queryKey: ['coordinator-stats', userId],
-    queryFn: fetchCoordinatorStats,
+    queryFn: () => fetchCoordinatorStats(userId),
     enabled: !!userId,
     staleTime: 1000 * 60 * 3,
   });
@@ -48,7 +48,7 @@ function useCoordinatorStats(userId: string) {
 function useCoordinatorTots(userId: string) {
   return useQuery({
     queryKey: ['coordinator-tots', userId],
-    queryFn: fetchCoordinatorTots,
+    queryFn: () => fetchCoordinatorTots(userId),
     enabled: !!userId,
   });
 }
@@ -57,7 +57,7 @@ function useCoordinatorTots(userId: string) {
 function useCoordinatorSales(userId: string) {
   return useQuery({
     queryKey: ['coordinator-sales', userId],
-    queryFn: fetchCoordinatorSales,
+    queryFn: () => fetchCoordinatorSales(userId),
     enabled: !!userId,
   });
 }

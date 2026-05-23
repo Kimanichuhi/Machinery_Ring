@@ -7,7 +7,7 @@ import {
   fetchMonthlySalesData,
   fetchProductPerformance,
   fetchTopPerformers,
-} from '@/lib/backend';
+} from '@/lib/supabase/dashboardQueries';
 
 export interface AdminStats {
   totalFarmers: number;
