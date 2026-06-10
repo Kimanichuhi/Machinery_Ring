@@ -353,14 +353,14 @@ export function useUpdateUser() {
       }
 
       // Always update local MR assignment when editing a user
-      // First delete all existing assignments for this user
+      // First delete all existing assignments for this user so we can replace them cleanly
       await supabase
         .from('tot_assignments')
         .delete()
         .eq('tot_id', id);
 
-      // Add new assignment if localMrId is provided and role requires it
-      if (data.localMrId && data.role !== 'admin' && data.role !== 'manager') {
+      // Add new assignment only for TOTs or Local MR Coordinators
+      if (data.localMrId && (data.role === 'tot' || data.role === 'local_mr_coordinator')) {
         const { error: assignmentError } = await supabase
           .from('tot_assignments')
           .insert({
@@ -370,6 +370,25 @@ export function useUpdateUser() {
           });
 
         if (assignmentError) throw assignmentError;
+      }
+
+      // Maintain coordinator relationship on `local_mrs`:
+      // - If the user is now a Local MR Coordinator, set `coordinator_id` on the selected Local MR
+      // - Otherwise, clear any `coordinator_id` entries that pointed to this user (handles demotion to office_employee)
+      if (data.role === 'local_mr_coordinator') {
+        if (data.localMrId) {
+          const { error: coordAssignError } = await supabase
+            .from('local_mrs')
+            .update({ coordinator_id: id })
+            .eq('id', data.localMrId);
+          if (coordAssignError) throw coordAssignError;
+        }
+      } else {
+        const { error: clearCoordError } = await supabase
+          .from('local_mrs')
+          .update({ coordinator_id: null })
+          .eq('coordinator_id', id);
+        if (clearCoordError) throw clearCoordError;
       }
 
       return { id };
