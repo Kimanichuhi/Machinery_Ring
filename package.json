@@ -20,6 +20,8 @@
     "frontend:preview": "npm --workspace apps/frontend run preview",
     "backend:dev": "npm --workspace apps/backend run dev",
     "backend:start": "npm --workspace apps/backend run start",
+    "gemini:verify": "node ./scripts/verify-gemini.js",
+    "gemini:models": "node ./scripts/list-gemini-models.js",
     "new:migration": "node ./scripts/new-migration.js",
     "seed:csv": "node ./scripts/import-csv.js"
   },

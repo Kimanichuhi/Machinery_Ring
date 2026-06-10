@@ -31,6 +31,7 @@ const VisitDetails = lazy(() => import("@/pages/VisitDetails").then(m => ({ defa
 const Trainings = lazy(() => import("@/pages/Trainings").then(m => ({ default: m.Trainings })));
 const TrainingDetails = lazy(() => import("@/pages/TrainingDetails").then(m => ({ default: m.TrainingDetails })));
 const Reports = lazy(() => import("@/pages/Reports").then(m => ({ default: m.Reports })));
+const AIAssistant = lazy(() => import("@/pages/AIAssistant").then(m => ({ default: m.AIAssistant })));
 const Settings = lazy(() => import("@/pages/Settings").then(m => ({ default: m.Settings })));
 const Support = lazy(() => import("@/pages/Support").then(m => ({ default: m.Support })));
 const Users = lazy(() => import("@/pages/admin/Users").then(m => ({ default: m.Users })));
@@ -129,6 +130,12 @@ const App = () => (
                     <Route path="/reports" element={withRouteBoundary('Reports',
                       <ProtectedRoute allowedRoles={['admin', 'manager', 'local_mr_coordinator']}>
                         <Reports />
+                      </ProtectedRoute>
+                    )} />
+
+                    <Route path="/ai-assistant" element={withRouteBoundary('AI assistant',
+                      <ProtectedRoute allowedRoles={['admin', 'manager', 'local_mr_coordinator']}>
+                        <AIAssistant />
                       </ProtectedRoute>
                     )} />
                     

@@ -34,7 +34,24 @@ async function backendFetch<T>(path, options = {}) {
   }
 
   const text = await response.text();
-  const data = text ? JSON.parse(text) : null;
+  const contentType = response.headers.get("content-type") || "";
+  const isJson = contentType.includes("application/json");
+  let data: any = null;
+
+  if (text && isJson) {
+    try {
+      data = JSON.parse(text);
+    } catch {
+      throw new Error(`The dashboard backend returned invalid JSON from ${API_BASE_URL}${path}.`);
+    }
+  } else if (text && !isJson) {
+    const looksLikeHtml = text.trimStart().startsWith("<!DOCTYPE") || text.trimStart().startsWith("<html");
+    throw new Error(
+      looksLikeHtml
+        ? `The AI request reached a web page instead of the backend API. Check that the backend is running at ${API_BASE_URL} and VITE_API_URL points to it.`
+        : `The dashboard backend returned ${contentType || "a non-JSON response"} from ${API_BASE_URL}${path}.`
+    );
+  }
 
   if (!response.ok) {
     const message = data?.error || response.statusText || "Backend request failed.";
@@ -46,6 +63,13 @@ async function backendFetch<T>(path, options = {}) {
   }
 
   return data as T;
+}
+
+export async function askFiaAssistant(prompt: string, context: unknown) {
+  return backendFetch<{ content: string; model: string }>("/api/ai/assistant", {
+    method: "POST",
+    body: JSON.stringify({ prompt, context }),
+  });
 }
 
 export async function fetchAdminStats() {

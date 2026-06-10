@@ -30,6 +30,7 @@ import {
   Shield,
   Bell,
   AlertCircle,
+  BrainCircuit,
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -48,6 +49,7 @@ const totNavItems = [
 // Local MR Coordinator: Read-only, scoped to their Local MR
 const coordinatorNavItems = [
   { to: '/dashboard/local-mr', icon: LayoutDashboard, label: 'Dashboard' },
+  { to: '/ai-assistant', icon: BrainCircuit, label: 'FIA Assistant' },
   { to: '/tots', icon: UserCog, label: 'TOT Overview' },
   { to: '/farmers', icon: Users, label: 'Farmers' },
   { to: '/sales', icon: ShoppingCart, label: 'Sales' },
@@ -62,6 +64,7 @@ const coordinatorNavItems = [
 // Manager: Read-only, organization-wide access
 const managerNavItems = [
   { to: '/dashboard/manager', icon: LayoutDashboard, label: 'Dashboard' },
+  { to: '/ai-assistant', icon: BrainCircuit, label: 'FIA Assistant' },
   { to: '/local-mrs', icon: Building2, label: 'Local MRs' },
   { to: '/tots', icon: UserCog, label: 'All TOTs' },
   { to: '/farmers', icon: Users, label: 'All Farmers' },
@@ -78,6 +81,7 @@ const managerNavItems = [
 // Admin: Full data entry and management access
 const adminNavItems = [
   { to: '/dashboard/admin', icon: LayoutDashboard, label: 'Dashboard' },
+  { to: '/ai-assistant', icon: BrainCircuit, label: 'FIA Assistant' },
   { to: '/users', icon: UserCog, label: 'User Management' },
   { to: '/tots', icon: UserCog, label: 'All TOTs' },
   { to: '/local-mrs', icon: Building2, label: 'Local MRs' },
