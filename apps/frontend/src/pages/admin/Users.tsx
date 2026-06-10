@@ -214,8 +214,8 @@ export function Users() {
       toast.error('Passwords do not match');
       return;
     }
-    if (formData.role !== 'admin' && formData.role !== 'manager' && !formData.localMrId) {
-      toast.error('Please assign a Local MR for TOT or Coordinator');
+    if ((formData.role === 'tot' || formData.role === 'local_mr_coordinator') && !formData.localMrId) {
+      toast.error('Please assign a Local MR for TOT or Local MR Coordinator');
       return;
     }
 
@@ -226,7 +226,7 @@ export function Users() {
         phone: formData.phone.trim(),
         password: formData.password,
         role: formData.role,
-        localMrId: (formData.role === 'admin' || formData.role === 'manager') ? undefined : formData.localMrId,
+        localMrId: (formData.role === 'tot' || formData.role === 'local_mr_coordinator') ? formData.localMrId : undefined,
       },
       {
         onSuccess: () => {
@@ -257,8 +257,8 @@ export function Users() {
       toast.error('Please enter a valid phone number');
       return;
     }
-    if (formData.role !== 'admin' && formData.role !== 'manager' && !formData.localMrId) {
-      toast.error('Please assign a Local MR for TOT or Coordinator');
+    if ((formData.role === 'tot' || formData.role === 'local_mr_coordinator') && !formData.localMrId) {
+      toast.error('Please assign a Local MR for TOT or Local MR Coordinator');
       return;
     }
 
@@ -271,9 +271,8 @@ export function Users() {
           phone: formData.phone.trim(),
           role: formData.role,
           status: formData.status,
-          localMrId: (formData.role === 'admin' || formData.role === 'manager') ? undefined : formData.localMrId,
+          localMrId: (formData.role === 'tot' || formData.role === 'local_mr_coordinator') ? formData.localMrId : undefined,
         },
-      },
       {
         onSuccess: () => {
           toast.success('User updated successfully');

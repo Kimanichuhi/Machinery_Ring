@@ -59,10 +59,10 @@ export function CreateUserForm({ onSuccess }: CreateUserFormProps) {
       return;
     }
 
-    if (formData.role !== 'admin' && !formData.localMrId) {
+    if ((formData.role === 'tot' || formData.role === 'local_mr_coordinator') && !formData.localMrId) {
       toast({
         title: 'Local MR Required',
-        description: 'Please assign a Local MR for TOT or Manager',
+        description: 'Please assign a Local MR for TOT or Local MR Coordinator',
         variant: 'destructive',
       });
       return;
@@ -74,7 +74,7 @@ export function CreateUserForm({ onSuccess }: CreateUserFormProps) {
         email: formData.email.toLowerCase().trim(),
         phone: formData.phone.trim(),
         role: formData.role,
-        localMrId: formData.role === 'admin' ? undefined : formData.localMrId,
+        localMrId: (formData.role === 'tot' || formData.role === 'local_mr_coordinator') ? formData.localMrId : undefined,
         password: formData.password,
       },
       {

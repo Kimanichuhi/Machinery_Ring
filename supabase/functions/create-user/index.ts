@@ -158,7 +158,7 @@ Deno.serve(async (req) => {
     }
 
     // Validate role
-    const validRoles = ["admin", "manager", "local_mr_coordinator", "tot"] as const;
+    const validRoles = ["admin", "manager", "local_mr_coordinator", "tot", "office_employee"] as const;
     if (!validRoles.includes(role)) {
       return new Response(
         JSON.stringify({ success: false, error: `Invalid role. Must be one of: ${validRoles.join(", ")}` }),
