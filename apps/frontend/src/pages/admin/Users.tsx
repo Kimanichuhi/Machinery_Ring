@@ -273,6 +273,7 @@ export function Users() {
           status: formData.status,
           localMrId: (formData.role === 'tot' || formData.role === 'local_mr_coordinator') ? formData.localMrId : undefined,
         },
+      },
       {
         onSuccess: () => {
           toast.success('User updated successfully');
