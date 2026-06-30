@@ -167,3 +167,29 @@ export async function fetchCoordinatorSales() {
 export async function fetchRecentActivity(limit = 10) {
   return backendFetch(`/api/dashboard/recent-activity?limit=${encodeURIComponent(String(limit))}`);
 }
+
+export type SendSmsPayload = {
+  title: string;
+  message: string;
+  type?: string;
+  recipients: Array<{
+    id?: string;
+    farmer_id?: string;
+    name?: string;
+    phone: string;
+    variables?: Record<string, unknown>;
+  }>;
+};
+
+export async function sendSms(payload: SendSmsPayload) {
+  return backendFetch<{
+    messageId?: string;
+    provider: string;
+    status: string;
+    recipients: Array<{ phone: string; providerId?: string; status: string }>;
+    warning?: string | null;
+  }>("/api/communication/send-sms", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}

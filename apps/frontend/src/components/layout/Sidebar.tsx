@@ -31,6 +31,7 @@ import {
   Bell,
   AlertCircle,
   BrainCircuit,
+  MessageSquare,
   
 } from 'lucide-react';
 import { toast } from 'sonner';
@@ -84,6 +85,7 @@ const managerNavItems: NavItem[] = [
   { to: '/products', icon: Package, label: 'Products' },
   { to: '/commission', icon: Calculator, label: 'Commission' },
   { to: '/reports', icon: FileText, label: 'Reports' },
+  { to: '/communication', icon: MessageSquare, label: 'Communication' },
   { to: '/notifications', icon: Bell, label: 'Notifications' },
 ];
 
@@ -101,6 +103,7 @@ const adminNavItems: NavItem[] = [
   { to: '/trainings', icon: GraduationCap, label: 'Trainings' },
   { to: '/visits', icon: MapPin, label: 'Visits' },
   { to: '/reports', icon: FileText, label: 'Reports' },
+  { to: '/communication', icon: MessageSquare, label: 'Communication' },
   { to: '/notifications', icon: Bell, label: 'Notifications' },
   { to: '/system-logs', icon: AlertCircle, label: 'System Logs' },
   { to: '/audit', icon: Shield, label: 'Audit Trail' },

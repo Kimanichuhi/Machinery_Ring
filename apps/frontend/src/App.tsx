@@ -43,6 +43,14 @@ const SystemLogs = lazy(() => import("@/pages/admin/SystemLogs").then(m => ({ de
 const Commission = lazy(() => import("@/pages/Commission").then(m => ({ default: m.Commission })));
 const TOTManagement = lazy(() => import("@/pages/TOTManagement").then(m => ({ default: m.TOTManagement })));
 const Notifications = lazy(() => import("@/pages/Notifications").then(m => ({ default: m.Notifications })));
+const Communication = lazy(() => import("@/pages/communication/Communication").then(m => ({ default: m.Communication })));
+const CommunicationDashboardPage = lazy(() => import("@/pages/communication/Communication").then(m => ({ default: m.CommunicationDashboardPage })));
+const CommunicationSendPage = lazy(() => import("@/pages/communication/Communication").then(m => ({ default: m.CommunicationSendPage })));
+const CommunicationTemplatesPage = lazy(() => import("@/pages/communication/Communication").then(m => ({ default: m.CommunicationTemplatesPage })));
+const CommunicationHistoryPage = lazy(() => import("@/pages/communication/Communication").then(m => ({ default: m.CommunicationHistoryPage })));
+const CommunicationScheduledPage = lazy(() => import("@/pages/communication/Communication").then(m => ({ default: m.CommunicationScheduledPage })));
+const CommunicationWeatherPage = lazy(() => import("@/pages/communication/Communication").then(m => ({ default: m.CommunicationWeatherPage })));
+const CommunicationSettingsPage = lazy(() => import("@/pages/communication/Communication").then(m => ({ default: m.CommunicationSettingsPage })));
 const NotFound = lazy(() => import("@/pages/NotFound"));
 const Install = lazy(() => import("@/pages/Install"));
 
@@ -125,6 +133,46 @@ const App = () => (
                     <Route path="/support" element={withRouteBoundary('Support', <Support />)} />
                     <Route path="/commission" element={withRouteBoundary('Commission', <Commission />)} />
                     <Route path="/notifications" element={withRouteBoundary('Notifications', <Notifications />)} />
+                    <Route path="/communication" element={withRouteBoundary('Communication',
+                      <ProtectedRoute allowedRoles={['admin', 'manager']}>
+                        <Communication />
+                      </ProtectedRoute>
+                    )} />
+                    <Route path="/communication/dashboard" element={withRouteBoundary('Communication dashboard',
+                      <ProtectedRoute allowedRoles={['admin', 'manager']}>
+                        <CommunicationDashboardPage />
+                      </ProtectedRoute>
+                    )} />
+                    <Route path="/communication/send" element={withRouteBoundary('Send SMS',
+                      <ProtectedRoute allowedRoles={['admin', 'manager']}>
+                        <CommunicationSendPage />
+                      </ProtectedRoute>
+                    )} />
+                    <Route path="/communication/templates" element={withRouteBoundary('SMS templates',
+                      <ProtectedRoute allowedRoles={['admin', 'manager']}>
+                        <CommunicationTemplatesPage />
+                      </ProtectedRoute>
+                    )} />
+                    <Route path="/communication/history" element={withRouteBoundary('SMS history',
+                      <ProtectedRoute allowedRoles={['admin', 'manager']}>
+                        <CommunicationHistoryPage />
+                      </ProtectedRoute>
+                    )} />
+                    <Route path="/communication/scheduled" element={withRouteBoundary('Scheduled SMS',
+                      <ProtectedRoute allowedRoles={['admin', 'manager']}>
+                        <CommunicationScheduledPage />
+                      </ProtectedRoute>
+                    )} />
+                    <Route path="/communication/weather" element={withRouteBoundary('Weather intelligence',
+                      <ProtectedRoute allowedRoles={['admin', 'manager']}>
+                        <CommunicationWeatherPage />
+                      </ProtectedRoute>
+                    )} />
+                    <Route path="/communication/settings" element={withRouteBoundary('Communication settings',
+                      <ProtectedRoute allowedRoles={['admin', 'manager']}>
+                        <CommunicationSettingsPage />
+                      </ProtectedRoute>
+                    )} />
                     
                     {/* Reports - Admin, Manager, Coordinator only */}
                     <Route path="/reports" element={withRouteBoundary('Reports',
