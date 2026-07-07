@@ -1,5 +1,5 @@
 import type React from 'react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { NavLink, Navigate, useLocation } from 'react-router-dom';
 import {
   AlertTriangle,
@@ -34,7 +34,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useFarmers } from '@/hooks/api/useFarmers';
 import { useLocalMRs } from '@/hooks/api/useLocalMRs';
 import { useClientPagination } from '@/hooks/useClientPagination';
-import { sendSms } from '@/lib/backend';
+import { getWeatherStatus, sendSms, syncWeather } from '@/lib/backend';
 import { cn } from '@/lib/utils';
 import {
   SmsRecipient,
@@ -85,53 +85,19 @@ type CommunicationSection =
 type MessageStatus = 'pending' | 'running' | 'completed' | 'cancelled' | 'failed';
 
 const navItems = [
-  { to: '/communication/dashboard', label: 'Dashboard', icon: BarChart3 },
-  { to: '/communication/send', label: 'Send SMS', icon: Send },
-  { to: '/communication/templates', label: 'Templates', icon: FileText },
-  { to: '/communication/scheduled', label: 'Scheduled', icon: CalendarClock },
-  { to: '/communication/history', label: 'History', icon: History },
+  { to: '/communication/sms', label: 'SMS Hub', icon: MessageSquare },
+  { to: '/communication/sms/send', label: 'Send SMS', icon: Send },
+  { to: '/communication/sms/templates', label: 'Templates', icon: FileText },
+  { to: '/communication/sms/scheduled', label: 'Scheduled', icon: CalendarClock },
+  { to: '/communication/sms/history', label: 'History', icon: History },
   { to: '/communication/weather', label: 'Weather', icon: CloudSun },
   { to: '/communication/settings', label: 'Settings', icon: Settings },
 ];
 
-const trendData = [
-  { day: 'Mon', sent: 420, delivered: 398, failed: 12 },
-  { day: 'Tue', sent: 310, delivered: 291, failed: 10 },
-  { day: 'Wed', sent: 520, delivered: 501, failed: 8 },
-  { day: 'Thu', sent: 460, delivered: 439, failed: 15 },
-  { day: 'Fri', sent: 610, delivered: 590, failed: 13 },
-  { day: 'Sat', sent: 270, delivered: 255, failed: 6 },
-  { day: 'Sun', sent: 180, delivered: 170, failed: 4 },
-];
-
-const categoryData = [
-  { name: 'Weather', value: 34, color: '#0f766e' },
-  { name: 'Training', value: 24, color: '#ca8a04' },
-  { name: 'Machinery', value: 18, color: '#ea580c' },
-  { name: 'Payments', value: 14, color: '#2563eb' },
-  { name: 'Alerts', value: 10, color: '#dc2626' },
-];
-
-const historyRows = [
-  { id: '1', date: '2026-06-29', title: 'Weekly Weather Update', sender: 'System', recipients: 1280, status: 'completed', success: 1244, failed: 18, pending: 18, cost: 1280, type: 'Weather' },
-  { id: '2', date: '2026-06-28', title: 'Training Reminder', sender: 'Admin', recipients: 230, status: 'completed', success: 224, failed: 3, pending: 3, cost: 230, type: 'Training' },
-  { id: '3', date: '2026-06-27', title: 'Machinery Booking Notices', sender: 'Manager', recipients: 86, status: 'completed', success: 82, failed: 2, pending: 2, cost: 86, type: 'Machinery' },
-  { id: '4', date: '2026-06-26', title: 'Payment Reminder', sender: 'Admin', recipients: 144, status: 'failed', success: 118, failed: 26, pending: 0, cost: 144, type: 'Finance' },
-];
-
-const scheduledRows = [
-  { id: '1', title: 'Weekly Weather SMS', schedule: 'Monday 07:00', repeat: 'Weekly', status: 'pending' as MessageStatus, recipients: 1280 },
-  { id: '2', title: 'Monthly Meeting Notice', schedule: '2026-07-01 09:00', repeat: 'Monthly', status: 'pending' as MessageStatus, recipients: 312 },
-  { id: '3', title: 'Weather Alert Follow-up', schedule: 'Custom cron', repeat: 'Custom', status: 'running' as MessageStatus, recipients: 740 },
-];
-
-const deliveryLogs = [
-  { farmer: 'Mary Wanjiku', phone: '+254712345001', providerId: 'AT-001', status: 'delivered', response: 'DeliveredToTerminal', retries: 0, sentAt: '09:00', deliveredAt: '09:01', failure: '-' },
-  { farmer: 'Joseph Mwangi', phone: '+254712345002', providerId: 'AT-002', status: 'failed', response: 'Rejected', retries: 2, sentAt: '09:00', deliveredAt: '-', failure: 'Invalid or unreachable number' },
-  { farmer: 'Grace Njeri', phone: '+254712345003', providerId: 'AT-003', status: 'pending', response: 'Queued', retries: 0, sentAt: '09:00', deliveredAt: '-', failure: '-' },
-];
-
-const weatherSnapshot: WeatherSnapshot = {
+const historyRows: Array<Record<string, unknown>> = [];
+const scheduledRows: Array<Record<string, unknown>> = [];
+const deliveryLogs: Array<Record<string, unknown>> = [];
+const initialWeatherSnapshot: WeatherSnapshot = {
   status: 'not_configured',
   temperature: undefined,
   humidity: undefined,
@@ -144,6 +110,11 @@ const weatherSnapshot: WeatherSnapshot = {
   lastUpdated: undefined,
   alertLevel: 'medium',
 };
+
+const envSmsProvider = import.meta.env.VITE_SMS_PROVIDER || import.meta.env.SMS_PROVIDER || 'not_configured';
+const hasWeatherConfig = Boolean(import.meta.env.VITE_WEATHER_API_URL || import.meta.env.WEATHER_API_URL || import.meta.env.VITE_WEATHER_API_KEY || import.meta.env.WEATHER_API_KEY);
+const envWeatherProvider = hasWeatherConfig ? 'OpenWeatherMap' : 'not_configured';
+const smsProviderLabel = envSmsProvider === 'not_configured' ? 'Not configured' : envSmsProvider;
 
 function SectionHeader({ title, description, action }: { title: string; description: string; action?: React.ReactNode }) {
   return (
@@ -198,134 +169,45 @@ function EmptyNotice({ title, description }: { title: string; description: strin
 }
 
 function CommunicationDashboard() {
-  const deliveryRate = 96.4;
-
   return (
     <div className="space-y-6">
       <SectionHeader
         title="Communication Dashboard"
-        description="Monitor SMS delivery, weather automation, queue health, and recent communication activity."
-        action={<Button variant="forest"><Send className="mr-2 h-4 w-4" />New SMS</Button>}
+        description="Track the health of SMS and weather automations once live data is available."
+        action={<Button variant="forest" onClick={() => window.location.assign('/communication/sms/send')}><Send className="mr-2 h-4 w-4" />Send SMS</Button>}
       />
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-5">
-        <MetricCard title="SMS Today" value="1,284" subtitle="Across all categories" icon={MessageSquare} />
-        <MetricCard title="This Week" value="3,012" subtitle="Weekly volume" icon={BarChart3} />
-        <MetricCard title="Scheduled" value="18" subtitle="Pending dispatch" icon={CalendarClock} tone="warning" />
-        <MetricCard title="Delivered" value="2,901" subtitle={`${deliveryRate}% success`} icon={CheckCircle2} tone="success" />
-        <MetricCard title="Failed" value="72" subtitle="Retry queue active" icon={XCircle} tone="danger" />
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <MetricCard title="SMS Today" value="0" subtitle="No live messages yet" icon={MessageSquare} />
+        <MetricCard title="Scheduled" value="0" subtitle="No pending jobs" icon={CalendarClock} tone="warning" />
+        <MetricCard title="Delivered" value="0" subtitle="No delivery data yet" icon={CheckCircle2} tone="success" />
+        <MetricCard title="SMS Provider" value={smsProviderLabel} subtitle="Managed from environment" icon={Settings} />
       </div>
 
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-4">
-        <MetricCard title="Weather SMS" value="1,280" subtitle="Weekly messages" icon={CloudSun} />
-        <MetricCard title="Alerts Sent" value="7" subtitle="Weather alerts" icon={BellRing} tone="warning" />
-        <MetricCard title="SMS Balance" value="API Pending" subtitle="Provider placeholder" icon={RefreshCw} />
-        <MetricCard title="Queue Health" value="Normal" subtitle="No backlog detected" icon={CheckCircle2} tone="success" />
-      </div>
-
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <Card className="lg:col-span-2" variant="elevated">
-          <CardHeader>
-            <CardTitle>SMS Trend</CardTitle>
-            <CardDescription>Daily sent, delivered, and failed messages</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="h-[280px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={trendData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="day" />
-                  <YAxis />
-                  <Tooltip />
-                  <Line type="monotone" dataKey="sent" stroke="#0f766e" strokeWidth={2} />
-                  <Line type="monotone" dataKey="delivered" stroke="#16a34a" strokeWidth={2} />
-                  <Line type="monotone" dataKey="failed" stroke="#dc2626" strokeWidth={2} />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card variant="elevated">
-          <CardHeader>
-            <CardTitle>Message Categories</CardTitle>
-            <CardDescription>Share by message type</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="h-[240px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie data={categoryData} dataKey="value" innerRadius={50} outerRadius={80} paddingAngle={3}>
-                    {categoryData.map((entry) => <Cell key={entry.name} fill={entry.color} />)}
-                  </Pie>
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-            <div className="space-y-2">
-              {categoryData.map((item) => (
-                <div key={item.name} className="flex items-center justify-between text-sm">
-                  <span className="flex items-center gap-2"><span className="h-2 w-2 rounded-full" style={{ background: item.color }} />{item.name}</span>
-                  <span className="font-medium">{item.value}%</span>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <Card variant="elevated">
-          <CardHeader>
-            <CardTitle>Messages by Local MR</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="h-[220px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={[{ name: 'Ol Kalou', messages: 620 }, { name: 'Ndaragwa', messages: 480 }, { name: 'Kipipiri', messages: 410 }, { name: 'Kinangop', messages: 390 }]}>
-                  <XAxis dataKey="name" fontSize={12} />
-                  <YAxis />
-                  <Tooltip />
-                  <Bar dataKey="messages" fill="#0f766e" radius={[4, 4, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </CardContent>
-        </Card>
-
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Card variant="elevated">
           <CardHeader>
             <CardTitle>Recent Activity</CardTitle>
+            <CardDescription>Outgoing SMS and weather campaigns will appear here after live dispatches are recorded.</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-3">
-            {historyRows.slice(0, 3).map((row) => (
-              <div key={row.id} className="rounded-xl bg-muted/40 p-3">
-                <div className="flex items-center justify-between gap-3">
-                  <p className="font-medium">{row.title}</p>
-                  <Badge variant={row.status === 'failed' ? 'destructive' : 'success'}>{row.status}</Badge>
-                </div>
-                <p className="mt-1 text-sm text-muted-foreground">{row.recipients.toLocaleString()} recipients by {row.sender}</p>
-              </div>
-            ))}
+          <CardContent>
+            <EmptyNotice title="No activity yet" description="Campaign history and delivery updates will appear here when messages are sent." />
           </CardContent>
         </Card>
 
         <Card variant="elevated">
           <CardHeader>
             <CardTitle>Weather Sync Status</CardTitle>
+            <CardDescription>Read from environment-backed configuration for security.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="rounded-xl bg-amber-50 p-4 text-amber-900">
               <div className="flex items-center gap-2 font-medium">
                 <AlertTriangle className="h-4 w-4" />
-                Weather API Not Configured
+                {envWeatherProvider === 'not_configured' ? 'Weather API Not Configured' : `${envWeatherProvider} configured`}
               </div>
-              <p className="mt-1 text-sm">Add provider credentials to enable daily sync, alerts, and weekly forecasts.</p>
+              <p className="mt-1 text-sm">Configure weather credentials in the deployment environment to enable live forecasts and alerts.</p>
             </div>
-            <Button variant="outline" className="w-full">
-              <RefreshCw className="mr-2 h-4 w-4" />
-              Refresh Status
-            </Button>
           </CardContent>
         </Card>
       </div>
@@ -422,7 +304,6 @@ function SendSmsPage() {
       <SectionHeader
         title="Send SMS"
         description="Compose, validate, preview, and queue bulk SMS messages."
-        action={<Button variant="forest" onClick={handleConfirmSend} disabled={isSending}><Send className="mr-2 h-4 w-4" />Review Send</Button>}
       />
 
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
@@ -543,6 +424,13 @@ function SendSmsPage() {
             </CardContent>
           </Card>
         </div>
+      </div>
+
+      <div className="flex justify-end">
+        <Button variant="forest" onClick={handleConfirmSend} disabled={isSending}>
+          {isSending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          {isSending ? 'Sending...' : 'Send SMS'}
+        </Button>
       </div>
 
       <Dialog open={confirmOpen} onOpenChange={setConfirmOpen}>
@@ -771,22 +659,67 @@ function HistoryPage() {
 }
 
 function WeatherPage() {
-  const recommendations = buildWeatherRecommendations(weatherSnapshot);
+  const [snapshot, setSnapshot] = useState<WeatherSnapshot>(initialWeatherSnapshot);
+  const [statusMessage, setStatusMessage] = useState('Loading weather snapshot...');
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const loadWeather = async (refresh = false) => {
+    if (refresh) {
+      setIsRefreshing(true);
+    }
+
+    try {
+      const response = refresh ? await syncWeather() : await getWeatherStatus();
+      const nextSnapshot = response.snapshot ? {
+        ...initialWeatherSnapshot,
+        ...response.snapshot,
+        status: response.status === 'configured' ? 'configured' : response.status === 'error' ? 'error' : 'not_configured',
+        lastUpdated: response.lastUpdated || initialWeatherSnapshot.lastUpdated,
+      } as WeatherSnapshot : {
+        ...initialWeatherSnapshot,
+        status: response.status === 'configured' ? 'configured' : response.status === 'error' ? 'error' : 'not_configured',
+        lastUpdated: response.lastUpdated || initialWeatherSnapshot.lastUpdated,
+      };
+
+      setSnapshot(nextSnapshot);
+      setStatusMessage(response.message || (response.status === 'configured' ? 'Weather data is live.' : 'Weather API is not configured yet.'));
+    } catch (error) {
+      setSnapshot((current) => ({ ...current, status: 'error' }));
+      setStatusMessage(error instanceof Error ? error.message : 'Weather sync failed.');
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
+
+  useEffect(() => {
+    void loadWeather(false);
+  }, []);
+
+  const recommendations = buildWeatherRecommendations(snapshot);
+  const weatherStatusLabel = snapshot.status === 'configured' ? 'Weather API is live' : snapshot.status === 'error' ? 'Weather sync failed' : 'Weather API Not Configured';
+  const weatherStatusDescription = snapshot.status === 'configured'
+    ? (statusMessage || 'Live forecast data is available.')
+    : statusMessage;
 
   return (
     <div className="space-y-6">
       <SectionHeader
         title="Weather Intelligence"
         description="Current weather, forecasts, alerts, history, and agricultural recommendations for Nyandarua."
-        action={<Button variant="outline"><RefreshCw className="mr-2 h-4 w-4" />Refresh</Button>}
+        action={
+          <Button variant="outline" onClick={() => void loadWeather(true)} disabled={isRefreshing}>
+            <RefreshCw className={`mr-2 h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+            {isRefreshing ? 'Refreshing…' : 'Refresh'}
+          </Button>
+        }
       />
 
-      <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-amber-900">
+      <div className={`rounded-xl border p-4 ${snapshot.status === 'configured' ? 'border-emerald-200 bg-emerald-50 text-emerald-900' : snapshot.status === 'error' ? 'border-red-200 bg-red-50 text-red-900' : 'border-amber-200 bg-amber-50 text-amber-900'}`}>
         <div className="flex items-center gap-2 font-medium">
           <AlertTriangle className="h-4 w-4" />
-          Weather API Not Configured
+          {weatherStatusLabel}
         </div>
-        <p className="mt-1 text-sm">Configure WEATHER_API_URL, WEATHER_API_KEY, location, latitude, and longitude to enable live weather intelligence.</p>
+        <p className="mt-1 text-sm">{weatherStatusDescription}</p>
       </div>
 
       <Tabs defaultValue="current">
@@ -799,16 +732,16 @@ function WeatherPage() {
         </TabsList>
         <TabsContent value="current" className="space-y-6">
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4 xl:grid-cols-5">
-            <MetricCard title="Temperature" value="--" subtitle="Celsius" icon={CloudSun} />
-            <MetricCard title="Humidity" value="--" subtitle="Percent" icon={CloudSun} />
-            <MetricCard title="Wind Speed" value="--" subtitle="km/h" icon={CloudSun} />
-            <MetricCard title="Rain Probability" value="--" subtitle="Percent" icon={CloudSun} />
-            <MetricCard title="UV Index" value="--" subtitle="Risk level" icon={CloudSun} />
-            <MetricCard title="Pressure" value="--" subtitle="hPa" icon={CloudSun} />
-            <MetricCard title="Cloud Cover" value="--" subtitle="Percent" icon={CloudSun} />
-            <MetricCard title="Visibility" value="--" subtitle="Kilometers" icon={CloudSun} />
-            <MetricCard title="Sunrise" value="--" subtitle="Local time" icon={CloudSun} />
-            <MetricCard title="Sunset" value="--" subtitle="Local time" icon={CloudSun} />
+            <MetricCard title="Temperature" value={snapshot.temperature === undefined ? '--' : `${snapshot.temperature.toFixed(1)}°C`} subtitle="Celsius" icon={CloudSun} />
+            <MetricCard title="Humidity" value={snapshot.humidity === undefined ? '--' : `${snapshot.humidity}%`} subtitle="Percent" icon={CloudSun} />
+            <MetricCard title="Wind Speed" value={snapshot.windSpeed === undefined ? '--' : `${snapshot.windSpeed.toFixed(1)} km/h`} subtitle="km/h" icon={CloudSun} />
+            <MetricCard title="Rain Probability" value={snapshot.rainProbability === undefined ? '--' : `${snapshot.rainProbability}%`} subtitle="Percent" icon={CloudSun} />
+            <MetricCard title="UV Index" value={snapshot.uvIndex === undefined ? '--' : `${snapshot.uvIndex}`} subtitle="Risk level" icon={CloudSun} />
+            <MetricCard title="Pressure" value={snapshot.pressure === undefined ? '--' : `${snapshot.pressure} hPa`} subtitle="hPa" icon={CloudSun} />
+            <MetricCard title="Cloud Cover" value={snapshot.cloudCover === undefined ? '--' : `${snapshot.cloudCover}%`} subtitle="Percent" icon={CloudSun} />
+            <MetricCard title="Visibility" value={snapshot.visibility === undefined ? '--' : `${snapshot.visibility.toFixed(1)} km`} subtitle="Kilometers" icon={CloudSun} />
+            <MetricCard title="Sunrise" value={snapshot.sunrise || '--'} subtitle="Local time" icon={CloudSun} />
+            <MetricCard title="Sunset" value={snapshot.sunset || '--'} subtitle="Local time" icon={CloudSun} />
           </div>
           <Card variant="elevated">
             <CardHeader>
@@ -826,7 +759,24 @@ function WeatherPage() {
             </CardContent>
           </Card>
         </TabsContent>
-        <TabsContent value="forecast"><EmptyNotice title="Forecast cache is empty" description="Daily sync will populate today, tomorrow, and 7-day forecast cards once the weather API is configured." /></TabsContent>
+        <TabsContent value="forecast">
+          {snapshot.status === 'configured' ? (
+            <Card variant="elevated">
+              <CardHeader>
+                <CardTitle>Latest forecast snapshot</CardTitle>
+                <CardDescription>Updated from OpenWeatherMap through the backend weather sync endpoint.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-2 text-sm text-muted-foreground">
+                <p>Location: {snapshot.location || 'Nyandarua'}</p>
+                <p>Last updated: {snapshot.lastUpdated ? new Date(snapshot.lastUpdated).toLocaleString() : 'Not available yet'}</p>
+                <p>Rain probability: {snapshot.rainProbability === undefined ? '--' : `${snapshot.rainProbability}%`}</p>
+                <p>Alert level: {snapshot.alertLevel || 'low'}</p>
+              </CardContent>
+            </Card>
+          ) : (
+            <EmptyNotice title="Forecast cache is empty" description="Daily sync will populate today, tomorrow, and 7-day forecast cards once the weather API is configured." />
+          )}
+        </TabsContent>
         <TabsContent value="alerts"><EmptyNotice title="No active weather alerts" description="Heavy rain, storm, wind, frost, cold, heat, and drought alerts will appear here." /></TabsContent>
         <TabsContent value="history"><EmptyNotice title="No weather history yet" description="Weather snapshots and generated reports will be stored after synchronization starts." /></TabsContent>
         <TabsContent value="settings"><SettingsPage compact /></TabsContent>
@@ -849,15 +799,17 @@ function SettingsPage({ compact = false }: { compact?: boolean }) {
         <Card variant="elevated">
           <CardHeader>
             <CardTitle>SMS Provider</CardTitle>
-            <CardDescription>Sensitive fields are masked and should be stored in environment variables or Supabase secrets.</CardDescription>
+            <CardDescription>Provider values are read from the deployment environment for security and never exposed as mock options in the UI.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <Select defaultValue="mock"><SelectTrigger><SelectValue /></SelectTrigger><SelectContent><SelectItem value="mock">Mock Provider</SelectItem><SelectItem value="africastalking">Africa's Talking</SelectItem><SelectItem value="twilio">Twilio</SelectItem><SelectItem value="infobip">Infobip</SelectItem></SelectContent></Select>
-            <Input placeholder="SMS_API_URL" />
-            <Input placeholder="SMS_API_KEY" type="password" />
-            <Input placeholder="SMS_USERNAME" />
-            <Input placeholder="SMS_SENDER_ID" />
-            <Input placeholder="SMS_SECRET" type="password" />
+            <div className="rounded-xl border border-dashed border-border bg-muted/40 p-3 text-sm">
+              <p className="font-medium">Configured provider</p>
+              <p className="mt-1 text-muted-foreground">{smsProviderLabel}</p>
+            </div>
+            <Input readOnly value={import.meta.env.VITE_SMS_API_URL || import.meta.env.SMS_API_URL || ''} placeholder="SMS_API_URL" />
+            <Input readOnly value={import.meta.env.VITE_SMS_API_KEY || import.meta.env.SMS_API_KEY || ''} placeholder="SMS_API_KEY" type="password" />
+            <Input readOnly value={import.meta.env.VITE_SMS_USERNAME || import.meta.env.SMS_USERNAME || ''} placeholder="SMS_USERNAME" />
+            <Input readOnly value={import.meta.env.VITE_SMS_SENDER_ID || import.meta.env.SMS_SENDER_ID || ''} placeholder="SMS_SENDER_ID" />
           </CardContent>
         </Card>
         <Card variant="elevated">
@@ -866,12 +818,12 @@ function SettingsPage({ compact = false }: { compact?: boolean }) {
             <CardDescription>All values load from environment variables in deployed environments.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <Input placeholder="WEATHER_API_URL" />
-            <Input placeholder="WEATHER_API_KEY" type="password" />
-            <Input placeholder="WEATHER_LOCATION" defaultValue="Nyandarua" />
+            <Input readOnly value={import.meta.env.VITE_WEATHER_API_URL || import.meta.env.WEATHER_API_URL || ''} placeholder="WEATHER_API_URL" />
+            <Input readOnly value={import.meta.env.VITE_WEATHER_API_KEY || import.meta.env.WEATHER_API_KEY || ''} placeholder="WEATHER_API_KEY" type="password" />
+            <Input readOnly value={import.meta.env.VITE_WEATHER_LOCATION || import.meta.env.WEATHER_LOCATION || 'Nyandarua'} placeholder="WEATHER_LOCATION" />
             <div className="grid grid-cols-2 gap-3">
-              <Input placeholder="WEATHER_LATITUDE" />
-              <Input placeholder="WEATHER_LONGITUDE" />
+              <Input readOnly value={import.meta.env.VITE_WEATHER_LATITUDE || import.meta.env.WEATHER_LATITUDE || '-0.3'} placeholder="WEATHER_LATITUDE" />
+              <Input readOnly value={import.meta.env.VITE_WEATHER_LONGITUDE || import.meta.env.WEATHER_LONGITUDE || '36.55'} placeholder="WEATHER_LONGITUDE" />
             </div>
             <Input placeholder="Daily Sync Time" defaultValue="06:00" />
             <Input placeholder="Weekly SMS Time" defaultValue="Monday 07:00" />
@@ -923,7 +875,9 @@ function CommunicationShell({ section }: { section: CommunicationSection }) {
     return <Navigate to="/dashboard" replace />;
   }
 
-  const activePath = location.pathname === '/communication' ? '/communication/dashboard' : location.pathname;
+  const activePath = location.pathname === '/communication' || location.pathname === '/communication/sms'
+    ? '/communication/sms'
+    : location.pathname;
 
   return (
     <div className="space-y-6">
@@ -962,6 +916,26 @@ export function Communication() {
 
 export function CommunicationDashboardPage() {
   return <CommunicationShell section="dashboard" />;
+}
+
+export function CommunicationSmsPage() {
+  return <CommunicationShell section="dashboard" />;
+}
+
+export function CommunicationSmsSendPage() {
+  return <CommunicationShell section="send" />;
+}
+
+export function CommunicationSmsTemplatesPage() {
+  return <CommunicationShell section="templates" />;
+}
+
+export function CommunicationSmsHistoryPage() {
+  return <CommunicationShell section="history" />;
+}
+
+export function CommunicationSmsScheduledPage() {
+  return <CommunicationShell section="scheduled" />;
 }
 
 export function CommunicationSendPage() {

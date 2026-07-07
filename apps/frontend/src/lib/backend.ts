@@ -193,3 +193,26 @@ export async function sendSms(payload: SendSmsPayload) {
     body: JSON.stringify(payload),
   });
 }
+export async function getWeatherStatus() {
+  return backendFetch<{
+    status: 'configured' | 'not_configured' | 'error';
+    location?: string;
+    message?: string;
+    snapshot?: Record<string, unknown>;
+    lastUpdated?: string;
+  }>('/api/communication/weather-status');
+}
+
+export async function syncWeather() {
+  return backendFetch<{
+    status: 'configured' | 'not_configured' | 'error';
+    location?: string;
+    message?: string;
+    snapshot?: Record<string, unknown>;
+    lastUpdated?: string;
+    recommendations?: Array<Record<string, unknown>>;
+    synced?: boolean;
+  }>('/api/communication/sync-weather', {
+    method: 'POST',
+  });
+}

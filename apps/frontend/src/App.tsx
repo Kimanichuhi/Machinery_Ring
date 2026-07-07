@@ -45,10 +45,11 @@ const TOTManagement = lazy(() => import("@/pages/TOTManagement").then(m => ({ de
 const Notifications = lazy(() => import("@/pages/Notifications").then(m => ({ default: m.Notifications })));
 const Communication = lazy(() => import("@/pages/communication/Communication").then(m => ({ default: m.Communication })));
 const CommunicationDashboardPage = lazy(() => import("@/pages/communication/Communication").then(m => ({ default: m.CommunicationDashboardPage })));
-const CommunicationSendPage = lazy(() => import("@/pages/communication/Communication").then(m => ({ default: m.CommunicationSendPage })));
-const CommunicationTemplatesPage = lazy(() => import("@/pages/communication/Communication").then(m => ({ default: m.CommunicationTemplatesPage })));
-const CommunicationHistoryPage = lazy(() => import("@/pages/communication/Communication").then(m => ({ default: m.CommunicationHistoryPage })));
-const CommunicationScheduledPage = lazy(() => import("@/pages/communication/Communication").then(m => ({ default: m.CommunicationScheduledPage })));
+const CommunicationSmsPage = lazy(() => import("@/pages/communication/Communication").then(m => ({ default: m.CommunicationSmsPage })));
+const CommunicationSmsSendPage = lazy(() => import("@/pages/communication/Communication").then(m => ({ default: m.CommunicationSmsSendPage })));
+const CommunicationSmsTemplatesPage = lazy(() => import("@/pages/communication/Communication").then(m => ({ default: m.CommunicationSmsTemplatesPage })));
+const CommunicationSmsHistoryPage = lazy(() => import("@/pages/communication/Communication").then(m => ({ default: m.CommunicationSmsHistoryPage })));
+const CommunicationSmsScheduledPage = lazy(() => import("@/pages/communication/Communication").then(m => ({ default: m.CommunicationSmsScheduledPage })));
 const CommunicationWeatherPage = lazy(() => import("@/pages/communication/Communication").then(m => ({ default: m.CommunicationWeatherPage })));
 const CommunicationSettingsPage = lazy(() => import("@/pages/communication/Communication").then(m => ({ default: m.CommunicationSettingsPage })));
 const NotFound = lazy(() => import("@/pages/NotFound"));
@@ -133,34 +134,30 @@ const App = () => (
                     <Route path="/support" element={withRouteBoundary('Support', <Support />)} />
                     <Route path="/commission" element={withRouteBoundary('Commission', <Commission />)} />
                     <Route path="/notifications" element={withRouteBoundary('Notifications', <Notifications />)} />
-                    <Route path="/communication" element={withRouteBoundary('Communication',
+                    <Route path="/communication" element={<Navigate to="/communication/sms" replace />} />
+                    <Route path="/communication/sms" element={withRouteBoundary('Communication SMS',
                       <ProtectedRoute allowedRoles={['admin', 'manager']}>
-                        <Communication />
+                        <CommunicationSmsPage />
                       </ProtectedRoute>
                     )} />
-                    <Route path="/communication/dashboard" element={withRouteBoundary('Communication dashboard',
+                    <Route path="/communication/sms/send" element={withRouteBoundary('Send SMS',
                       <ProtectedRoute allowedRoles={['admin', 'manager']}>
-                        <CommunicationDashboardPage />
+                        <CommunicationSmsSendPage />
                       </ProtectedRoute>
                     )} />
-                    <Route path="/communication/send" element={withRouteBoundary('Send SMS',
+                    <Route path="/communication/sms/templates" element={withRouteBoundary('SMS templates',
                       <ProtectedRoute allowedRoles={['admin', 'manager']}>
-                        <CommunicationSendPage />
+                        <CommunicationSmsTemplatesPage />
                       </ProtectedRoute>
                     )} />
-                    <Route path="/communication/templates" element={withRouteBoundary('SMS templates',
+                    <Route path="/communication/sms/history" element={withRouteBoundary('SMS history',
                       <ProtectedRoute allowedRoles={['admin', 'manager']}>
-                        <CommunicationTemplatesPage />
+                        <CommunicationSmsHistoryPage />
                       </ProtectedRoute>
                     )} />
-                    <Route path="/communication/history" element={withRouteBoundary('SMS history',
+                    <Route path="/communication/sms/scheduled" element={withRouteBoundary('Scheduled SMS',
                       <ProtectedRoute allowedRoles={['admin', 'manager']}>
-                        <CommunicationHistoryPage />
-                      </ProtectedRoute>
-                    )} />
-                    <Route path="/communication/scheduled" element={withRouteBoundary('Scheduled SMS',
-                      <ProtectedRoute allowedRoles={['admin', 'manager']}>
-                        <CommunicationScheduledPage />
+                        <CommunicationSmsScheduledPage />
                       </ProtectedRoute>
                     )} />
                     <Route path="/communication/weather" element={withRouteBoundary('Weather intelligence',
@@ -173,6 +170,11 @@ const App = () => (
                         <CommunicationSettingsPage />
                       </ProtectedRoute>
                     )} />
+                    <Route path="/communication/dashboard" element={<Navigate to="/communication/sms" replace />} />
+                    <Route path="/communication/send" element={<Navigate to="/communication/sms/send" replace />} />
+                    <Route path="/communication/templates" element={<Navigate to="/communication/sms/templates" replace />} />
+                    <Route path="/communication/history" element={<Navigate to="/communication/sms/history" replace />} />
+                    <Route path="/communication/scheduled" element={<Navigate to="/communication/sms/scheduled" replace />} />
                     
                     {/* Reports - Admin, Manager, Coordinator only */}
                     <Route path="/reports" element={withRouteBoundary('Reports',
