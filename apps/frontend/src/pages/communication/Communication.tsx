@@ -214,7 +214,7 @@ function MetricCard({ title, value, subtitle, icon: Icon, tone = 'default' }: {
   }[tone];
 
   return (
-    <Card className="p-4" variant="solid">
+    <Card className="p-4" variant="default">
       <div className="flex items-center gap-3">
         <div className={cn('flex h-11 w-11 items-center justify-center rounded-xl', color)}>
           <Icon className="h-5 w-5" />
@@ -287,7 +287,7 @@ function CommunicationDashboard() {
       </div>
 
       <div className="grid grid-cols-1 gap-6">
-        <Card variant="solid">
+        <Card variant="elevated">
           <CardHeader>
             <CardTitle>Recent Activity</CardTitle>
             <CardDescription>Outgoing SMS and weather campaigns will appear here after live dispatches are recorded.</CardDescription>
@@ -437,7 +437,7 @@ function SendSmsPage() {
       />
 
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
-        <Card className="xl:col-span-2" variant="solid">
+        <Card className="xl:col-span-2" variant="elevated">
           <CardHeader>
             <CardTitle>Message Form</CardTitle>
             <CardDescription>Use templates and variables such as {'{{farmer_name}}'}, {'{{local_mr}}'}, and {'{{date}}'}.</CardDescription>
@@ -482,7 +482,7 @@ function SendSmsPage() {
         </Card>
 
         <div className="space-y-6">
-          <Card variant="solid">
+          <Card variant="elevated">
             <CardHeader>
               <CardTitle>Recipients</CardTitle>
               <CardDescription>Filter farmers or enter custom numbers.</CardDescription>
@@ -537,7 +537,7 @@ function SendSmsPage() {
             </CardContent>
           </Card>
 
-          <Card variant="solid">
+          <Card variant="elevated">
             <CardHeader>
               <CardTitle>SMS Preview</CardTitle>
             </CardHeader>
@@ -729,7 +729,7 @@ function TemplatesPage() {
         description="Create reusable messages with variables for farmer, Local MR, weather, dates, and events."
         action={<Button variant="forest" onClick={() => setCreateOpen(true)}><Plus className="mr-2 h-4 w-4" />Create Template</Button>}
       />
-      <Card variant="solid">
+      <Card variant="elevated">
         <CardContent className="pt-6">
           <div className="relative">
             <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -739,7 +739,7 @@ function TemplatesPage() {
       </Card>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
         {filteredTemplates.map((template) => (
-          <Card key={template.name} variant="solid">
+          <Card key={template.name} variant="elevated">
             <CardHeader>
               <div className="flex items-start justify-between gap-3">
                 <div>
@@ -961,7 +961,7 @@ function ScheduledPage() {
         description="Manage one-time and recurring SMS jobs, including retries, pause, and resume."
         action={<Button variant="forest" onClick={() => setCreateOpen(true)}><CalendarClock className="mr-2 h-4 w-4" />New Schedule</Button>}
       />
-      <Card variant="solid">
+      <Card variant="elevated">
         <CardContent className="pt-6">
           <Table>
             <TableHeader>
@@ -1131,7 +1131,7 @@ function HistoryPage() {
         description="Review sent campaigns, delivery outcomes, cost, export logs, duplicate, or resend."
         action={<Button variant="outline"><Download className="mr-2 h-4 w-4" />Export</Button>}
       />
-      <Card variant="solid">
+      <Card variant="elevated">
         <CardContent className="space-y-4 pt-6">
           <div className="grid grid-cols-1 gap-3 md:grid-cols-5">
             <Input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search history..." className="md:col-span-2" />
@@ -1188,7 +1188,7 @@ function HistoryPage() {
         </CardContent>
       </Card>
 
-      <Card variant="solid">
+      <Card variant="elevated">
         <CardHeader>
           <CardTitle>Delivery Logs</CardTitle>
           <CardDescription>Per-recipient provider status and retry details.</CardDescription>
@@ -1333,7 +1333,7 @@ function WeatherPage() {
             <MetricCard title="Sunrise" value={snapshot.sunrise || '--'} subtitle="Local time" icon={CloudSun} />
             <MetricCard title="Sunset" value={snapshot.sunset || '--'} subtitle="Local time" icon={CloudSun} />
           </div>
-          <Card variant="solid">
+          <Card variant="elevated">
             <CardHeader>
               <CardTitle>Agricultural Summary</CardTitle>
               <CardDescription>Generated from the latest synced weather values and MR Assistant when available.</CardDescription>
@@ -1354,7 +1354,7 @@ function WeatherPage() {
         </TabsContent>
         <TabsContent value="forecast">
           {snapshot.status === 'configured' ? (
-            <Card variant="solid">
+            <Card variant="elevated">
               <CardHeader>
                 <CardTitle>Detailed Forecast</CardTitle>
                 <CardDescription>{buildWeatherInsight(snapshot, forecast)}</CardDescription>
@@ -1442,7 +1442,7 @@ function CommunicationShell({ section }: { section: CommunicationSection }) {
 
   return (
     <div className="space-y-6">
-      <Card className="p-2" variant="solid">
+      <Card className="p-2" variant="elevated">
         <div className="flex gap-1 overflow-x-auto">
           {navItems.map(({ to, label, icon: Icon }) => (
             <NavLink

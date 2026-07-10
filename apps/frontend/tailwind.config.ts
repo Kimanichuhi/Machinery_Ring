@@ -15,8 +15,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ["Manrope", "system-ui", "sans-serif"],
-        heading: ["Sora", "system-ui", "sans-serif"],
+        sans: ["Baloo 2", "system-ui", "sans-serif"],
+        heading: ["Baloo 2", "system-ui", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",

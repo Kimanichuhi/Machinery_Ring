@@ -8,9 +8,12 @@ const cardVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-card/80 border border-border/20 shadow-card backdrop-blur-md transition-colors duration-200",
-        elevated: "bg-card/90 shadow-xl hover:shadow-2xl transition-shadow duration-300 backdrop-blur-md border border-border/10",
-        bordered: "bg-card/80 border-2 border-border/20 shadow-soft backdrop-blur-md",
+        // Glassmorphism, tuned for legibility: high enough surface opacity that text
+        // stays crisp, a bright top hairline for a "glass edge" shine, and enough
+        // blur to read as frosted rather than see-through.
+        default: "bg-card/90 border border-border/20 border-t-white/25 shadow-card backdrop-blur-lg transition-colors duration-200",
+        elevated: "bg-card/95 shadow-xl hover:shadow-2xl transition-shadow duration-300 backdrop-blur-lg border border-border/10 border-t-white/25",
+        bordered: "bg-card/90 border-2 border-border/20 border-t-white/30 shadow-soft backdrop-blur-lg",
         solid: "bg-card shadow-md hover:shadow-lg transition-shadow duration-200 border border-border/40",
         forest: "bg-primary text-primary-foreground shadow-md",
         earth: "bg-secondary text-secondary-foreground shadow-md",
