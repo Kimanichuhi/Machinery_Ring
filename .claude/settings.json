@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(timeout 40 bash -c 'until curl -sf http://localhost:4099/health >/dev/null 2>&1; do sleep 1; done; echo BACKEND_UP')",
+      "Bash(timeout 40 bash -c 'until curl -sf http://localhost:4173/ >/dev/null 2>&1; do sleep 1; done; echo FRONTEND_UP')",
+      "Bash(echo \"TSC_EXIT:$?\")",
+      "Bash(node --check src/routes/ai.js)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(timeout 30 bash -c 'until curl -sf http://localhost:4099/health >/dev/null 2>&1; do sleep 1; done; echo BACKEND_UP')",
+      "Bash(timeout 30 bash -c 'until curl -sf http://localhost:4173/ >/dev/null 2>&1; do sleep 1; done; echo FRONTEND_UP')"
+    ]
+  }
+}
