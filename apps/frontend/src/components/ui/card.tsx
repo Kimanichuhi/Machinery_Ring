@@ -11,6 +11,7 @@ const cardVariants = cva(
         default: "bg-card/80 border border-border/20 shadow-card backdrop-blur-md transition-colors duration-200",
         elevated: "bg-card/90 shadow-xl hover:shadow-2xl transition-shadow duration-300 backdrop-blur-md border border-border/10",
         bordered: "bg-card/80 border-2 border-border/20 shadow-soft backdrop-blur-md",
+        solid: "bg-card shadow-md hover:shadow-lg transition-shadow duration-200 border border-border/40",
         forest: "bg-primary text-primary-foreground shadow-md",
         earth: "bg-secondary text-secondary-foreground shadow-md",
         gradient: "bg-gradient-to-br from-primary via-primary/90 to-accent/60 text-primary-foreground shadow-lg",

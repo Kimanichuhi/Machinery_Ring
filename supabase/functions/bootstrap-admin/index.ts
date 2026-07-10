@@ -1,4 +1,5 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { authorizeSystemOnly } from "../_shared/auth.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -13,7 +14,13 @@ Deno.serve(async (req) => {
   try {
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    
+
+    // This endpoint creates the first admin account, so there is no admin
+    // yet to gate it with a role check. Only the deploy operator, who holds
+    // the service-role key, is allowed to invoke it.
+    const authError = authorizeSystemOnly(req, serviceRoleKey, corsHeaders);
+    if (authError) return authError;
+
     const supabase = createClient(supabaseUrl, serviceRoleKey, {
       auth: { autoRefreshToken: false, persistSession: false }
     });

@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { authorizeSystemOnly } from "../_shared/auth.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -15,16 +16,22 @@ serve(async (req) => {
   }
 
   try {
+    const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+
+    // Only the on-insert DB trigger (public.trigger_notification_email) is
+    // meant to call this, authenticated with the service-role key.
+    const authError = authorizeSystemOnly(req, supabaseServiceKey, corsHeaders);
+    if (authError) return authError;
+
     const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
     if (!RESEND_API_KEY) {
       throw new Error("RESEND_API_KEY is not configured");
     }
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // This function can be called via DB webhook or manually
+    // This function is called via DB webhook (trigger) or manually by an authorized caller
     const payload = await req.json();
 
     // DB webhook sends { type, table, record, ... }

@@ -2,6 +2,16 @@ import { supabase } from "@/integrations/supabase/client";
 
 const API_BASE_URL = (import.meta.env.VITE_API_URL || "http://localhost:4000").replace(/\/$/, "");
 
+export class BackendError extends Error {
+  status: number;
+
+  constructor(message: string, status: number) {
+    super(message);
+    this.name = "BackendError";
+    this.status = status;
+  }
+}
+
 async function getAuthToken() {
   const { data } = await supabase.auth.getSession();
   return data?.session?.access_token || null;
@@ -55,7 +65,7 @@ async function backendFetch<T>(path, options = {}) {
 
   if (!response.ok) {
     const message = data?.error || response.statusText || "Backend request failed.";
-    throw new Error(message);
+    throw new BackendError(message, response.status);
   }
 
   if (data?.error) {
@@ -65,10 +75,16 @@ async function backendFetch<T>(path, options = {}) {
   return data as T;
 }
 
-export async function askFiaAssistant(prompt: string, context: unknown) {
+export type FiaAttachment = {
+  name: string;
+  mimeType: string;
+  data: string; // base64-encoded, no "data:" URI prefix
+};
+
+export async function askFiaAssistant(prompt: string, context: unknown, attachments?: FiaAttachment[]) {
   return backendFetch<{ content: string; model: string }>("/api/ai/assistant", {
     method: "POST",
-    body: JSON.stringify({ prompt, context }),
+    body: JSON.stringify({ prompt, context, attachments }),
   });
 }
 
@@ -177,6 +193,7 @@ export type SendSmsPayload = {
     farmer_id?: string;
     name?: string;
     phone: string;
+    message?: string;
     variables?: Record<string, unknown>;
   }>;
 };
@@ -193,6 +210,81 @@ export async function sendSms(payload: SendSmsPayload) {
     body: JSON.stringify(payload),
   });
 }
+
+export type SmsTemplateRecord = {
+  id?: string;
+  name: string;
+  category: string;
+  body: string;
+  variables?: string[];
+  is_default?: boolean;
+  is_favorite?: boolean;
+  status?: string;
+  created_at?: string;
+};
+
+export async function fetchSmsTemplates() {
+  return backendFetch<{ templates: SmsTemplateRecord[]; warning?: string }>('/api/communication/templates');
+}
+
+export async function createSmsTemplate(payload: Pick<SmsTemplateRecord, 'name' | 'category' | 'body'> & { variables?: string[] }) {
+  return backendFetch<{ template: SmsTemplateRecord }>('/api/communication/templates', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function archiveSmsTemplate(id: string) {
+  return backendFetch<{ template: SmsTemplateRecord }>(`/api/communication/templates/${encodeURIComponent(id)}/archive`, {
+    method: 'PATCH',
+  });
+}
+
+export async function deleteSmsTemplate(id: string) {
+  return backendFetch<{ success: boolean }>(`/api/communication/templates/${encodeURIComponent(id)}`, {
+    method: 'DELETE',
+  });
+}
+
+export type ScheduledSmsRecord = {
+  id?: string;
+  title: string;
+  body: string;
+  type?: string;
+  scheduled_for: string;
+  repeat_rule: string;
+  timezone?: string;
+  filters?: {
+    recipientMode?: string;
+    localMrId?: string;
+    recipientCount?: number;
+    recipients?: Array<Record<string, unknown>>;
+  };
+  status: string;
+  created_at?: string;
+};
+
+export async function fetchScheduledSms() {
+  return backendFetch<{ schedules: ScheduledSmsRecord[]; warning?: string }>('/api/communication/scheduled-sms');
+}
+
+export async function scheduleSms(payload: {
+  title: string;
+  message: string;
+  scheduledFor: string;
+  repeatRule: string;
+  timezone?: string;
+  type?: string;
+  recipientMode?: string;
+  localMrId?: string;
+  recipients?: Array<Record<string, unknown>>;
+}) {
+  return backendFetch<{ schedule: ScheduledSmsRecord; status: string }>('/api/communication/schedule-sms', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+}
+
 export async function getWeatherStatus() {
   return backendFetch<{
     status: 'configured' | 'not_configured' | 'error';
@@ -209,6 +301,8 @@ export async function syncWeather() {
     location?: string;
     message?: string;
     snapshot?: Record<string, unknown>;
+    forecast?: Array<Record<string, unknown>>;
+    alerts?: Array<Record<string, unknown>>;
     lastUpdated?: string;
     recommendations?: Array<Record<string, unknown>>;
     synced?: boolean;

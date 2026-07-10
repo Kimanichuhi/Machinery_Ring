@@ -99,6 +99,74 @@ function normalizeSnapshot(data, config) {
   };
 }
 
+function describeCondition(item) {
+  const condition = String(item?.weather?.[0]?.description || item?.weather?.[0]?.main || "weather").toLowerCase();
+  const pop = Math.round((item?.pop ?? 0) * 100);
+  const temp = item?.main?.temp;
+
+  if (pop >= 70) return `Rain is likely (${pop}% probability)`;
+  if (pop >= 40) return `Scattered rain is possible (${pop}% probability)`;
+  if (typeof temp === "number" && temp <= 8) return `Cold conditions expected near ${Number(temp).toFixed(1)}°C`;
+  if (typeof temp === "number" && temp >= 28) return `Warm conditions expected near ${Number(temp).toFixed(1)}°C`;
+  return condition.charAt(0).toUpperCase() + condition.slice(1);
+}
+
+function normalizeForecast(data) {
+  const list = Array.isArray(data?.list) ? data.list : [];
+  return list.slice(0, 12).map((item) => ({
+    time: item.dt_txt || (item.dt ? new Date(item.dt * 1000).toISOString() : undefined),
+    summary: describeCondition(item),
+    temperature: typeof item?.main?.temp === "number" ? Number(item.main.temp.toFixed(1)) : undefined,
+    temperatureMin: typeof item?.main?.temp_min === "number" ? Number(item.main.temp_min.toFixed(1)) : undefined,
+    temperatureMax: typeof item?.main?.temp_max === "number" ? Number(item.main.temp_max.toFixed(1)) : undefined,
+    humidity: typeof item?.main?.humidity === "number" ? item.main.humidity : undefined,
+    rainProbability: Math.round((item?.pop ?? 0) * 100),
+    rainfall: typeof item?.rain?.["3h"] === "number" ? Number(item.rain["3h"].toFixed(1)) : 0,
+    windSpeed: typeof item?.wind?.speed === "number" ? Number(item.wind.speed.toFixed(1)) : undefined,
+  }));
+}
+
+function buildAlerts(snapshot, forecast = []) {
+  const alerts = [];
+  const highRain = forecast.find((item) => (item.rainProbability || 0) >= 70 || (item.rainfall || 0) >= 10);
+  const cold = forecast.find((item) => (item.temperatureMin ?? item.temperature ?? 99) <= 8);
+  const wind = forecast.find((item) => (item.windSpeed || 0) >= 30);
+
+  if (highRain || (snapshot.rainProbability || 0) >= 70) {
+    alerts.push({
+      severity: "high",
+      title: "Likely rain window",
+      message: `${highRain?.summary || "Rain is likely"}${highRain?.time ? ` around ${highRain.time}` : ""}. Avoid spraying and plan machinery movement carefully.`,
+    });
+  }
+
+  if (cold || (snapshot.temperature || 99) <= 8) {
+    alerts.push({
+      severity: "medium",
+      title: "Cold stress watch",
+      message: `Temperatures may fall near ${cold?.temperatureMin ?? snapshot.temperature}°C${cold?.time ? ` around ${cold.time}` : ""}. Protect seedlings and young livestock where practical.`,
+    });
+  }
+
+  if (wind || (snapshot.windSpeed || 0) >= 30) {
+    alerts.push({
+      severity: "high",
+      title: "Strong wind caution",
+      message: `Wind may reach ${wind?.windSpeed ?? snapshot.windSpeed} km/h${wind?.time ? ` around ${wind.time}` : ""}. Limit spraying and exposed field work.`,
+    });
+  }
+
+  if (alerts.length === 0) {
+    alerts.push({
+      severity: "low",
+      title: "No severe weather signal",
+      message: "No high-confidence severe weather alert is visible in the latest forecast window.",
+    });
+  }
+
+  return alerts;
+}
+
 function buildRecommendations(snapshot) {
   const recommendations = [];
 
@@ -195,11 +263,15 @@ export class WeatherService {
 
       const data = await response.json();
       const snapshot = normalizeSnapshot(data, getWeatherConfig(this.env));
+      const forecast = normalizeForecast(data);
+      const alerts = buildAlerts(snapshot, forecast);
 
       return {
         ...status,
         synced: true,
         snapshot,
+        forecast,
+        alerts,
         lastUpdated: snapshot.lastUpdated,
         message: `Weather forecast synced for ${snapshot.location}.`,
         recommendations: buildRecommendations(snapshot),

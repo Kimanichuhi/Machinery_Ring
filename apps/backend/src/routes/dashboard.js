@@ -1,7 +1,13 @@
 import express from "express";
 import { supabaseAdmin } from "../supabaseClient.js";
+import { cacheGetResponse } from "../utils/cache.js";
 
 const router = express.Router();
+
+// Dashboard aggregate stats run several Supabase queries per request and
+// don't need to be real-time; a short TTL trades a little staleness for
+// materially faster repeat loads.
+const CACHE_TTL_MS = 30_000;
 
 function parseQueryString(value) {
   if (value === undefined || value === null) return undefined;
@@ -21,8 +27,28 @@ async function verifyAuth(req, res, next) {
     return res.status(401).json({ error: "Invalid authentication token" });
   }
 
+  const { data: roleRow, error: roleError } = await supabaseAdmin
+    .from("user_roles")
+    .select("role")
+    .eq("user_id", data.user.id)
+    .maybeSingle();
+
+  if (roleError) {
+    return res.status(500).json({ error: "Could not verify user role." });
+  }
+
   req.user = data.user;
+  req.role = roleRow?.role || null;
   next();
+}
+
+function requireRole(...allowedRoles) {
+  return (req, res, next) => {
+    if (!req.role || !allowedRoles.includes(req.role)) {
+      return res.status(403).json({ error: "You do not have permission to access this resource." });
+    }
+    next();
+  };
 }
 
 function buildErrorMessage(error) {
@@ -140,7 +166,7 @@ async function fetchTopTotPerformers(localMrId) {
 
 router.use(verifyAuth);
 
-router.get("/admin", async (req, res) => {
+router.get("/admin", requireRole("admin"), cacheGetResponse(CACHE_TTL_MS), async (req, res) => {
   try {
     const [farmersResult, salesResult, localMrsResult, totsResult, productsResult, machineryBookingsResult, trainingsResult] =
       await Promise.all([
@@ -174,9 +200,10 @@ router.get("/admin", async (req, res) => {
   }
 });
 
-router.get("/tot", async (req, res) => {
+router.get("/tot", requireRole("admin", "manager", "local_mr_coordinator", "tot"), cacheGetResponse(CACHE_TTL_MS), async (req, res) => {
   try {
-    const totId = parseQueryString(req.query.totId);
+    // TOTs may only view their own stats; management roles may query any totId.
+    const totId = req.role === "tot" ? req.user.id : parseQueryString(req.query.totId);
     if (!totId) {
       return res.status(400).json({ error: "totId query parameter is required." });
     }
@@ -208,7 +235,7 @@ router.get("/tot", async (req, res) => {
   }
 });
 
-router.get("/manager", async (req, res) => {
+router.get("/manager", requireRole("admin", "manager"), cacheGetResponse(CACHE_TTL_MS), async (req, res) => {
   try {
     const localMrId = parseQueryString(req.query.localMrId);
     if (!localMrId) {
@@ -242,7 +269,7 @@ router.get("/manager", async (req, res) => {
   }
 });
 
-router.get("/coordinator/stats", async (req, res) => {
+router.get("/coordinator/stats", requireRole("admin", "local_mr_coordinator"), cacheGetResponse(CACHE_TTL_MS), async (req, res) => {
   try {
     const localMr = await getLocalMrForCoordinator(req.user.id);
     if (!localMr) {
@@ -278,7 +305,7 @@ router.get("/coordinator/stats", async (req, res) => {
   }
 });
 
-router.get("/coordinator/tots", async (req, res) => {
+router.get("/coordinator/tots", requireRole("admin", "local_mr_coordinator"), cacheGetResponse(CACHE_TTL_MS), async (req, res) => {
   try {
     const localMr = await getLocalMrForCoordinator(req.user.id);
     if (!localMr) {
@@ -408,7 +435,7 @@ router.get("/coordinator/tots", async (req, res) => {
   }
 });
 
-router.get("/coordinator/sales", async (req, res) => {
+router.get("/coordinator/sales", requireRole("admin", "local_mr_coordinator"), cacheGetResponse(CACHE_TTL_MS), async (req, res) => {
   try {
     const localMr = await getLocalMrForCoordinator(req.user.id);
     if (!localMr) {
@@ -436,7 +463,7 @@ router.get("/coordinator/sales", async (req, res) => {
   }
 });
 
-router.get("/local-mrs", async (_req, res) => {
+router.get("/local-mrs", requireRole("admin", "manager"), cacheGetResponse(CACHE_TTL_MS), async (_req, res) => {
   try {
     const { data: localMrs, error } = await supabaseAdmin
       .from("local_mrs")
@@ -480,7 +507,7 @@ router.get("/local-mrs", async (_req, res) => {
   }
 });
 
-router.get("/monthly-sales", async (req, res) => {
+router.get("/monthly-sales", cacheGetResponse(CACHE_TTL_MS), async (req, res) => {
   try {
     const localMrId = parseQueryString(req.query.localMrId);
     const totId = parseQueryString(req.query.totId);
@@ -518,7 +545,7 @@ router.get("/monthly-sales", async (req, res) => {
   }
 });
 
-router.get("/product-performance", async (req, res) => {
+router.get("/product-performance", cacheGetResponse(CACHE_TTL_MS), async (req, res) => {
   try {
     const localMrId = parseQueryString(req.query.localMrId);
     let query = supabaseAdmin
@@ -553,7 +580,7 @@ router.get("/product-performance", async (req, res) => {
   }
 });
 
-router.get("/top-performers", async (req, res) => {
+router.get("/top-performers", cacheGetResponse(CACHE_TTL_MS), async (req, res) => {
   try {
     const type = parseQueryString(req.query.type) || "tots";
     const localMrId = parseQueryString(req.query.localMrId);
@@ -727,7 +754,7 @@ router.get("/trainings", async (req, res) => {
   }
 });
 
-router.get("/users", async (_req, res) => {
+router.get("/users", requireRole("admin"), cacheGetResponse(CACHE_TTL_MS), async (_req, res) => {
   try {
     const [profilesResult, rolesResult, assignmentsResult, salesResult, jobsResult, trainingsResult, attendeesResult, visitsResult] =
       await Promise.all([
@@ -838,7 +865,7 @@ router.get("/users", async (_req, res) => {
   }
 });
 
-router.get("/recent-activity", async (req, res) => {
+router.get("/recent-activity", cacheGetResponse(CACHE_TTL_MS), async (req, res) => {
   try {
     const limit = Number(req.query.limit || 10);
     const [salesResult, visitsResult, trainingsResult] = await Promise.all([

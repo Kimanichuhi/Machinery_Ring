@@ -51,7 +51,6 @@ const CommunicationSmsTemplatesPage = lazy(() => import("@/pages/communication/C
 const CommunicationSmsHistoryPage = lazy(() => import("@/pages/communication/Communication").then(m => ({ default: m.CommunicationSmsHistoryPage })));
 const CommunicationSmsScheduledPage = lazy(() => import("@/pages/communication/Communication").then(m => ({ default: m.CommunicationSmsScheduledPage })));
 const CommunicationWeatherPage = lazy(() => import("@/pages/communication/Communication").then(m => ({ default: m.CommunicationWeatherPage })));
-const CommunicationSettingsPage = lazy(() => import("@/pages/communication/Communication").then(m => ({ default: m.CommunicationSettingsPage })));
 const NotFound = lazy(() => import("@/pages/NotFound"));
 const Install = lazy(() => import("@/pages/Install"));
 
@@ -163,11 +162,6 @@ const App = () => (
                     <Route path="/communication/weather" element={withRouteBoundary('Weather intelligence',
                       <ProtectedRoute allowedRoles={['admin', 'manager']}>
                         <CommunicationWeatherPage />
-                      </ProtectedRoute>
-                    )} />
-                    <Route path="/communication/settings" element={withRouteBoundary('Communication settings',
-                      <ProtectedRoute allowedRoles={['admin', 'manager']}>
-                        <CommunicationSettingsPage />
                       </ProtectedRoute>
                     )} />
                     <Route path="/communication/dashboard" element={<Navigate to="/communication/sms" replace />} />

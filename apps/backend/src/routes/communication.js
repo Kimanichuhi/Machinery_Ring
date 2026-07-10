@@ -59,7 +59,7 @@ function isMissingCommunicationSchemaError(error) {
   const message = String(error?.message || "");
   return (
     error?.code === "PGRST205" ||
-    message.includes("communication_messages") && message.includes("schema cache") ||
+    message.includes("schema cache") ||
     message.includes("Could not find the table")
   );
 }
@@ -127,10 +127,143 @@ router.post("/send-sms", async (req, res) => {
   }
 });
 
+router.get("/templates", async (_req, res) => {
+  const { data, error } = await supabaseAdmin
+    .from("communication_templates")
+    .select("id,name,category,body,variables,is_default,is_favorite,status,created_at")
+    .is("deleted_at", null)
+    .eq("status", "active")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    if (isMissingCommunicationSchemaError(error)) {
+      return res.json({ templates: [], warning: "Template tables are not installed in Supabase yet." });
+    }
+
+    return res.status(500).json({ error: error.message });
+  }
+
+  res.json({ templates: data || [] });
+});
+
+router.post("/templates", async (req, res) => {
+  const name = String(req.body?.name || "").trim();
+  const category = String(req.body?.category || "General").trim();
+  const body = String(req.body?.body || "").trim();
+  const variables = Array.isArray(req.body?.variables) ? req.body.variables : [];
+
+  if (!name || !body) {
+    return res.status(400).json({ error: "name and body are required." });
+  }
+
+  const { data, error } = await supabaseAdmin
+    .from("communication_templates")
+    .insert({
+      name,
+      category,
+      body,
+      variables,
+      status: "active",
+      created_by: req.user.id,
+    })
+    .select("id,name,category,body,variables,is_default,is_favorite,status,created_at")
+    .maybeSingle();
+
+  if (error) {
+    if (isMissingCommunicationSchemaError(error)) {
+      return res.status(503).json({ error: "Template tables are not installed in Supabase yet." });
+    }
+
+    return res.status(500).json({ error: error.message });
+  }
+
+  res.status(201).json({ template: data });
+});
+
+router.patch("/templates/:id/archive", async (req, res) => {
+  const { id } = req.params;
+
+  const { data, error } = await supabaseAdmin
+    .from("communication_templates")
+    .update({
+      status: "archived",
+      archived_at: new Date().toISOString(),
+      updated_by: req.user.id,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", id)
+    .is("deleted_at", null)
+    .select("id,name,category,body,variables,is_default,is_favorite,status,created_at")
+    .maybeSingle();
+
+  if (error) {
+    if (isMissingCommunicationSchemaError(error)) {
+      return res.status(503).json({ error: "Template tables are not installed in Supabase yet." });
+    }
+
+    return res.status(500).json({ error: error.message });
+  }
+
+  if (!data) {
+    return res.status(404).json({ error: "Template not found." });
+  }
+
+  res.json({ template: data });
+});
+
+router.delete("/templates/:id", async (req, res) => {
+  const { id } = req.params;
+
+  const { data, error } = await supabaseAdmin
+    .from("communication_templates")
+    .update({
+      deleted_at: new Date().toISOString(),
+      updated_by: req.user.id,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", id)
+    .is("deleted_at", null)
+    .select("id")
+    .maybeSingle();
+
+  if (error) {
+    if (isMissingCommunicationSchemaError(error)) {
+      return res.status(503).json({ error: "Template tables are not installed in Supabase yet." });
+    }
+
+    return res.status(500).json({ error: error.message });
+  }
+
+  if (!data) {
+    return res.status(404).json({ error: "Template not found." });
+  }
+
+  res.json({ success: true });
+});
+
+router.get("/scheduled-sms", async (_req, res) => {
+  const { data, error } = await supabaseAdmin
+    .from("scheduled_messages")
+    .select("id,title,body,type,scheduled_for,repeat_rule,timezone,filters,status,created_at")
+    .is("deleted_at", null)
+    .order("scheduled_for", { ascending: true });
+
+  if (error) {
+    if (isMissingCommunicationSchemaError(error)) {
+      return res.json({ schedules: [], warning: "Scheduled message tables are not installed in Supabase yet." });
+    }
+
+    return res.status(500).json({ error: error.message });
+  }
+
+  res.json({ schedules: data || [] });
+});
+
 router.post("/schedule-sms", async (req, res) => {
   const title = String(req.body?.title || "").trim();
   const message = String(req.body?.message || "").trim();
   const scheduledFor = req.body?.scheduledFor;
+  const recipients = Array.isArray(req.body?.recipients) ? req.body.recipients : [];
 
   if (!title || !message || !scheduledFor) {
     return res.status(400).json({ error: "title, message, and scheduledFor are required." });
@@ -141,19 +274,32 @@ router.post("/schedule-sms", async (req, res) => {
     .insert({
       title,
       body: message,
+      type: req.body?.type || "manual",
       scheduled_for: scheduledFor,
       repeat_rule: req.body?.repeatRule || "once",
+      next_run_at: scheduledFor,
+      timezone: req.body?.timezone || "Africa/Nairobi",
+      filters: {
+        recipientMode: req.body?.recipientMode || "all_farmers",
+        localMrId: req.body?.localMrId || "all",
+        recipientCount: recipients.length,
+        recipients,
+      },
       status: "pending",
       created_by: req.user.id,
     })
-    .select("id")
+    .select("id,title,body,type,scheduled_for,repeat_rule,timezone,filters,status,created_at")
     .maybeSingle();
 
   if (error) {
+    if (isMissingCommunicationSchemaError(error)) {
+      return res.status(503).json({ error: "Scheduled message tables are not installed in Supabase yet." });
+    }
+
     return res.status(500).json({ error: error.message });
   }
 
-  res.json({ id: data?.id, status: "pending" });
+  res.json({ schedule: data, status: "pending" });
 });
 
 router.post("/sync-weather", async (_req, res) => {

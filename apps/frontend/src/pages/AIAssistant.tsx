@@ -1,50 +1,10 @@
-import { useMemo, useState } from 'react';
-import {
-  Activity,
-  AlertTriangle,
-  BarChart3,
-  Bot,
-  BrainCircuit,
-  CalendarClock,
-  CheckCircle2,
-  CloudRain,
-  ClipboardList,
-  DollarSign,
-  Download,
-  History,
-  Leaf,
-  LineChart,
-  Loader2,
-  PlusCircle,
-  Package,
-  Send,
-  ShieldCheck,
-  Sparkles,
-  Sprout,
-  Tractor,
-  TrendingDown,
-  TrendingUp,
-  Users,
-  Zap,
-} from 'lucide-react';
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  Cell,
-  Pie,
-  PieChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from 'recharts';
+import type React from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { BrainCircuit, History, Loader2, Paperclip, Plus, Send, Trash2, X } from 'lucide-react';
 import { toast } from 'sonner';
 
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
 import { Textarea } from '@/components/ui/textarea';
 import { useAuth } from '@/contexts/AuthContext';
 import { useFarmers } from '@/hooks/api/useFarmers';
@@ -53,12 +13,18 @@ import { useProducts } from '@/hooks/api/useProducts';
 import { useSales } from '@/hooks/api/useSales';
 import { useTrainings } from '@/hooks/api/useTrainings';
 import { useVisits } from '@/hooks/api/useVisits';
-import { askFiaAssistant } from '@/lib/backend';
+import { askFiaAssistant, BackendError, type FiaAttachment } from '@/lib/backend';
 import { cn } from '@/lib/utils';
+
+type MessageAttachment = {
+  name: string;
+  mimeType: string;
+};
 
 type AssistantMessage = {
   role: 'assistant' | 'user';
   content: string;
+  attachments?: MessageAttachment[];
 };
 
 type ChatSession = {
@@ -73,35 +39,7 @@ type Recommendation = {
   reason: string;
   impact: string;
   urgency: 'High' | 'Medium' | 'Low';
-  icon: typeof AlertTriangle;
 };
-
-const intelligenceModules = [
-  {
-    id: 'production',
-    title: 'Production',
-    icon: Sprout,
-    focus: 'Yield trends, field performance, crop risks, planting and harvest timing.',
-  },
-  {
-    id: 'livestock',
-    title: 'Livestock',
-    icon: Activity,
-    focus: 'Health alerts, vaccination schedules, productivity trends, breeding performance.',
-  },
-  {
-    id: 'finance',
-    title: 'Finance',
-    icon: DollarSign,
-    focus: 'Revenue, expenses, cash flow, profit forecasts, and cost-saving opportunities.',
-  },
-  {
-    id: 'operations',
-    title: 'Operations',
-    icon: Tractor,
-    focus: 'Inventory, machinery utilization, workforce productivity, procurement and tasks.',
-  },
-];
 
 const suggestedPrompts = [
   'Generate today\'s executive briefing',
@@ -110,15 +48,6 @@ const suggestedPrompts = [
   'Show worker productivity rankings',
   'Generate monthly farm report',
   'What are our biggest operational risks?',
-];
-
-const commandActions = [
-  { label: 'Create procurement request', icon: Package },
-  { label: 'Assign staff tasks', icon: ClipboardList },
-  { label: 'Schedule maintenance', icon: CalendarClock },
-  { label: 'Send manager briefing', icon: Send },
-  { label: 'Generate PDF summary', icon: Download },
-  { label: 'Enable risk alerts', icon: ShieldCheck },
 ];
 
 const formatCurrency = (value: number) =>
@@ -150,18 +79,12 @@ const getRevenue = (sale: Record<string, unknown>) =>
 const getPersonName = (item: Record<string, unknown>) =>
   String(item.totName || item.tot_name || item.trainer_name || item.created_by_name || item.booked_by_name || 'Unassigned');
 
-const getUrgencyVariant = (urgency: Recommendation['urgency']) => {
-  if (urgency === 'High') return 'destructive';
-  if (urgency === 'Medium') return 'warning';
-  return 'success';
-};
-
 const formatPercent = (value: number) => `${Math.abs(value).toFixed(0)}%`;
 
 const initialAssistantMessage: AssistantMessage = {
   role: 'assistant',
   content:
-    'Good morning. I am FIA, your Farm Intelligence Agent. I can brief you on production, inventory, sales, machinery, workforce, reports, and risks using the farm data currently available in the platform.',
+    'Good morning. I am MR Assistant, here to help with production, inventory, sales, machinery, workforce, reports, and risks using the farm data currently available in the platform. You can also attach a file (image, PDF, spreadsheet) for me to analyze.',
 };
 
 const createChatId = () => `${Date.now()}-${Math.random().toString(36).slice(2)}`;
@@ -171,6 +94,53 @@ const getChatTitle = (messages: AssistantMessage[]) => {
   if (!firstQuestion) return 'New chat';
   return firstQuestion.length > 42 ? `${firstQuestion.slice(0, 42)}...` : firstQuestion;
 };
+
+const MAX_ATTACHMENTS = 4;
+const MAX_ATTACHMENT_BYTES = 8 * 1024 * 1024; // ~8MB raw, must stay in sync with the backend's limit
+const MAX_HISTORY_SESSIONS = 20;
+
+function fileToBase64(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = String(reader.result || '');
+      // Strip the "data:<mime>;base64," prefix — Gemini wants the raw base64 payload.
+      const base64 = result.slice(result.indexOf(',') + 1);
+      resolve(base64);
+    };
+    reader.onerror = () => reject(reader.error || new Error('Could not read file.'));
+    reader.readAsDataURL(file);
+  });
+}
+
+const MARKDOWN_LINK_RE = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g;
+
+function renderTextWithLinks(text: string) {
+  const parts: React.ReactNode[] = [];
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+  let key = 0;
+
+  MARKDOWN_LINK_RE.lastIndex = 0;
+  while ((match = MARKDOWN_LINK_RE.exec(text))) {
+    if (match.index > lastIndex) parts.push(text.slice(lastIndex, match.index));
+    parts.push(
+      <a
+        key={`link-${key++}`}
+        href={match[2]}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-primary underline underline-offset-2"
+      >
+        {match[1]}
+      </a>
+    );
+    lastIndex = match.index + match[0].length;
+  }
+  if (lastIndex < text.length) parts.push(text.slice(lastIndex));
+
+  return parts;
+}
 
 function MessageContent({ content }: { content: string }) {
   const lines = content.split('\n');
@@ -188,7 +158,7 @@ function MessageContent({ content }: { content: string }) {
 
     return (
       <div className="space-y-3">
-        {before && <p className="whitespace-pre-line">{before}</p>}
+        {before && <p className="whitespace-pre-line">{renderTextWithLinks(before)}</p>}
         <div className="overflow-x-auto rounded-lg border border-border/50">
           <table className="min-w-full border-collapse text-left text-xs sm:text-sm">
             <thead className="bg-muted/70">
@@ -217,27 +187,59 @@ function MessageContent({ content }: { content: string }) {
     );
   }
 
-  return <span className="whitespace-pre-line">{content}</span>;
+  return <span className="whitespace-pre-line">{renderTextWithLinks(content)}</span>;
 }
 
 export function AIAssistant() {
   const { user } = useAuth();
-  const [activeModule, setActiveModule] = useState('production');
   const [input, setInput] = useState('');
   const [isThinking, setIsThinking] = useState(false);
-  const [activeChatId, setActiveChatId] = useState(() => createChatId());
-  const [showHistory, setShowHistory] = useState(false);
-  const [chatHistory, setChatHistory] = useState<ChatSession[]>([]);
   const [messages, setMessages] = useState<AssistantMessage[]>([initialAssistantMessage]);
+  const [activeChatId, setActiveChatId] = useState(() => createChatId());
+  const [chatHistory, setChatHistory] = useState<ChatSession[]>([]);
+  const [historyOpen, setHistoryOpen] = useState(false);
+  const [pendingAttachments, setPendingAttachments] = useState<FiaAttachment[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const { data: farmers = [], isLoading: farmersLoading } = useFarmers();
-  const { data: sales = [], isLoading: salesLoading } = useSales();
-  const { data: machineryBookings = [], isLoading: machineryLoading } = useMachineryBookings();
-  const { data: products = [], isLoading: productsLoading } = useProducts();
-  const { data: trainings = [], isLoading: trainingsLoading } = useTrainings();
-  const { data: visits = [], isLoading: visitsLoading } = useVisits();
+  const historyStorageKey = user?.id ? `fia-chat-history-${user.id}` : null;
 
-  const isLoading = farmersLoading || salesLoading || machineryLoading || productsLoading || trainingsLoading || visitsLoading;
+  // Load this user's saved chat sessions once we know who they are.
+  useEffect(() => {
+    if (!historyStorageKey) return;
+    try {
+      const raw = localStorage.getItem(historyStorageKey);
+      if (raw) setChatHistory(JSON.parse(raw));
+    } catch {
+      // Ignore corrupt/legacy local storage content.
+    }
+  }, [historyStorageKey]);
+
+  // Keep the active session's entry in history up to date as the conversation grows.
+  useEffect(() => {
+    const hasUserMessage = messages.some((message) => message.role === 'user');
+    if (!hasUserMessage) return;
+
+    setChatHistory((current) => {
+      const entry: ChatSession = { id: activeChatId, title: getChatTitle(messages), messages, updatedAt: Date.now() };
+      const existingIndex = current.findIndex((session) => session.id === activeChatId);
+      const next = existingIndex >= 0 ? [...current] : [entry, ...current];
+      if (existingIndex >= 0) next[existingIndex] = entry;
+      return next.sort((a, b) => b.updatedAt - a.updatedAt).slice(0, MAX_HISTORY_SESSIONS);
+    });
+  }, [messages, activeChatId]);
+
+  // Persist history for this user whenever it changes.
+  useEffect(() => {
+    if (!historyStorageKey) return;
+    localStorage.setItem(historyStorageKey, JSON.stringify(chatHistory));
+  }, [chatHistory, historyStorageKey]);
+
+  const { data: farmers = [] } = useFarmers();
+  const { data: sales = [] } = useSales();
+  const { data: machineryBookings = [] } = useMachineryBookings();
+  const { data: products = [] } = useProducts();
+  const { data: trainings = [] } = useTrainings();
+  const { data: visits = [] } = useVisits();
 
   const intelligence = useMemo(() => {
     const now = new Date();
@@ -325,14 +327,12 @@ export function AIAssistant() {
           : 'Product stock records exist, but reorder levels should be reviewed for automated procurement.',
         impact: 'Prevents production delays and emergency purchases',
         urgency: lowStock.length ? 'High' : 'Medium',
-        icon: Package,
       },
       {
         title: 'Review machinery allocation',
         reason: `${machineryRows.length} machinery bookings can be sequenced by route and task type to reduce fuel usage.`,
         impact: 'Improves utilization and lowers operating cost',
         urgency: machineryRows.length > 5 ? 'Medium' : 'Low',
-        icon: Tractor,
       },
       {
         title: 'Target top revenue channels',
@@ -341,14 +341,12 @@ export function AIAssistant() {
           : 'Sales records should be segmented by product and market for price intelligence.',
         impact: 'Improves margin and selling timing',
         urgency: 'Medium',
-        icon: TrendingUp,
       },
       {
         title: 'Increase field intelligence coverage',
         reason: `${visitRows.length} visits and ${trainingRows.length} trainings are available. Use them to flag underperforming areas.`,
         impact: 'Improves yield forecasting and risk detection',
         urgency: visitRows.length < 10 ? 'High' : 'Medium',
-        icon: Leaf,
       },
     ];
 
@@ -373,19 +371,10 @@ export function AIAssistant() {
       },
     ];
 
-    const scoreData = [
-      { name: 'Production', value: productionScore, color: '#166534' },
-      { name: 'Finance', value: financeScore, color: '#0f766e' },
-      { name: 'Inventory', value: inventoryScore, color: '#d97706' },
-      { name: 'Workforce', value: workforceScore, color: '#7c3aed' },
-      { name: 'Machinery', value: machineryScore, color: '#92400e' },
-    ];
-
     return {
       briefing,
       recommendations,
       riskData,
-      scoreData,
       farmHealthScore,
       lowStock,
       topProducts,
@@ -505,7 +494,7 @@ export function AIAssistant() {
 
     if (normalized.includes('inventory') || normalized.includes('stock') || normalized.includes('fertilizer')) {
       return lowStockNames.length
-        ? `Direct answer: the products needing stock attention are ${lowStockNames.join(', ')}.\n\nKey evidence:\n${executiveSnapshot}\n\nInsight: stock risk is operationally important because product shortages can delay sales, farmer support, and planned field activity.\n\nRecommended actions:\n1. Confirm physical stock for the listed items.\n2. Create procurement requests for anything at or below reorder level.\n3. Add supplier lead times and reorder thresholds so FIA can rank urgency more accurately.`
+        ? `Direct answer: the products needing stock attention are ${lowStockNames.join(', ')}.\n\nKey evidence:\n${executiveSnapshot}\n\nInsight: stock risk is operationally important because product shortages can delay sales, farmer support, and planned field activity.\n\nRecommended actions:\n1. Confirm physical stock for the listed items.\n2. Create procurement requests for anything at or below reorder level.\n3. Add supplier lead times and reorder thresholds so MR Assistant can rank urgency more accurately.`
         : `Direct answer: no critical low-stock products are visible in the current records.\n\nKey evidence:\n${executiveSnapshot}\n\nInsight: this is only reliable if product stock and minimum stock fields are being maintained.\n\nRecommended actions:\n1. Review product reorder levels.\n2. Update stock after every sale or receipt.\n3. Add supplier lead times for procurement planning.`;
     }
 
@@ -516,7 +505,7 @@ export function AIAssistant() {
       return `Direct answer: total recorded revenue is ${formatCurrency(intelligence.totalRevenue)} and this month is ${formatCurrency(intelligence.monthlyRevenue)}. Revenue is ${intelligence.revenueGrowth >= 0 ? 'up' : 'down'} by ${formatPercent(intelligence.revenueGrowth)} versus the previous comparable month.\n\nRevenue leaders:\n${leaders}\n\nInsight: ${
         topProduct
           ? `${topProduct.name} is the strongest visible contributor, so pricing, availability, and market demand for that product should be protected.`
-          : 'sales need clearer product tagging before FIA can identify strong and weak revenue channels.'
+          : 'sales need clearer product tagging before MR Assistant can identify strong and weak revenue channels.'
       }\n\nRecommended actions:\n1. Compare top products by margin, not just revenue.\n2. Check whether low stock threatens the strongest sellers.\n3. Review underperforming products for pricing, availability, or field demand issues.`;
     }
 
@@ -550,7 +539,7 @@ export function AIAssistant() {
     farmHealthScore: intelligence.farmHealthScore,
     summary: intelligence.summary,
     briefing: intelligence.briefing,
-    recommendations: intelligence.recommendations.map(({ icon: _icon, ...item }) => item),
+    recommendations: intelligence.recommendations,
     risks: intelligence.riskData,
     products: (products as Record<string, unknown>[]).slice(0, 25).map((product) => ({
       name: getName(product, 'Unnamed product'),
@@ -609,410 +598,323 @@ export function AIAssistant() {
     },
   });
 
-  const saveChatSession = (nextMessages: AssistantMessage[]) => {
-    setMessages(nextMessages);
-    setChatHistory((current) => {
-      const nextSession: ChatSession = {
-        id: activeChatId,
-        title: getChatTitle(nextMessages),
-        messages: nextMessages,
-        updatedAt: Date.now(),
-      };
-      const withoutCurrent = current.filter((session) => session.id !== activeChatId);
-      return [nextSession, ...withoutCurrent].slice(0, 12);
-    });
-  };
-
-  const handleNewChat = () => {
-    saveChatSession(messages);
-    setActiveChatId(createChatId());
-    setMessages([initialAssistantMessage]);
-    setInput('');
-    setShowHistory(false);
-  };
-
-  const handleSelectChat = (session: ChatSession) => {
-    setActiveChatId(session.id);
-    setMessages(session.messages);
-    setShowHistory(false);
-  };
-
   const handleAsk = async (prompt = input) => {
     const cleanPrompt = prompt.trim();
-    if (!cleanPrompt) return;
+    const attachments = pendingAttachments;
+    if (!cleanPrompt && attachments.length === 0) return;
 
-    const userMessages = [...messages, { role: 'user' as const, content: cleanPrompt }];
-    saveChatSession(userMessages);
+    const userMessages: AssistantMessage[] = [
+      ...messages,
+      {
+        role: 'user',
+        content: cleanPrompt || 'Please analyze the attached file(s).',
+        attachments: attachments.length > 0 ? attachments.map(({ name, mimeType }) => ({ name, mimeType })) : undefined,
+      },
+    ];
+    setMessages(userMessages);
     setInput('');
+    setPendingAttachments([]);
     setIsThinking(true);
 
     try {
-      const response = await askFiaAssistant(cleanPrompt, buildAssistantContext());
-      saveChatSession([...userMessages, { role: 'assistant', content: response.content }]);
+      const response = await askFiaAssistant(cleanPrompt || 'Please analyze the attached file(s).', buildAssistantContext(), attachments);
+      setMessages([...userMessages, { role: 'assistant', content: response.content }]);
     } catch (error) {
-      const fallback = respondToPrompt(cleanPrompt);
-      const message = error instanceof Error ? error.message : 'Gemini is unavailable.';
-      toast.error(`FIA used local analysis: ${message}`);
-      saveChatSession([...userMessages, { role: 'assistant', content: fallback }]);
+      if (error instanceof BackendError && error.status === 401) {
+        toast.error('Your session has expired. Please refresh the page and log in again.');
+        setMessages([
+          ...userMessages,
+          {
+            role: 'assistant',
+            content: 'Your session has expired. Please refresh the page and log in again, then ask me your question.',
+          },
+        ]);
+      } else if (attachments.length > 0) {
+        toast.error('Could not analyze the attached file(s) right now.');
+        const message = error instanceof Error ? error.message : 'Gemini is unavailable.';
+        setMessages([
+          ...userMessages,
+          {
+            role: 'assistant',
+            content: `I couldn't analyze the attached file(s) because the live AI connection failed (${message}). File analysis needs that connection — offline analysis only covers platform data, not file contents. Please try again in a moment.`,
+          },
+        ]);
+      } else {
+        const fallback = respondToPrompt(cleanPrompt);
+        const message = error instanceof Error ? error.message : 'Gemini is unavailable.';
+        toast.error(`MR Assistant used local analysis: ${message}`);
+        setMessages([...userMessages, { role: 'assistant', content: fallback }]);
+      }
     } finally {
       setIsThinking(false);
     }
   };
 
-  const handleCommand = (label: string) => {
-    toast.success(`${label} queued by FIA`);
+  const handleInputKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      if (!isThinking) void handleAsk();
+    }
   };
 
-  const activeModuleData = intelligenceModules.find((module) => module.id === activeModule) || intelligenceModules[0];
+  const handleNewChat = () => {
+    setActiveChatId(createChatId());
+    setMessages([initialAssistantMessage]);
+    setInput('');
+    setPendingAttachments([]);
+    setHistoryOpen(false);
+  };
+
+  const handleSelectChat = (session: ChatSession) => {
+    setActiveChatId(session.id);
+    setMessages(session.messages);
+    setHistoryOpen(false);
+  };
+
+  const handleDeleteChat = (event: React.MouseEvent, sessionId: string) => {
+    event.stopPropagation();
+    setChatHistory((current) => current.filter((session) => session.id !== sessionId));
+    if (sessionId === activeChatId) handleNewChat();
+  };
+
+  const handleFilesSelected = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(event.target.files || []);
+    event.target.value = '';
+    if (files.length === 0) return;
+
+    if (pendingAttachments.length + files.length > MAX_ATTACHMENTS) {
+      toast.error(`You can attach up to ${MAX_ATTACHMENTS} files at a time.`);
+      return;
+    }
+
+    const oversized = files.find((file) => file.size > MAX_ATTACHMENT_BYTES);
+    if (oversized) {
+      toast.error(`"${oversized.name}" is too large. Files must be under ${MAX_ATTACHMENT_BYTES / (1024 * 1024)}MB.`);
+      return;
+    }
+
+    try {
+      const converted = await Promise.all(
+        files.map(async (file) => ({
+          name: file.name,
+          mimeType: file.type || 'application/octet-stream',
+          data: await fileToBase64(file),
+        }))
+      );
+      setPendingAttachments((current) => [...current, ...converted]);
+    } catch {
+      toast.error('Could not read one of the selected files.');
+    }
+  };
+
+  const handleRemoveAttachment = (index: number) => {
+    setPendingAttachments((current) => current.filter((_, i) => i !== index));
+  };
+
+  const handleQuickPrompt = (prompt: string) => {
+    setInput(prompt);
+  };
+
+  const hasConversationStarted = messages.some((message) => message.role === 'user');
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!hasConversationStarted) return;
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  }, [messages, isThinking, hasConversationStarted]);
+
+  const attachmentChipsRow = pendingAttachments.length > 0 && (
+    <div className="flex flex-wrap gap-2">
+      {pendingAttachments.map((attachment, index) => (
+        <span
+          key={`${attachment.name}-${index}`}
+          className="inline-flex items-center gap-1.5 rounded-lg border border-border/50 bg-muted/40 px-2.5 py-1.5 text-xs"
+        >
+          <Paperclip className="h-3.5 w-3.5" />
+          <span className="max-w-[140px] truncate">{attachment.name}</span>
+          <button type="button" onClick={() => handleRemoveAttachment(index)} className="text-muted-foreground hover:text-destructive">
+            <X className="h-3.5 w-3.5" />
+          </button>
+        </span>
+      ))}
+    </div>
+  );
+
+  const inputRow = (
+    <div className="flex flex-col gap-2 sm:flex-row">
+      <input
+        ref={fileInputRef}
+        type="file"
+        multiple
+        hidden
+        accept="image/*,application/pdf,.csv,.txt,.xlsx,.xls,.doc,.docx"
+        onChange={handleFilesSelected}
+      />
+      <div className="flex flex-1 items-end gap-2">
+        <Button
+          type="button"
+          variant="outline"
+          size="icon"
+          className="flex-shrink-0"
+          onClick={() => fileInputRef.current?.click()}
+          title="Attach a file"
+        >
+          <Paperclip className="h-4 w-4" />
+        </Button>
+        <Textarea
+          value={input}
+          onChange={(event) => setInput(event.target.value)}
+          onKeyDown={handleInputKeyDown}
+          placeholder="Message MR Assistant... (Enter to send, Shift+Enter for a new line)"
+          className="min-h-[76px] resize-none"
+        />
+      </div>
+      <Button
+        type="button"
+        className="sm:self-end"
+        onClick={() => handleAsk()}
+        disabled={(!input.trim() && pendingAttachments.length === 0) || isThinking}
+      >
+        <Send className="h-4 w-4" />
+        Ask
+      </Button>
+    </div>
+  );
+
+  const quickPrompts = (
+    <div className="flex flex-wrap justify-center gap-2">
+      {suggestedPrompts.map((prompt) => (
+        <Button key={prompt} type="button" variant="outline" size="sm" onClick={() => handleQuickPrompt(prompt)}>
+          {prompt}
+        </Button>
+      ))}
+    </div>
+  );
 
   return (
     <div className="space-y-4 sm:space-y-6">
-      <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
-        <div className="space-y-2">
-          <div className="flex flex-wrap items-center gap-2">
-            <Badge variant="forest" className="gap-1">
-              <Sparkles className="h-3.5 w-3.5" />
-              Farm Intelligence Agent
-            </Badge>
-            <Badge variant="outline">Executive command center</Badge>
-          </div>
-          <h1 className="font-heading text-2xl font-bold text-foreground sm:text-3xl">
-            FIA AI Assistant
-          </h1>
-          <p className="max-w-3xl text-sm text-muted-foreground sm:text-base">
-            Daily briefing, decision intelligence, risk detection, predictive analytics, and natural language support for farm managers.
-          </p>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          <Button variant="outline" onClick={() => handleCommand('Monthly farm report')}>
-            <Download className="h-4 w-4" />
-            Monthly Report
-          </Button>
-          <Button variant="forest" onClick={() => handleCommand('Executive briefing')}>
-            <Send className="h-4 w-4" />
-            Send Briefing
-          </Button>
-        </div>
+      <div>
+        <h1 className="font-heading text-2xl font-bold text-foreground sm:text-3xl">MR Assistant</h1>
+        <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">
+          Ask MR Assistant about production, inventory, sales, machinery, workforce, reports, and risks.
+        </p>
       </div>
 
-      <Card variant="gradient" className="overflow-hidden">
-        <CardContent className="p-4 sm:p-6">
-          <div className="grid gap-5 lg:grid-cols-[1.25fr_0.75fr] lg:items-center">
-            <div className="space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/15">
-                  <Bot className="h-6 w-6" />
-                </div>
-                <div>
-                  <p className="text-sm opacity-80">Good morning, {user?.name || 'Manager'}.</p>
-                  <h2 className="font-heading text-xl font-semibold sm:text-2xl">Today's Farm Summary</h2>
-                </div>
-              </div>
-              <div className="grid gap-2 sm:grid-cols-2">
-                {intelligence.briefing.slice(0, 6).map((item) => (
-                  <div key={item} className="flex items-start gap-2 rounded-lg bg-white/10 p-3 text-sm">
-                    <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0" />
-                    <span>{item}</span>
-                  </div>
-                ))}
-              </div>
+      <Card variant="solid">
+        <CardHeader>
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <BrainCircuit className="h-5 w-5 text-primary" />
+                MR Assistant
+              </CardTitle>
+              <CardDescription>Ask operational, financial, inventory, workforce, sales, or report questions.</CardDescription>
             </div>
-            <div className="rounded-2xl bg-white/10 p-4">
-              <div className="flex items-center justify-between gap-4">
-                <div>
-                  <p className="text-sm opacity-80">Farm Health Score</p>
-                  <p className="font-heading text-5xl font-bold">{intelligence.farmHealthScore}</p>
-                </div>
-                <ShieldCheck className="h-14 w-14 opacity-80" />
-              </div>
-              <Progress value={intelligence.farmHealthScore} className="mt-4 bg-white/20" />
-              <p className="mt-3 text-sm opacity-85">
-                Score combines production, finance, inventory, workforce, and machinery signals from available records.
-              </p>
+            <div className="flex gap-2">
+              <Button type="button" variant="outline" size="sm" onClick={() => setHistoryOpen((open) => !open)}>
+                <History className="mr-2 h-4 w-4" />
+                History
+              </Button>
+              <Button type="button" variant="outline" size="sm" onClick={handleNewChat}>
+                <Plus className="mr-2 h-4 w-4" />
+                New Chat
+              </Button>
             </div>
           </div>
-        </CardContent>
-      </Card>
-
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-6">
-        <Card className="xl:col-span-1">
-          <CardContent className="p-4">
-            <Users className="mb-3 h-5 w-5 text-primary" />
-            <p className="text-2xl font-bold">{intelligence.summary.farmers}</p>
-            <p className="text-xs text-muted-foreground">Farmers</p>
-          </CardContent>
-        </Card>
-        <Card className="xl:col-span-1">
-          <CardContent className="p-4">
-            <DollarSign className="mb-3 h-5 w-5 text-primary" />
-            <p className="text-2xl font-bold">{formatCurrency(intelligence.monthlyRevenue)}</p>
-            <p className="text-xs text-muted-foreground">Monthly revenue</p>
-          </CardContent>
-        </Card>
-        <Card className="xl:col-span-1">
-          <CardContent className="p-4">
-            <Package className="mb-3 h-5 w-5 text-primary" />
-            <p className="text-2xl font-bold">{intelligence.lowStock.length}</p>
-            <p className="text-xs text-muted-foreground">Low stock alerts</p>
-          </CardContent>
-        </Card>
-        <Card className="xl:col-span-1">
-          <CardContent className="p-4">
-            <Tractor className="mb-3 h-5 w-5 text-primary" />
-            <p className="text-2xl font-bold">{intelligence.summary.machinery}</p>
-            <p className="text-xs text-muted-foreground">Machinery jobs</p>
-          </CardContent>
-        </Card>
-        <Card className="xl:col-span-1">
-          <CardContent className="p-4">
-            <Sprout className="mb-3 h-5 w-5 text-primary" />
-            <p className="text-2xl font-bold">{intelligence.harvestForecast}T</p>
-            <p className="text-xs text-muted-foreground">Harvest forecast</p>
-          </CardContent>
-        </Card>
-        <Card className="xl:col-span-1">
-          <CardContent className="p-4">
-            <CloudRain className="mb-3 h-5 w-5 text-primary" />
-            <p className="text-2xl font-bold">{intelligence.confidence}%</p>
-            <p className="text-xs text-muted-foreground">Forecast confidence</p>
-          </CardContent>
-        </Card>
-      </div>
-
-      <div className="grid gap-4 xl:grid-cols-[1.1fr_0.9fr]">
-        <Card variant="elevated">
-          <CardHeader className="p-4 sm:p-6">
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <BrainCircuit className="h-5 w-5 text-primary" />
-              AI Chat Assistant
-            </CardTitle>
-            <CardDescription>Ask FIA operational, financial, inventory, workforce, sales, or report questions.</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4 p-4 pt-0 sm:p-6 sm:pt-0">
-            <div className="h-[360px] space-y-3 overflow-y-auto rounded-xl border border-border/40 bg-muted/20 p-3 scrollbar-thin">
-              {messages.map((message, index) => (
-                <div
-                  key={`${message.role}-${index}`}
-                  className={cn(
-                    'max-w-[88%] whitespace-pre-line rounded-xl px-3 py-2 text-sm',
-                    message.role === 'assistant'
-                      ? 'bg-card text-card-foreground shadow-soft'
-                      : 'ml-auto bg-primary text-primary-foreground'
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex flex-col gap-4 sm:flex-row">
+            {historyOpen && (
+              <div className="w-full flex-shrink-0 rounded-xl border border-border/40 bg-muted/20 p-2 sm:w-64">
+                <p className="px-2 py-1 text-xs font-medium uppercase tracking-wide text-muted-foreground">Chat history</p>
+                <div className="max-h-[420px] space-y-1 overflow-y-auto">
+                  {chatHistory.length === 0 && (
+                    <p className="px-2 py-4 text-center text-xs text-muted-foreground">No saved chats yet.</p>
                   )}
-                >
-                  {message.content}
+                  {chatHistory.map((session) => (
+                    <button
+                      key={session.id}
+                      type="button"
+                      onClick={() => handleSelectChat(session)}
+                      className={cn(
+                        'group flex w-full items-center justify-between gap-2 rounded-lg px-2 py-2 text-left text-sm hover:bg-muted/60',
+                        session.id === activeChatId && 'bg-muted/60 font-medium'
+                      )}
+                    >
+                      <span className="truncate">{session.title}</span>
+                      <span
+                        role="button"
+                        tabIndex={0}
+                        onClick={(event) => handleDeleteChat(event, session.id)}
+                        className="flex-shrink-0 rounded p-1 text-muted-foreground opacity-0 hover:bg-destructive/10 hover:text-destructive group-hover:opacity-100"
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </span>
+                    </button>
+                  ))}
                 </div>
-              ))}
-              {isThinking && (
-                <div className="inline-flex items-center gap-2 rounded-xl bg-card px-3 py-2 text-sm shadow-soft">
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  FIA is analyzing farm records
+              </div>
+            )}
+
+            <div className="min-w-0 flex-1">
+              {hasConversationStarted ? (
+                <div className="space-y-4">
+                  <div className="h-[480px] space-y-3 overflow-y-auto rounded-xl border border-border/40 bg-muted/20 p-3 scrollbar-thin">
+                    {messages.map((message, index) => (
+                      <div
+                        key={`${message.role}-${index}`}
+                        className={cn(
+                          'max-w-[88%] whitespace-pre-line rounded-xl px-3 py-2 text-sm',
+                          message.role === 'assistant'
+                            ? 'bg-card text-card-foreground shadow-soft'
+                            : 'ml-auto bg-primary text-primary-foreground'
+                        )}
+                      >
+                        {message.attachments && message.attachments.length > 0 && (
+                          <div className="mb-2 flex flex-wrap gap-1.5">
+                            {message.attachments.map((attachment) => (
+                              <span
+                                key={attachment.name}
+                                className="inline-flex items-center gap-1 rounded-md bg-black/10 px-2 py-1 text-xs"
+                              >
+                                <Paperclip className="h-3 w-3" />
+                                {attachment.name}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                        <MessageContent content={message.content} />
+                      </div>
+                    ))}
+                    {isThinking && (
+                      <div className="inline-flex items-center gap-2 rounded-xl bg-card px-3 py-2 text-sm shadow-soft">
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        MR Assistant is analyzing farm records
+                      </div>
+                    )}
+                    <div ref={messagesEndRef} />
+                  </div>
+                  {attachmentChipsRow}
+                  {inputRow}
+                </div>
+              ) : (
+                <div className="flex min-h-[420px] flex-col items-center justify-center gap-6 px-4 py-8 text-center">
+                  <div className="space-y-2">
+                    <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                      <BrainCircuit className="h-7 w-7" />
+                    </div>
+                    <h2 className="font-heading text-2xl font-semibold">MR Assistant</h2>
+                    <p className="mx-auto max-w-md text-sm text-muted-foreground">{initialAssistantMessage.content}</p>
+                  </div>
+                  <div className="w-full max-w-2xl space-y-3">
+                    {attachmentChipsRow}
+                    {inputRow}
+                    {quickPrompts}
+                  </div>
                 </div>
               )}
             </div>
-            <div className="flex flex-wrap gap-2">
-              {suggestedPrompts.map((prompt) => (
-                <Button key={prompt} type="button" variant="outline" size="sm" onClick={() => handleAsk(prompt)}>
-                  {prompt}
-                </Button>
-              ))}
-            </div>
-            <div className="flex flex-col gap-2 sm:flex-row">
-              <Textarea
-                value={input}
-                onChange={(event) => setInput(event.target.value)}
-                placeholder="Ask FIA about harvest forecasts, low stock, revenue, risks, workforce, or reports..."
-                className="min-h-[76px] resize-none"
-              />
-              <Button type="button" className="sm:self-end" onClick={() => handleAsk()} disabled={!input.trim() || isThinking}>
-                <Send className="h-4 w-4" />
-                Ask
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card variant="elevated">
-          <CardHeader className="p-4 sm:p-6">
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <Zap className="h-5 w-5 text-primary" />
-              Strategic Recommendations
-            </CardTitle>
-            <CardDescription>High-priority actions ranked by business impact.</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-3 p-4 pt-0 sm:p-6 sm:pt-0">
-            {intelligence.recommendations.map((item) => (
-              <div key={item.title} className="rounded-xl border border-border/40 bg-card/60 p-4">
-                <div className="flex items-start gap-3">
-                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                    <item.icon className="h-5 w-5" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <h3 className="font-heading text-base font-semibold">{item.title}</h3>
-                      <Badge variant={getUrgencyVariant(item.urgency)}>{item.urgency}</Badge>
-                    </div>
-                    <p className="mt-1 text-sm text-muted-foreground">{item.reason}</p>
-                    <p className="mt-2 text-xs font-medium text-primary">{item.impact}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
-      </div>
-
-      <div className="grid gap-4 xl:grid-cols-3">
-        <Card>
-          <CardHeader className="p-4 sm:p-6">
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <BarChart3 className="h-5 w-5 text-primary" />
-              Farm Health Breakdown
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="h-72 p-4 pt-0 sm:p-6 sm:pt-0">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie data={intelligence.scoreData} dataKey="value" nameKey="name" innerRadius={58} outerRadius={92} paddingAngle={3}>
-                  {intelligence.scoreData.map((entry) => (
-                    <Cell key={entry.name} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip formatter={(value) => [`${value}/100`, 'Score']} />
-              </PieChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="p-4 sm:p-6">
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <LineChart className="h-5 w-5 text-primary" />
-              Revenue Leaders
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="h-72 p-4 pt-0 sm:p-6 sm:pt-0">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={intelligence.topProducts.length ? intelligence.topProducts : [{ name: 'No sales data', revenue: 0 }]}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                <XAxis dataKey="name" tick={{ fontSize: 11 }} interval={0} height={54} />
-                <YAxis tick={{ fontSize: 11 }} />
-                <Tooltip formatter={(value) => [formatCurrency(Number(value)), 'Revenue']} />
-                <Bar dataKey="revenue" fill="#166534" radius={[6, 6, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="p-4 sm:p-6">
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <AlertTriangle className="h-5 w-5 text-primary" />
-              Risk Detection
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3 p-4 pt-0 sm:p-6 sm:pt-0">
-            {intelligence.riskData.map((risk) => (
-              <div key={risk.title} className="rounded-xl border border-border/40 bg-muted/20 p-3">
-                <div className="flex items-center justify-between gap-3">
-                  <h3 className="font-medium">{risk.title}</h3>
-                  <Badge variant={risk.level === 'High' ? 'destructive' : risk.level === 'Medium' ? 'warning' : 'success'}>
-                    {risk.level}
-                  </Badge>
-                </div>
-                <p className="mt-2 text-sm text-muted-foreground">{risk.signal}</p>
-                <p className="mt-2 text-xs font-medium text-primary">{risk.action}</p>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
-      </div>
-
-      <div className="grid gap-4 xl:grid-cols-[0.9fr_1.1fr]">
-        <Card>
-          <CardHeader className="p-4 sm:p-6">
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <Activity className="h-5 w-5 text-primary" />
-              Decision Intelligence
-            </CardTitle>
-            <CardDescription>Select a module to review FIA's operating focus.</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4 p-4 pt-0 sm:p-6 sm:pt-0">
-            <div className="grid grid-cols-2 gap-2">
-              {intelligenceModules.map((module) => (
-                <Button
-                  key={module.id}
-                  type="button"
-                  variant={activeModule === module.id ? 'forest' : 'outline'}
-                  className="justify-start"
-                  onClick={() => setActiveModule(module.id)}
-                >
-                  <module.icon className="h-4 w-4" />
-                  {module.title}
-                </Button>
-              ))}
-            </div>
-            <div className="rounded-xl border border-border/40 bg-muted/20 p-4">
-              <activeModuleData.icon className="mb-3 h-6 w-6 text-primary" />
-              <h3 className="font-heading text-lg font-semibold">{activeModuleData.title} Intelligence</h3>
-              <p className="mt-2 text-sm text-muted-foreground">{activeModuleData.focus}</p>
-              <div className="mt-4 grid gap-2 sm:grid-cols-2">
-                <div className="rounded-lg bg-card/70 p-3">
-                  <p className="text-xs text-muted-foreground">Forecast value</p>
-                  <p className="text-lg font-semibold">{formatCurrency(intelligence.forecastRevenue)}</p>
-                </div>
-                <div className="rounded-lg bg-card/70 p-3">
-                  <p className="text-xs text-muted-foreground">Confidence level</p>
-                  <p className="text-lg font-semibold">{intelligence.confidence}%</p>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="p-4 sm:p-6">
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <ClipboardList className="h-5 w-5 text-primary" />
-              Automation Command Center
-            </CardTitle>
-            <CardDescription>Queue routine management actions for FIA-assisted workflows.</CardDescription>
-          </CardHeader>
-          <CardContent className="grid gap-3 p-4 pt-0 sm:grid-cols-2 sm:p-6 sm:pt-0 lg:grid-cols-3">
-            {commandActions.map((action) => (
-              <Button
-                key={action.label}
-                type="button"
-                variant="outline"
-                className="h-auto min-h-[74px] flex-col items-start justify-center whitespace-normal p-4 text-left"
-                onClick={() => handleCommand(action.label)}
-              >
-                <action.icon className="h-5 w-5 text-primary" />
-                <span>{action.label}</span>
-              </Button>
-            ))}
-          </CardContent>
-        </Card>
-      </div>
-
-      <Card className="border-primary/20 bg-primary/5">
-        <CardContent className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-6">
-          <div className="flex items-start gap-3">
-            {isLoading ? (
-              <Loader2 className="mt-0.5 h-5 w-5 animate-spin text-primary" />
-            ) : intelligence.revenueGrowth >= 0 ? (
-              <TrendingUp className="mt-0.5 h-5 w-5 text-primary" />
-            ) : (
-              <TrendingDown className="mt-0.5 h-5 w-5 text-destructive" />
-            )}
-            <div>
-              <h3 className="font-heading font-semibold">FIA data readiness</h3>
-              <p className="text-sm text-muted-foreground">
-                Connected to farmers, products, sales, machinery, visits, and trainings. Live weather, livestock, and model-backed responses can be added through backend integrations.
-              </p>
-            </div>
           </div>
-          <Badge variant="outline">{isLoading ? 'Syncing data' : 'Analysis ready'}</Badge>
         </CardContent>
       </Card>
     </div>

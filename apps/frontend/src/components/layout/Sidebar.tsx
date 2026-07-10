@@ -59,7 +59,7 @@ const totNavItems: NavItem[] = [
 // Local MR Coordinator: Read-only, scoped to their Local MR
 const coordinatorNavItems: NavItem[] = [
   { to: '/dashboard/local-mr', icon: LayoutDashboard, label: 'Dashboard' },
-  { to: '/ai-assistant', icon: BrainCircuit, label: 'FIA Assistant' },
+  { to: '/ai-assistant', icon: BrainCircuit, label: 'MR Assistant' },
   { to: '/tots', icon: UserCog, label: 'TOT Overview' },
   { to: '/farmers', icon: Users, label: 'Farmers' },
   { to: '/sales', icon: ShoppingCart, label: 'Sales' },
@@ -74,7 +74,7 @@ const coordinatorNavItems: NavItem[] = [
 // Manager: Read-only, organization-wide access
 const managerNavItems: NavItem[] = [
   { to: '/dashboard/manager', icon: LayoutDashboard, label: 'Dashboard' },
-  { to: '/ai-assistant', icon: BrainCircuit, label: 'FIA Assistant' },
+  { to: '/ai-assistant', icon: BrainCircuit, label: 'MR Assistant' },
   { to: '/local-mrs', icon: Building2, label: 'Local MRs' },
   { to: '/tots', icon: UserCog, label: 'All TOTs' },
   { to: '/farmers', icon: Users, label: 'All Farmers' },
@@ -92,7 +92,7 @@ const managerNavItems: NavItem[] = [
 // Admin: Full data entry and management access
 const adminNavItems: NavItem[] = [
   { to: '/dashboard/admin', icon: LayoutDashboard, label: 'Dashboard' },
-  { to: '/ai-assistant', icon: BrainCircuit, label: 'FIA Assistant' },
+  { to: '/ai-assistant', icon: BrainCircuit, label: 'MR Assistant' },
   { to: '/users', icon: UserCog, label: 'User Management' },
   { to: '/tots', icon: UserCog, label: 'All TOTs' },
   { to: '/local-mrs', icon: Building2, label: 'Local MRs' },

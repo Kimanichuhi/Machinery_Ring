@@ -11,6 +11,7 @@ class MockProvider {
       message,
       recipients: recipients.map((recipient, index) => ({
         phone: recipient.phone,
+        message: recipient.message || message,
         providerId: `mock-${Date.now()}-${index}`,
         status: "queued",
       })),
@@ -126,7 +127,7 @@ class TextSmsProvider {
     const results = [];
 
     for (const [index, recipient] of recipients.entries()) {
-      results.push(await this.sendOne({ message, recipient, index }));
+      results.push(await this.sendOne({ message: recipient.message || message, recipient, index }));
     }
 
     return {

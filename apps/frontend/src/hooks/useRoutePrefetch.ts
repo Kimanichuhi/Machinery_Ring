@@ -24,7 +24,6 @@ const routeImports: Record<string, () => Promise<unknown>> = {
   "/communication/sms/history": () => import("@/pages/communication/Communication"),
   "/communication/sms/scheduled": () => import("@/pages/communication/Communication"),
   "/communication/weather": () => import("@/pages/communication/Communication"),
-  "/communication/settings": () => import("@/pages/communication/Communication"),
   "/communication/dashboard": () => import("@/pages/communication/Communication"),
   "/communication/send": () => import("@/pages/communication/Communication"),
   "/communication/templates": () => import("@/pages/communication/Communication"),
