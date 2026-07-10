@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400..800&family=Plus+Jakarta+Sans:wght@500..800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,14 +6,14 @@
 
 @layer base {
   :root {
-    /* Agricultural Theme - Cream & Green */
-    --background: 42 33% 96%;
-    --foreground: 150 30% 15%;
+    /* Agricultural Theme - crisp glass */
+    --background: 135 24% 96%;
+    --foreground: 154 38% 12%;
 
-    --card: 40 30% 98%;
+    --card: 0 0% 100%;
     --card-foreground: 150 30% 15%;
 
-    --popover: 40 30% 98%;
+    --popover: 0 0% 100%;
     --popover-foreground: 150 30% 15%;
 
     /* Primary - Deep Forest Green */
@@ -25,8 +25,8 @@
     --secondary-foreground: 42 33% 96%;
 
     /* Muted - Soft Sage */
-    --muted: 120 15% 88%;
-    --muted-foreground: 150 20% 40%;
+    --muted: 142 18% 90%;
+    --muted-foreground: 154 18% 34%;
 
     /* Accent - Golden Wheat */
     --accent: 42 85% 55%;
@@ -35,11 +35,11 @@
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 120 15% 85%;
-    --input: 120 15% 85%;
+    --border: 150 18% 82%;
+    --input: 150 18% 82%;
     --ring: 160 55% 20%;
 
-    --radius: 1rem;
+    --radius: 0.75rem;
 
     /* Custom Agricultural Colors */
     --forest: 160 55% 20%;
@@ -59,9 +59,9 @@
     --gradient-hero: linear-gradient(135deg, hsl(160 55% 20%) 0%, hsl(160 40% 28%) 50%, hsl(42 60% 45%) 100%);
 
     /* Shadows */
-    --shadow-soft: 0 4px 20px -4px hsl(160 30% 20% / 0.08);
-    --shadow-card: 0 8px 30px -8px hsl(160 30% 20% / 0.12);
-    --shadow-elevated: 0 20px 50px -12px hsl(160 30% 20% / 0.15);
+    --shadow-soft: 0 10px 26px -18px hsl(160 30% 20% / 0.22);
+    --shadow-card: 0 18px 44px -26px hsl(160 30% 20% / 0.28);
+    --shadow-elevated: 0 30px 70px -36px hsl(160 30% 20% / 0.32);
 
     /* Sidebar */
     --sidebar-background: 160 55% 20%;
@@ -126,11 +126,16 @@
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
-    font-family: 'Baloo 2', sans-serif;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
-    background-image: radial-gradient(circle at top left, rgba(74, 222, 128, 0.12), transparent 28%),
-                      radial-gradient(circle at bottom right, rgba(251, 191, 36, 0.10), transparent 24%);
+    -moz-osx-font-smoothing: grayscale;
+    background-color: hsl(var(--background));
+    background-image:
+      linear-gradient(135deg, hsl(150 32% 97%) 0%, hsl(42 44% 96%) 42%, hsl(180 28% 95%) 100%),
+      radial-gradient(circle at 12% 8%, hsl(158 70% 42% / 0.16), transparent 30%),
+      radial-gradient(circle at 86% 14%, hsl(42 92% 55% / 0.13), transparent 26%),
+      radial-gradient(circle at 72% 86%, hsl(194 70% 48% / 0.10), transparent 28%);
     background-attachment: fixed;
     /* Safe area support for notched devices */
     padding-top: env(safe-area-inset-top);
@@ -140,7 +145,8 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Baloo 2', sans-serif;
+    font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+    letter-spacing: 0;
   }
 
   /* Improve touch targets on mobile */
@@ -153,7 +159,7 @@
 
 @layer utilities {
   .font-heading {
-    font-family: 'Baloo 2', sans-serif;
+    font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
   }
 
   .gradient-forest {
@@ -185,18 +191,37 @@
   }
 
   .glass-panel {
-    background: rgba(255, 255, 255, 0.66);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    box-shadow: 0 24px 70px -36px rgba(15, 23, 42, 0.24);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-radius: 1.5rem;
+    /* Reduced blur and higher opacity for sharper UI clarity */
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.82));
+    border: 1px solid rgba(255, 255, 255, 0.58);
+    box-shadow: 0 18px 46px -24px rgba(15, 23, 42, 0.22);
+    backdrop-filter: blur(6px) saturate(1.08);
+    -webkit-backdrop-filter: blur(6px) saturate(1.08);
+    border-radius: 0.875rem;
   }
 
   .dark .glass-panel {
-    background: rgba(15, 23, 42, 0.68);
-    border-color: rgba(148, 163, 184, 0.18);
-    box-shadow: 0 24px 70px -36px rgba(0, 0, 0, 0.44);
+    /* Slightly reduced blur in dark mode for better legibility */
+    background: rgba(15, 23, 42, 0.60);
+    border-color: rgba(148, 163, 184, 0.20);
+    box-shadow: 0 18px 46px -22px rgba(0, 0, 0, 0.42);
+    backdrop-filter: blur(6px) saturate(1.06);
+    -webkit-backdrop-filter: blur(6px) saturate(1.06);
+  }
+
+  .glass-edge {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .glass-edge::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.55), transparent 36%);
+    opacity: 0.8;
   }
 
   /* Custom scrollbar */
