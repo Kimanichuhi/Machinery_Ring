@@ -4,7 +4,10 @@ import { supabaseAdmin } from "../supabaseClient.js";
 const router = express.Router();
 
 const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models";
-const DEFAULT_MODEL = "gemini-flash-latest";
+const DEFAULT_GEMINI_MODEL = "gemini-flash-latest";
+
+const OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
+const DEFAULT_OPENAI_MODEL = "gpt-5.6";
 
 async function verifyAuth(req, res, next) {
   const authHeader = req.headers.authorization || req.headers.Authorization;
@@ -32,7 +35,11 @@ function buildFarmContext(context) {
 const MAX_ATTACHMENTS = 4;
 const MAX_ATTACHMENT_BYTES = 8 * 1024 * 1024; // ~8MB raw per file, before base64 inflation
 
-function buildAttachmentParts(attachments) {
+function isImageAttachment(attachment) {
+  return typeof attachment?.mimeType === "string" && attachment.mimeType.startsWith("image/");
+}
+
+function validAttachments(attachments) {
   if (!Array.isArray(attachments)) return [];
 
   return attachments
@@ -42,46 +49,20 @@ function buildAttachmentParts(attachments) {
       // base64 length ~= 4/3 of raw byte length
       const approxBytes = (attachment.data.length * 3) / 4;
       return approxBytes <= MAX_ATTACHMENT_BYTES;
-    })
-    .map((attachment) => ({
-      inline_data: {
-        mime_type: attachment.mimeType,
-        data: attachment.data,
-      },
-    }));
+    });
 }
 
-router.get("/health", (_req, res) => {
-  res.json({
-    ok: true,
-    model: process.env.GEMINI_MODEL || DEFAULT_MODEL,
-    geminiConfigured: Boolean(process.env.GEMINI_API_KEY),
-  });
-});
-
-router.post("/assistant", verifyAuth, async (req, res) => {
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) {
-    return res.status(500).json({ error: "GEMINI_API_KEY is not configured on the backend." });
-  }
-
-  const prompt = String(req.body?.prompt || "").trim();
-  if (!prompt) {
-    return res.status(400).json({ error: "Prompt is required." });
-  }
-
-  const model = process.env.GEMINI_MODEL || DEFAULT_MODEL;
-  const farmContext = buildFarmContext(req.body?.context);
-  const attachmentParts = buildAttachmentParts(req.body?.attachments);
-
-  const systemInstruction = [
+function buildSystemInstruction({ webSearchAvailable }) {
+  return [
     "You are MR Assistant, the farm intelligence assistant for Machring Nyandarua.",
     "Always stick to the manager's question. Answer only what was asked unless the manager asks for a report, summary, insights, plan, or recommendations.",
     "For simple factual questions such as counts, totals, names, or yes/no questions, give a short direct answer in one or two sentences.",
     "For analytical questions, answer the exact question first, then add only the most relevant evidence, insights, and practical next actions.",
     "When the manager asks to generate, list, show, or export records, return the records in a clean markdown table with useful columns. Keep any explanation short.",
     "For any fact about this farm's own records (counts, names, dates, prices, revenue, farmers, sales), use only the supplied platform data. Do not invent or guess platform records.",
-    "You have live web search available for things the platform data does not cover, such as current weather, market prices, agronomy best practices, regulations, or news. Use it when the question needs current or general information, and say when you're citing information from the web versus the platform.",
+    webSearchAvailable
+      ? "You have live web search available for things the platform data does not cover, such as current weather, market prices, agronomy best practices, regulations, or news. Use it when the question needs current or general information, and say when you're citing information from the web versus the platform."
+      : "You do not have live web search in this session. For anything requiring current/real-time information (today's prices, weather, news), say clearly that you can't verify current data right now instead of guessing.",
     "If the manager attaches files (images, PDFs, spreadsheets, documents), analyze their actual content directly and answer using what's in them, combined with platform data and web search where relevant.",
     "When the data supports it, include totals, rankings, risks, likely causes, and practical next actions.",
     "If the question is only a greeting or casual opener, respond briefly and naturally, then invite the manager to ask what they need help with. Do not give a farm report for a greeting.",
@@ -90,67 +71,163 @@ router.post("/assistant", verifyAuth, async (req, res) => {
     "Structure substantial answers with short sections only when the question needs analysis: Direct answer, Key evidence, Insights, Recommended actions.",
     "Use Kenyan Shillings where money appears, and do not invent exact records that are not in the context.",
   ].join(" ");
+}
+
+async function callOpenAI({ prompt, farmContext, attachments }) {
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) throw new Error("OPENAI_API_KEY is not configured on the backend.");
+
+  const model = process.env.OPENAI_MODEL || DEFAULT_OPENAI_MODEL;
+  const content = [
+    { type: "text", text: `Farm platform context:\n${farmContext}\n\nManager question:\n${prompt}` },
+  ];
+
+  for (const attachment of attachments) {
+    content.push({
+      type: "image_url",
+      image_url: { url: `data:${attachment.mimeType};base64,${attachment.data}` },
+    });
+  }
+
+  const response = await fetch(OPENAI_API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      model,
+      messages: [
+        { role: "system", content: buildSystemInstruction({ webSearchAvailable: false }) },
+        { role: "user", content },
+      ],
+      max_completion_tokens: 1400,
+    }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data?.error?.message || "OpenAI request failed.");
+  }
+
+  const text = data?.choices?.[0]?.message?.content?.trim();
+  if (!text) throw new Error("OpenAI returned an empty response.");
+
+  return { content: text, model };
+}
+
+async function callGemini({ prompt, farmContext, attachments }) {
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) throw new Error("GEMINI_API_KEY is not configured on the backend.");
+
+  const model = process.env.GEMINI_MODEL || DEFAULT_GEMINI_MODEL;
+  const attachmentParts = attachments.map((attachment) => ({
+    inline_data: {
+      mime_type: attachment.mimeType,
+      data: attachment.data,
+    },
+  }));
+
+  const response = await fetch(`${GEMINI_API_URL}/${model}:generateContent?key=${encodeURIComponent(apiKey)}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      systemInstruction: {
+        parts: [{ text: buildSystemInstruction({ webSearchAvailable: true }) }],
+      },
+      contents: [
+        {
+          role: "user",
+          parts: [
+            { text: `Farm platform context:\n${farmContext}\n\nManager question:\n${prompt}` },
+            ...attachmentParts,
+          ],
+        },
+      ],
+      tools: [{ google_search: {} }],
+      generationConfig: {
+        temperature: 0.25,
+        topP: 0.9,
+        maxOutputTokens: 1400,
+      },
+    }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data?.error?.message || "Gemini request failed.");
+  }
+
+  let content =
+    data?.candidates?.[0]?.content?.parts
+      ?.map((part) => part?.text)
+      .filter(Boolean)
+      .join("\n")
+      .trim() || "";
+
+  if (!content) throw new Error("Gemini returned an empty response.");
+
+  const groundingChunks = data?.candidates?.[0]?.groundingMetadata?.groundingChunks || [];
+  const sources = groundingChunks
+    .map((chunk) => chunk?.web)
+    .filter((web) => web?.uri)
+    .filter((web, index, all) => all.findIndex((other) => other.uri === web.uri) === index);
+
+  if (sources.length > 0) {
+    const sourceList = sources.map((web, index) => `${index + 1}. [${web.title || web.uri}](${web.uri})`).join("\n");
+    content = `${content}\n\nSources:\n${sourceList}`;
+  }
+
+  return { content, model };
+}
+
+router.get("/health", (_req, res) => {
+  res.json({
+    ok: true,
+    defaultProvider: "openai",
+    openaiConfigured: Boolean(process.env.OPENAI_API_KEY),
+    openaiModel: process.env.OPENAI_MODEL || DEFAULT_OPENAI_MODEL,
+    fallbackProvider: "gemini",
+    geminiConfigured: Boolean(process.env.GEMINI_API_KEY),
+    geminiModel: process.env.GEMINI_MODEL || DEFAULT_GEMINI_MODEL,
+  });
+});
+
+router.post("/assistant", verifyAuth, async (req, res) => {
+  const prompt = String(req.body?.prompt || "").trim();
+  if (!prompt) {
+    return res.status(400).json({ error: "Prompt is required." });
+  }
+
+  const farmContext = buildFarmContext(req.body?.context);
+  const attachments = validAttachments(req.body?.attachments);
+  // OpenAI's chat completions endpoint only accepts images inline; anything else
+  // (PDF, spreadsheet, doc) goes straight to Gemini, which handles all file types.
+  const openaiCanHandleAttachments = attachments.every(isImageAttachment);
+
+  let openaiError = null;
+
+  if (process.env.OPENAI_API_KEY && openaiCanHandleAttachments) {
+    try {
+      const result = await callOpenAI({ prompt, farmContext, attachments });
+      return res.json(result);
+    } catch (error) {
+      openaiError = error;
+      console.error("MR Assistant: OpenAI request failed, falling back to Gemini:", error.message);
+    }
+  }
+
+  if (!process.env.GEMINI_API_KEY) {
+    return res.status(500).json({ error: openaiError?.message || "No AI provider is configured on the backend." });
+  }
 
   try {
-    const geminiResponse = await fetch(`${GEMINI_API_URL}/${model}:generateContent?key=${encodeURIComponent(apiKey)}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        systemInstruction: {
-          parts: [{ text: systemInstruction }],
-        },
-        contents: [
-          {
-            role: "user",
-            parts: [
-              {
-                text: `Farm platform context:\n${farmContext}\n\nManager question:\n${prompt}`,
-              },
-              ...attachmentParts,
-            ],
-          },
-        ],
-        tools: [{ google_search: {} }],
-        generationConfig: {
-          temperature: 0.25,
-          topP: 0.9,
-          maxOutputTokens: 1400,
-        },
-      }),
-    });
-
-    const data = await geminiResponse.json();
-
-    if (!geminiResponse.ok) {
-      const message = data?.error?.message || "Gemini request failed.";
-      return res.status(geminiResponse.status).json({ error: message });
-    }
-
-    let content =
-      data?.candidates?.[0]?.content?.parts
-        ?.map((part) => part?.text)
-        .filter(Boolean)
-        .join("\n")
-        .trim() || "";
-
-    if (!content) {
-      return res.status(502).json({ error: "Gemini returned an empty response." });
-    }
-
-    const groundingChunks = data?.candidates?.[0]?.groundingMetadata?.groundingChunks || [];
-    const sources = groundingChunks
-      .map((chunk) => chunk?.web)
-      .filter((web) => web?.uri)
-      .filter((web, index, all) => all.findIndex((other) => other.uri === web.uri) === index);
-
-    if (sources.length > 0) {
-      const sourceList = sources.map((web, index) => `${index + 1}. [${web.title || web.uri}](${web.uri})`).join("\n");
-      content = `${content}\n\nSources:\n${sourceList}`;
-    }
-
-    res.json({ content, model });
+    const result = await callGemini({ prompt, farmContext, attachments });
+    return res.json(result);
   } catch (error) {
-    res.status(502).json({ error: error?.message || "Could not reach Gemini." });
+    return res.status(502).json({ error: error?.message || "Could not reach the AI provider." });
   }
 });
 

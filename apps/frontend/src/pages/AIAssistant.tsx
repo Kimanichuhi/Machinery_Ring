@@ -620,6 +620,10 @@ export function AIAssistant() {
       const response = await askFiaAssistant(cleanPrompt || 'Please analyze the attached file(s).', buildAssistantContext(), attachments);
       setMessages([...userMessages, { role: 'assistant', content: response.content }]);
     } catch (error) {
+      // Log the real error for debugging, but never surface API-provider details
+      // (quota, billing, rate limits) to the user — show a clean, generic message.
+      console.error('MR Assistant request failed:', error);
+
       if (error instanceof BackendError && error.status === 401) {
         toast.error('Your session has expired. Please refresh the page and log in again.');
         setMessages([
@@ -630,19 +634,17 @@ export function AIAssistant() {
           },
         ]);
       } else if (attachments.length > 0) {
-        toast.error('Could not analyze the attached file(s) right now.');
-        const message = error instanceof Error ? error.message : 'Gemini is unavailable.';
+        toast.error('Could not analyze the attached file(s) right now. Please try again shortly.');
         setMessages([
           ...userMessages,
           {
             role: 'assistant',
-            content: `I couldn't analyze the attached file(s) because the live AI connection failed (${message}). File analysis needs that connection — offline analysis only covers platform data, not file contents. Please try again in a moment.`,
+            content: "I couldn't analyze the attached file(s) right now — the live AI connection is temporarily unavailable. File analysis needs that connection, since offline analysis only covers platform data, not file contents. Please try again in a moment.",
           },
         ]);
       } else {
         const fallback = respondToPrompt(cleanPrompt);
-        const message = error instanceof Error ? error.message : 'Gemini is unavailable.';
-        toast.error(`MR Assistant used local analysis: ${message}`);
+        toast.error('Live AI is temporarily unavailable — showing offline analysis instead.');
         setMessages([...userMessages, { role: 'assistant', content: fallback }]);
       }
     } finally {
