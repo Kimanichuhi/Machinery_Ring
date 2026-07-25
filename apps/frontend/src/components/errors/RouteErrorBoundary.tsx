@@ -13,6 +13,16 @@ type RouteErrorBoundaryState = {
   error: Error | null;
 };
 
+// Browsers phrase dynamic-import/chunk-load failures differently, but they all
+// mean the same thing: the module graph the page loaded is stale (dev server
+// restarted, or a deploy shipped new hashed chunk filenames).
+const CHUNK_LOAD_ERROR_PATTERN =
+  /failed to fetch dynamically imported module|error loading dynamically imported module|importing a module script failed/i;
+
+function isChunkLoadError(error: Error): boolean {
+  return CHUNK_LOAD_ERROR_PATTERN.test(error.message);
+}
+
 export class RouteErrorBoundary extends React.Component<RouteErrorBoundaryProps, RouteErrorBoundaryState> {
   state: RouteErrorBoundaryState = {
     error: null,
@@ -22,11 +32,33 @@ export class RouteErrorBoundary extends React.Component<RouteErrorBoundaryProps,
     return { error };
   }
 
+  componentDidMount() {
+    // A successful mount means this route's chunk is reachable again —
+    // clear the guard so a future genuine failure still gets one auto-reload.
+    sessionStorage.removeItem(`chunk-reload-${this.props.section}`);
+  }
+
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     console.error(`Error in ${this.props.section}:`, error, errorInfo);
+
+    // React.lazy() caches the rejected import promise forever, so clearing
+    // local state and re-rendering re-throws the exact same error. A real
+    // reload is the only way to recover, so do it automatically once — but
+    // guard against a reload loop if the module genuinely can't be reached.
+    if (isChunkLoadError(error)) {
+      const reloadKey = `chunk-reload-${this.props.section}`;
+      if (!sessionStorage.getItem(reloadKey)) {
+        sessionStorage.setItem(reloadKey, '1');
+        window.location.reload();
+      }
+    }
   }
 
   private handleRetry = () => {
+    if (this.state.error && isChunkLoadError(this.state.error)) {
+      window.location.reload();
+      return;
+    }
     this.setState({ error: null });
   };
 
@@ -34,6 +66,8 @@ export class RouteErrorBoundary extends React.Component<RouteErrorBoundaryProps,
     if (!this.state.error) {
       return this.props.children;
     }
+
+    const chunkError = isChunkLoadError(this.state.error);
 
     return (
       <div className="flex min-h-[50vh] items-center justify-center p-4">
@@ -46,7 +80,9 @@ export class RouteErrorBoundary extends React.Component<RouteErrorBoundaryProps,
               <div>
                 <CardTitle>{this.props.section} could not load</CardTitle>
                 <CardDescription>
-                  This section hit an error, but the rest of the dashboard is still available.
+                  {chunkError
+                    ? 'A newer version of the app is available. Reloading the page will fix this.'
+                    : 'This section hit an error, but the rest of the dashboard is still available.'}
                 </CardDescription>
               </div>
             </div>
@@ -57,7 +93,7 @@ export class RouteErrorBoundary extends React.Component<RouteErrorBoundaryProps,
             </p>
             <Button onClick={this.handleRetry} className="gap-2">
               <RotateCcw className="h-4 w-4" />
-              Try again
+              {chunkError ? 'Reload page' : 'Try again'}
             </Button>
           </CardContent>
         </Card>

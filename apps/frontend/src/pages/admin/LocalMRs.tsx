@@ -233,7 +233,7 @@ export function LocalMRs() {
       {/* HEADER */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold">Local MR Management</h1>
+          <h1 className="font-heading text-2xl font-bold">Local MR Management</h1>
           <p className="text-muted-foreground">Manage local market representatives</p>
         </div>
         <Button onClick={() => setIsAddDialogOpen(true)}>
@@ -591,7 +591,7 @@ function Stat({ icon: Icon, label, value }: { icon: any; label: string; value: s
         </div>
         <div>
           <p className="text-sm text-muted-foreground">{label}</p>
-          <p className="text-2xl font-bold">{value}</p>
+          <p className="font-heading text-2xl font-bold">{value}</p>
         </div>
       </CardContent>
     </Card>

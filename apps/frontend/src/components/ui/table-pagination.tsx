@@ -18,6 +18,7 @@ interface TablePaginationProps {
   onPageSizeChange: (pageSize: number) => void;
   pageSizeOptions?: number[];
   isLoading?: boolean;
+  minCountToShow?: number;
 }
 
 export function TablePagination({
@@ -29,7 +30,12 @@ export function TablePagination({
   onPageSizeChange,
   pageSizeOptions = [10, 25, 50, 100],
   isLoading = false,
+  minCountToShow = 25,
 }: TablePaginationProps) {
+  if (totalCount <= minCountToShow) {
+    return null;
+  }
+
   const startRecord = totalCount === 0 ? 0 : (page - 1) * pageSize + 1;
   const endRecord = Math.min(page * pageSize, totalCount);
 

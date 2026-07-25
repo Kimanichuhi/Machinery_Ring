@@ -188,7 +188,7 @@ export function AuditLog() {
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Total Logs</p>
-              <p className="text-2xl font-bold">{auditLogs.length}</p>
+              <p className="font-heading text-2xl font-bold">{auditLogs.length}</p>
             </div>
           </CardContent>
         </Card>
@@ -199,7 +199,7 @@ export function AuditLog() {
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Info</p>
-              <p className="text-2xl font-bold">{infoCount}</p>
+              <p className="font-heading text-2xl font-bold">{infoCount}</p>
             </div>
           </CardContent>
         </Card>
@@ -210,7 +210,7 @@ export function AuditLog() {
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Warnings</p>
-              <p className="text-2xl font-bold">{warningCount}</p>
+              <p className="font-heading text-2xl font-bold">{warningCount}</p>
             </div>
           </CardContent>
         </Card>
@@ -221,7 +221,7 @@ export function AuditLog() {
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Errors</p>
-              <p className="text-2xl font-bold">{errorCount}</p>
+              <p className="font-heading text-2xl font-bold">{errorCount}</p>
             </div>
           </CardContent>
         </Card>

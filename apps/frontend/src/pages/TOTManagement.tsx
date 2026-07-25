@@ -216,7 +216,7 @@ export function TOTManagement() {
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Total TOTs</p>
-              <p className="text-2xl font-bold">{totsPerformance.length}</p>
+              <p className="font-heading text-2xl font-bold">{totsPerformance.length}</p>
             </div>
           </CardContent>
         </Card>
@@ -227,7 +227,7 @@ export function TOTManagement() {
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Active</p>
-              <p className="text-2xl font-bold text-green-600">{activeTOTs}</p>
+              <p className="font-heading text-2xl font-bold text-green-600">{activeTOTs}</p>
             </div>
           </CardContent>
         </Card>
@@ -238,7 +238,7 @@ export function TOTManagement() {
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Total Sales</p>
-              <p className="text-xl font-bold">{formatCurrency(totalSales)}</p>
+              <p className="font-heading text-xl font-bold">{formatCurrency(totalSales)}</p>
             </div>
           </CardContent>
         </Card>
@@ -249,7 +249,7 @@ export function TOTManagement() {
             </div>
             <div>
               <p className="text-sm opacity-80">Commission</p>
-              <p className="text-xl font-bold">{formatCurrency(totalCommission)}</p>
+              <p className="font-heading text-xl font-bold">{formatCurrency(totalCommission)}</p>
             </div>
           </CardContent>
         </Card>
@@ -407,17 +407,17 @@ export function TOTManagement() {
               <div className="grid grid-cols-3 gap-4">
                 <Card className="p-4 text-center">
                   <ShoppingCart className="w-6 h-6 mx-auto text-primary mb-2" />
-                  <p className="text-xl font-bold">{formatCurrency(selectedTOTData.totalSales)}</p>
+                  <p className="font-heading text-xl font-bold">{formatCurrency(selectedTOTData.totalSales)}</p>
                   <p className="text-xs text-muted-foreground">Total Sales</p>
                 </Card>
                 <Card className="p-4 text-center">
                   <TrendingUp className="w-6 h-6 mx-auto text-green-600 mb-2" />
-                  <p className="text-xl font-bold">{formatCurrency(selectedTOTData.totalCommission)}</p>
+                  <p className="font-heading text-xl font-bold">{formatCurrency(selectedTOTData.totalCommission)}</p>
                   <p className="text-xs text-muted-foreground">Commission Earned</p>
                 </Card>
                 <Card className="p-4 text-center">
                   <Users className="w-6 h-6 mx-auto text-blue-600 mb-2" />
-                  <p className="text-xl font-bold">{farmersRegisteredByTOT}</p>
+                  <p className="font-heading text-xl font-bold">{farmersRegisteredByTOT}</p>
                   <p className="text-xs text-muted-foreground">Farmers Registered</p>
                 </Card>
               </div>

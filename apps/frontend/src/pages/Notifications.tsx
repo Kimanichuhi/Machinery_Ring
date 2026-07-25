@@ -229,7 +229,7 @@ export function Notifications() {
               <Bell className="w-5 h-5 text-primary" />
             </div>
             <div>
-              <p className="text-2xl font-bold">{notifications.length}</p>
+              <p className="font-heading text-2xl font-bold">{notifications.length}</p>
               <p className="text-sm text-muted-foreground">Total</p>
             </div>
           </div>
@@ -240,7 +240,7 @@ export function Notifications() {
               <Clock className="w-5 h-5 text-orange-600" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-orange-600">{unreadCount}</p>
+              <p className="font-heading text-2xl font-bold text-orange-600">{unreadCount}</p>
               <p className="text-sm text-muted-foreground">Unread</p>
             </div>
           </div>
@@ -251,7 +251,7 @@ export function Notifications() {
               <CheckCircle className="w-5 h-5 text-emerald-600" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-emerald-600">{notifications.filter(n => n.read).length}</p>
+              <p className="font-heading text-2xl font-bold text-emerald-600">{notifications.filter(n => n.read).length}</p>
               <p className="text-sm text-muted-foreground">Read</p>
             </div>
           </div>
@@ -262,7 +262,7 @@ export function Notifications() {
               <AlertCircle className="w-5 h-5 text-red-600" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-red-600">
+              <p className="font-heading text-2xl font-bold text-red-600">
                 {notifications.filter(n => n.type.includes('pending') || n.type.includes('support')).length}
               </p>
               <p className="text-sm text-muted-foreground">Pending Action</p>

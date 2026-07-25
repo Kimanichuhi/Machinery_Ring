@@ -118,7 +118,7 @@ export function MechanisationOverview({ jobs }: MechanisationOverviewProps) {
           <div className="flex items-center gap-2">
             <Clock className="w-5 h-5 text-orange-500" />
             <div>
-              <p className="text-2xl font-bold">{statusCounts.pending}</p>
+              <p className="font-heading text-2xl font-bold">{statusCounts.pending}</p>
               <p className="text-xs text-muted-foreground">Pending Approval</p>
             </div>
           </div>
@@ -127,7 +127,7 @@ export function MechanisationOverview({ jobs }: MechanisationOverviewProps) {
           <div className="flex items-center gap-2">
             <CheckCircle className="w-5 h-5 text-blue-500" />
             <div>
-              <p className="text-2xl font-bold">{statusCounts.approved}</p>
+              <p className="font-heading text-2xl font-bold">{statusCounts.approved}</p>
               <p className="text-xs text-muted-foreground">Approved</p>
             </div>
           </div>
@@ -136,7 +136,7 @@ export function MechanisationOverview({ jobs }: MechanisationOverviewProps) {
           <div className="flex items-center gap-2">
             <Tractor className="w-5 h-5 text-indigo-500" />
             <div>
-              <p className="text-2xl font-bold">{statusCounts.inProgress}</p>
+              <p className="font-heading text-2xl font-bold">{statusCounts.inProgress}</p>
               <p className="text-xs text-muted-foreground">In Progress</p>
             </div>
           </div>
@@ -145,7 +145,7 @@ export function MechanisationOverview({ jobs }: MechanisationOverviewProps) {
           <div className="flex items-center gap-2">
             <CheckCircle className="w-5 h-5 text-green-500" />
             <div>
-              <p className="text-2xl font-bold">{statusCounts.completed}</p>
+              <p className="font-heading text-2xl font-bold">{statusCounts.completed}</p>
               <p className="text-xs text-muted-foreground">Completed</p>
             </div>
           </div>
@@ -154,7 +154,7 @@ export function MechanisationOverview({ jobs }: MechanisationOverviewProps) {
           <div className="flex items-center gap-2">
             <XCircle className="w-5 h-5 text-red-500" />
             <div>
-              <p className="text-2xl font-bold">{statusCounts.rejected}</p>
+              <p className="font-heading text-2xl font-bold">{statusCounts.rejected}</p>
               <p className="text-xs text-muted-foreground">Rejected</p>
             </div>
           </div>
@@ -163,7 +163,7 @@ export function MechanisationOverview({ jobs }: MechanisationOverviewProps) {
           <div className="flex items-center gap-2">
             <AlertCircle className="w-5 h-5 text-gray-500" />
             <div>
-              <p className="text-2xl font-bold">{statusCounts.cancelled}</p>
+              <p className="font-heading text-2xl font-bold">{statusCounts.cancelled}</p>
               <p className="text-xs text-muted-foreground">Cancelled</p>
             </div>
           </div>

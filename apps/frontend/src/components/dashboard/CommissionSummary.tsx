@@ -86,7 +86,7 @@ export function CommissionSummary() {
         {/* Total earned */}
         <div className="text-center pb-3 border-b border-border">
           <p className="text-xs text-muted-foreground mb-1">Total Earned</p>
-          <p className="text-2xl font-bold text-foreground">{formatKES(totalEarned)}</p>
+          <p className="font-heading text-2xl font-bold text-foreground">{formatKES(totalEarned)}</p>
           <p className="text-xs text-muted-foreground">{salesCount} sale{salesCount !== 1 ? 's' : ''}</p>
         </div>
 

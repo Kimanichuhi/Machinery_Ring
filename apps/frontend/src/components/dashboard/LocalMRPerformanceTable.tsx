@@ -219,22 +219,22 @@ export function LocalMRPerformanceTable({
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="p-4 bg-muted rounded-xl text-center">
                   <UserCheck className="w-6 h-6 mx-auto mb-2 text-primary" />
-                  <p className="text-2xl font-bold">{selectedMR.totalTots}</p>
+                  <p className="font-heading text-2xl font-bold">{selectedMR.totalTots}</p>
                   <p className="text-xs text-muted-foreground">TOTs</p>
                 </div>
                 <div className="p-4 bg-muted rounded-xl text-center">
                   <Users className="w-6 h-6 mx-auto mb-2 text-primary" />
-                  <p className="text-2xl font-bold">{selectedDetails.farmers.length}</p>
+                  <p className="font-heading text-2xl font-bold">{selectedDetails.farmers.length}</p>
                   <p className="text-xs text-muted-foreground">Farmers</p>
                 </div>
                 <div className="p-4 bg-muted rounded-xl text-center">
                   <ShoppingCart className="w-6 h-6 mx-auto mb-2 text-primary" />
-                  <p className="text-2xl font-bold">{selectedDetails.sales.length}</p>
+                  <p className="font-heading text-2xl font-bold">{selectedDetails.sales.length}</p>
                   <p className="text-xs text-muted-foreground">Sales</p>
                 </div>
                 <div className="p-4 bg-muted rounded-xl text-center">
                   <Tractor className="w-6 h-6 mx-auto mb-2 text-primary" />
-                  <p className="text-2xl font-bold">{selectedDetails.jobs.length}</p>
+                  <p className="font-heading text-2xl font-bold">{selectedDetails.jobs.length}</p>
                   <p className="text-xs text-muted-foreground">Mech. Jobs</p>
                 </div>
               </div>
@@ -245,13 +245,13 @@ export function LocalMRPerformanceTable({
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <p className="text-sm text-muted-foreground">Total Revenue</p>
-                    <p className="text-xl font-bold text-primary">
+                    <p className="font-heading text-xl font-bold text-primary">
                       {formatCurrency(selectedDetails.totalRevenue)}
                     </p>
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Total Commission</p>
-                    <p className="text-xl font-bold text-secondary">
+                    <p className="font-heading text-xl font-bold text-secondary">
                       {formatCurrency(selectedDetails.totalCommission)}
                     </p>
                   </div>

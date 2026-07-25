@@ -419,7 +419,7 @@ export function Users() {
       {/* HEADER */}
       <div className="flex flex-col sm:flex-row justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold">User Management</h1>
+          <h1 className="font-heading text-2xl font-bold">User Management</h1>
           <p className="text-muted-foreground">Create and manage TOT, Manager, and Admin accounts</p>
         </div>
         <div className="flex gap-2">
@@ -945,7 +945,7 @@ function StatCard({ icon: Icon, label, value }: { icon: any; label: string; valu
         </div>
         <div>
           <p className="text-sm text-muted-foreground">{label}</p>
-          <p className="text-2xl font-bold">{value}</p>
+          <p className="font-heading text-2xl font-bold">{value}</p>
         </div>
       </CardContent>
     </Card>

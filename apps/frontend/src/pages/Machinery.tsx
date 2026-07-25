@@ -240,7 +240,7 @@ export function Machinery() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold">Machinery Management</h1>
+          <h1 className="font-heading text-2xl font-bold">Machinery Management</h1>
           <p className="text-muted-foreground">
             {isAdmin ? 'Manage fleet, bookings & maintenance' : 'View machinery availability'}
           </p>
@@ -265,7 +265,7 @@ export function Machinery() {
           <CardContent className="p-4 flex items-center gap-3">
             <CheckCircle className="w-5 h-5 text-green-600" />
             <div>
-              <p className="text-2xl font-bold">{availableCount}</p>
+              <p className="font-heading text-2xl font-bold">{availableCount}</p>
               <p className="text-sm text-muted-foreground">Available</p>
             </div>
           </CardContent>
@@ -274,7 +274,7 @@ export function Machinery() {
           <CardContent className="p-4 flex items-center gap-3">
             <Clock className="w-5 h-5 text-yellow-600" />
             <div>
-              <p className="text-2xl font-bold">{inUseCount}</p>
+              <p className="font-heading text-2xl font-bold">{inUseCount}</p>
               <p className="text-sm text-muted-foreground">In Use</p>
             </div>
           </CardContent>
@@ -283,7 +283,7 @@ export function Machinery() {
           <CardContent className="p-4 flex items-center gap-3">
             <Wrench className="w-5 h-5 text-red-600" />
             <div>
-              <p className="text-2xl font-bold">{maintenanceCount}</p>
+              <p className="font-heading text-2xl font-bold">{maintenanceCount}</p>
               <p className="text-sm text-muted-foreground">Maintenance</p>
             </div>
           </CardContent>

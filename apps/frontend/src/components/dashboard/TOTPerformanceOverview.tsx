@@ -139,19 +139,19 @@ export function TOTPerformanceOverview({
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card className="p-4">
           <p className="text-sm text-muted-foreground">Total TOTs</p>
-          <p className="text-2xl font-bold">{tots.length}</p>
+          <p className="font-heading text-2xl font-bold">{tots.length}</p>
         </Card>
         <Card className="p-4 border-l-4 border-l-green-500">
           <p className="text-sm text-muted-foreground">High Performers</p>
-          <p className="text-2xl font-bold text-green-600">{highPerformers}</p>
+          <p className="font-heading text-2xl font-bold text-green-600">{highPerformers}</p>
         </Card>
         <Card className="p-4 border-l-4 border-l-orange-500">
           <p className="text-sm text-muted-foreground">Need Attention</p>
-          <p className="text-2xl font-bold text-orange-600">{lowPerformers}</p>
+          <p className="font-heading text-2xl font-bold text-orange-600">{lowPerformers}</p>
         </Card>
         <Card className="p-4 border-l-4 border-l-red-500">
           <p className="text-sm text-muted-foreground">Inactive</p>
-          <p className="text-2xl font-bold text-red-600">{inactiveTots}</p>
+          <p className="font-heading text-2xl font-bold text-red-600">{inactiveTots}</p>
         </Card>
       </div>
 

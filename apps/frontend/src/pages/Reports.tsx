@@ -357,19 +357,19 @@ export function Reports() {
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
               <div>
-                <p className="text-2xl font-bold">{summary.farmers}</p>
+                <p className="font-heading text-2xl font-bold">{summary.farmers}</p>
                 <p className="text-xs opacity-80">Farmers</p>
               </div>
               <div>
-                <p className="text-2xl font-bold">{summary.sales}</p>
+                <p className="font-heading text-2xl font-bold">{summary.sales}</p>
                 <p className="text-xs opacity-80">Sales</p>
               </div>
               <div>
-                <p className="text-2xl font-bold">KES {(summary.totalSales / 1000).toFixed(0)}K</p>
+                <p className="font-heading text-2xl font-bold">KES {(summary.totalSales / 1000).toFixed(0)}K</p>
                 <p className="text-xs opacity-80">Revenue</p>
               </div>
               <div>
-                <p className="text-2xl font-bold">KES {(summary.totalCommission / 1000).toFixed(0)}K</p>
+                <p className="font-heading text-2xl font-bold">KES {(summary.totalCommission / 1000).toFixed(0)}K</p>
                 <p className="text-xs opacity-80">Commission</p>
               </div>
             </div>

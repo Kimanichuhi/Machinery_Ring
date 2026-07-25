@@ -209,7 +209,7 @@ export function Commission() {
       <div className="space-y-6">
         {/* HEADER */}
         <div className="flex justify-between flex-wrap gap-4">
-          <h1 className="text-2xl font-bold flex items-center gap-2">
+          <h1 className="font-heading text-2xl font-bold flex items-center gap-2">
             <Calculator className="w-6 h-6" />
             My Commission
           </h1>
@@ -220,19 +220,19 @@ export function Commission() {
           <Card>
             <CardContent className="p-4">
               <p className="text-sm text-muted-foreground">My Sales</p>
-              <p className="text-2xl font-bold">{totPersonalStats.salesCount}</p>
+              <p className="font-heading text-2xl font-bold">{totPersonalStats.salesCount}</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-4">
               <p className="text-sm text-muted-foreground">Total Revenue</p>
-              <p className="text-2xl font-bold">{formatCurrency(totPersonalStats.totalSales)}</p>
+              <p className="font-heading text-2xl font-bold">{formatCurrency(totPersonalStats.totalSales)}</p>
             </CardContent>
           </Card>
           <Card variant="forest">
             <CardContent className="p-4">
               <p className="text-sm opacity-80">My Commission</p>
-              <p className="text-2xl font-bold">
+              <p className="font-heading text-2xl font-bold">
                 {formatCurrency(totPersonalStats.totalCommission)}
               </p>
             </CardContent>
@@ -242,7 +242,7 @@ export function Commission() {
               <p className="text-sm text-muted-foreground flex items-center gap-1">
                 <Users className="w-4 h-4" /> TOTs in MR
               </p>
-              <p className="text-2xl font-bold">{totPersonalStats.activeTots}</p>
+              <p className="font-heading text-2xl font-bold">{totPersonalStats.activeTots}</p>
             </CardContent>
           </Card>
         </div>
@@ -307,7 +307,7 @@ export function Commission() {
               <ArrowLeft className="w-4 h-4" />
             </Button>
           )}
-          <h1 className="text-2xl font-bold flex items-center gap-2">
+          <h1 className="font-heading text-2xl font-bold flex items-center gap-2">
             <Calculator className="w-6 h-6" />
             {isCoordinator ? 'MR Commission Overview' : 'Commission Overview'}
           </h1>
@@ -331,25 +331,25 @@ export function Commission() {
         <Card>
           <CardContent className="p-4">
             <p className="text-sm text-muted-foreground">Local MRs</p>
-            <p className="text-2xl font-bold">{localMRSummaries.length}</p>
+            <p className="font-heading text-2xl font-bold">{localMRSummaries.length}</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4">
             <p className="text-sm text-muted-foreground">Active TOTs</p>
-            <p className="text-2xl font-bold">{totals.activeTots}</p>
+            <p className="font-heading text-2xl font-bold">{totals.activeTots}</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4">
             <p className="text-sm text-muted-foreground">Total Sales</p>
-            <p className="text-2xl font-bold">{formatCurrency(totals.sales)}</p>
+            <p className="font-heading text-2xl font-bold">{formatCurrency(totals.sales)}</p>
           </CardContent>
         </Card>
         <Card variant="forest">
           <CardContent className="p-4">
             <p className="text-sm opacity-80">Commission</p>
-            <p className="text-2xl font-bold">
+            <p className="font-heading text-2xl font-bold">
               {formatCurrency(totals.commission)}
             </p>
           </CardContent>
