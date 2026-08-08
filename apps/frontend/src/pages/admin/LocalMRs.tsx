@@ -276,7 +276,7 @@ export function LocalMRs() {
           </div>
 
           {/* TABLE */}
-          <Card>
+          <Card variant="elevated">
             <CardHeader>
               <CardTitle>Local MRs ({filteredMRs.length})</CardTitle>
             </CardHeader>
@@ -343,7 +343,7 @@ export function LocalMRs() {
 
         {/* Performance Tab */}
         <TabsContent value="performance" className="space-y-4">
-          <Card>
+          <Card variant="elevated">
             <CardHeader>
               <CardTitle>Local MR Performance Overview</CardTitle>
             </CardHeader>

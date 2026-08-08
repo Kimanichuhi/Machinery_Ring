@@ -1,5 +1,6 @@
 // src/hooks/api/useFarmersAndTots.ts
 import { useQuery } from '@tanstack/react-query';
+import { STALE_TIME } from '@/lib/queryConfig';
 import { supabase } from '@/integrations/supabase/client';
 
 export interface FarmerOrTot {
@@ -100,6 +101,6 @@ export function useFarmersAndTots(filters: FarmersAndTotsFilters = {}) {
 
       return combined;
     },
-    staleTime: 1000 * 60 * 3,
+    staleTime: STALE_TIME.STANDARD,
   });
 }

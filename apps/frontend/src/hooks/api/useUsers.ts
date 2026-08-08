@@ -1,5 +1,6 @@
 // src/hooks/api/useUsers.ts
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { STALE_TIME } from '@/lib/queryConfig';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
@@ -210,7 +211,7 @@ export function useUsers(filters: UserFilters = {}) {
 
       return users;
     },
-    staleTime: 1000 * 60 * 5,
+    staleTime: STALE_TIME.MEDIUM,
   });
 }
 

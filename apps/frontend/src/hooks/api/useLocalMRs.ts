@@ -1,5 +1,6 @@
 // src/hooks/api/useLocalMRs.ts
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { STALE_TIME } from '@/lib/queryConfig';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
@@ -138,7 +139,7 @@ export function useLocalMRs() {
         updated_at: mr.updated_at,
       }));
     },
-    staleTime: 1000 * 60 * 5,
+    staleTime: STALE_TIME.MEDIUM,
   });
 }
 
@@ -171,7 +172,7 @@ export function useLocalMR(id: string) {
       return { ...data, coordinator };
     },
     enabled: !!id,
-    staleTime: 1000 * 60 * 2,
+    staleTime: STALE_TIME.BRIEF,
   });
 }
 

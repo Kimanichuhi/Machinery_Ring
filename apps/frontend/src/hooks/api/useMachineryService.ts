@@ -1,4 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { STALE_TIME } from '@/lib/queryConfig';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
@@ -64,7 +65,7 @@ export function useMachineryServiceHistory(filters: { machineryId?: string } = {
         machinery_name: s.machinery?.name || '',
       }));
     },
-    staleTime: 1000 * 60 * 5,
+    staleTime: STALE_TIME.MEDIUM,
   });
 }
 
@@ -96,7 +97,7 @@ export function useUpcomingMaintenance() {
         machinery_status: s.machinery?.status || '',
       }));
     },
-    staleTime: 1000 * 60 * 5,
+    staleTime: STALE_TIME.MEDIUM,
   });
 }
 

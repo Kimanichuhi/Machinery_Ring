@@ -11,6 +11,8 @@ import { NotificationProvider } from "@/contexts/NotificationContext";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { RouteErrorBoundary } from "@/components/errors/RouteErrorBoundary";
+import { STALE_TIME, GC_TIME, DEFAULT_QUERY_RETRY, DEFAULT_MUTATION_RETRY } from "@/lib/queryConfig";
+import { ROLE_GROUPS } from "@/lib/permissions";
 
 // Lazy load pages for code splitting
 const Auth = lazy(() => import("@/pages/Auth").then(m => ({ default: m.Auth })));
@@ -68,8 +70,12 @@ const withRouteBoundary = (section: string, element: React.ReactNode) => (
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 60 * 5, // 5 minutes
-      retry: 1,
+      staleTime: STALE_TIME.MEDIUM,
+      gcTime: GC_TIME.STANDARD,
+      retry: DEFAULT_QUERY_RETRY,
+    },
+    mutations: {
+      retry: DEFAULT_MUTATION_RETRY,
     },
   },
 });
@@ -99,22 +105,22 @@ const App = () => (
                     
                     {/* Role-specific dashboards */}
                     <Route path="/dashboard/admin" element={withRouteBoundary('Admin dashboard',
-                      <ProtectedRoute allowedRoles={['admin']}>
+                      <ProtectedRoute allowedRoles={ROLE_GROUPS.ADMIN_ONLY}>
                         <AdminDashboard />
                       </ProtectedRoute>
                     )} />
                     <Route path="/dashboard/manager" element={withRouteBoundary('Manager dashboard',
-                      <ProtectedRoute allowedRoles={['manager', 'admin']}>
+                      <ProtectedRoute allowedRoles={ROLE_GROUPS.MANAGER_AND_ADMIN}>
                         <ManagerDashboard />
                       </ProtectedRoute>
                     )} />
                     <Route path="/dashboard/local-mr" element={withRouteBoundary('Local MR dashboard',
-                      <ProtectedRoute allowedRoles={['local_mr_coordinator', 'admin']}>
+                      <ProtectedRoute allowedRoles={ROLE_GROUPS.COORDINATOR_AND_ADMIN}>
                         <CoordinatorDashboard />
                       </ProtectedRoute>
                     )} />
                     <Route path="/dashboard/tot" element={withRouteBoundary('TOT dashboard',
-                      <ProtectedRoute allowedRoles={['tot', 'local_mr_coordinator', 'manager', 'admin']}>
+                      <ProtectedRoute allowedRoles={ROLE_GROUPS.ALL_ROLES}>
                         <TotDashboard />
                       </ProtectedRoute>
                     )} />
@@ -135,32 +141,32 @@ const App = () => (
                     <Route path="/notifications" element={withRouteBoundary('Notifications', <Notifications />)} />
                     <Route path="/communication" element={<Navigate to="/communication/sms" replace />} />
                     <Route path="/communication/sms" element={withRouteBoundary('Communication SMS',
-                      <ProtectedRoute allowedRoles={['admin', 'manager']}>
+                      <ProtectedRoute allowedRoles={ROLE_GROUPS.MANAGER_AND_ADMIN}>
                         <CommunicationSmsPage />
                       </ProtectedRoute>
                     )} />
                     <Route path="/communication/sms/send" element={withRouteBoundary('Send SMS',
-                      <ProtectedRoute allowedRoles={['admin', 'manager']}>
+                      <ProtectedRoute allowedRoles={ROLE_GROUPS.MANAGER_AND_ADMIN}>
                         <CommunicationSmsSendPage />
                       </ProtectedRoute>
                     )} />
                     <Route path="/communication/sms/templates" element={withRouteBoundary('SMS templates',
-                      <ProtectedRoute allowedRoles={['admin', 'manager']}>
+                      <ProtectedRoute allowedRoles={ROLE_GROUPS.MANAGER_AND_ADMIN}>
                         <CommunicationSmsTemplatesPage />
                       </ProtectedRoute>
                     )} />
                     <Route path="/communication/sms/history" element={withRouteBoundary('SMS history',
-                      <ProtectedRoute allowedRoles={['admin', 'manager']}>
+                      <ProtectedRoute allowedRoles={ROLE_GROUPS.MANAGER_AND_ADMIN}>
                         <CommunicationSmsHistoryPage />
                       </ProtectedRoute>
                     )} />
                     <Route path="/communication/sms/scheduled" element={withRouteBoundary('Scheduled SMS',
-                      <ProtectedRoute allowedRoles={['admin', 'manager']}>
+                      <ProtectedRoute allowedRoles={ROLE_GROUPS.MANAGER_AND_ADMIN}>
                         <CommunicationSmsScheduledPage />
                       </ProtectedRoute>
                     )} />
                     <Route path="/communication/weather" element={withRouteBoundary('Weather intelligence',
-                      <ProtectedRoute allowedRoles={['admin', 'manager']}>
+                      <ProtectedRoute allowedRoles={ROLE_GROUPS.MANAGER_AND_ADMIN}>
                         <CommunicationWeatherPage />
                       </ProtectedRoute>
                     )} />
@@ -172,49 +178,49 @@ const App = () => (
                     
                     {/* Reports - Admin, Manager, Coordinator only */}
                     <Route path="/reports" element={withRouteBoundary('Reports',
-                      <ProtectedRoute allowedRoles={['admin', 'manager', 'local_mr_coordinator']}>
+                      <ProtectedRoute allowedRoles={ROLE_GROUPS.CAN_VIEW_ORG_DATA}>
                         <Reports />
                       </ProtectedRoute>
                     )} />
 
                     <Route path="/ai-assistant" element={withRouteBoundary('AI assistant',
-                      <ProtectedRoute allowedRoles={['admin', 'manager', 'local_mr_coordinator']}>
+                      <ProtectedRoute allowedRoles={ROLE_GROUPS.CAN_VIEW_ORG_DATA}>
                         <AIAssistant />
                       </ProtectedRoute>
                     )} />
                     
                     {/* Coordinator, Manager & Admin routes */}
                     <Route path="/tots" element={withRouteBoundary('TOT management',
-                      <ProtectedRoute allowedRoles={['local_mr_coordinator', 'manager', 'admin']}>
+                      <ProtectedRoute allowedRoles={ROLE_GROUPS.CAN_VIEW_ORG_DATA}>
                         <TOTManagement />
                       </ProtectedRoute>
                     )} />
                     
                     {/* Admin & Manager routes */}
                     <Route path="/local-mrs" element={withRouteBoundary('Local MRs',
-                      <ProtectedRoute allowedRoles={['manager', 'admin']}>
+                      <ProtectedRoute allowedRoles={ROLE_GROUPS.MANAGER_AND_ADMIN}>
                         <LocalMRs />
                       </ProtectedRoute>
                     )} />
                     <Route path="/local-mrs/:id" element={withRouteBoundary('Local MR details',
-                      <ProtectedRoute allowedRoles={['manager', 'admin']}>
+                      <ProtectedRoute allowedRoles={ROLE_GROUPS.MANAGER_AND_ADMIN}>
                         <LocalMRDetails />
                       </ProtectedRoute>
                     )} />
                     
                     {/* Admin-only routes */}
                     <Route path="/users" element={withRouteBoundary('User management',
-                      <ProtectedRoute allowedRoles={['admin']}>
+                      <ProtectedRoute allowedRoles={ROLE_GROUPS.ADMIN_ONLY}>
                         <Users />
                       </ProtectedRoute>
                     )} />
                     <Route path="/audit" element={withRouteBoundary('Audit trail',
-                      <ProtectedRoute allowedRoles={['admin']}>
+                      <ProtectedRoute allowedRoles={ROLE_GROUPS.ADMIN_ONLY}>
                         <AuditLog />
                       </ProtectedRoute>
                     )} />
                     <Route path="/system-logs" element={withRouteBoundary('System logs',
-                      <ProtectedRoute allowedRoles={['admin']}>
+                      <ProtectedRoute allowedRoles={ROLE_GROUPS.ADMIN_ONLY}>
                         <SystemLogs />
                       </ProtectedRoute>
                     )} />

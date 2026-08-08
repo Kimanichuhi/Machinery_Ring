@@ -1,6 +1,8 @@
 // src/hooks/api/useSystemLogs.ts
 import { useQuery } from '@tanstack/react-query';
+import { STALE_TIME } from '@/lib/queryConfig';
 import { supabase } from '@/integrations/supabase/client';
+import { classifyAuditSeverity } from '@/lib/auditSeverity';
 
 export interface DisplaySystemLog {
   id: string;
@@ -48,14 +50,14 @@ export function useSystemLogs() {
       return (data || []).map((log): DisplaySystemLog => ({
         id: log.id,
         timestamp: new Date(log.created_at).toISOString(),
-        level: 'info',
+        level: classifyAuditSeverity(log.action, log.entity),
         module: log.entity,
         message: `${log.action} on ${log.entity}${log.entity_id ? ` (${log.entity_id.substring(0, 8)}...)` : ''}`,
         userId: log.actor_id || undefined,
         userName: log.actor_role || undefined,
       }));
     },
-    staleTime: 1000 * 60 * 5,
+    staleTime: STALE_TIME.MEDIUM,
   });
 }
 
@@ -108,6 +110,6 @@ export function useAuditLogs(filters?: {
 
       return data || [];
     },
-    staleTime: 1000 * 60 * 5,
+    staleTime: STALE_TIME.MEDIUM,
   });
 }

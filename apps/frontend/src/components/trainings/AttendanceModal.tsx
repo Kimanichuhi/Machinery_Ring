@@ -13,9 +13,6 @@ import { Search, Download, Users, FileSpreadsheet, FileText, Upload, AlertCircle
 import { useFarmersAndTots } from '@/hooks/api/useFarmersAndTots';
 import { useAddMultipleAttendees } from '@/hooks/api/useTrainings';
 import { toast } from 'sonner';
-import { parseExcelFileRaw, exportToExcelFile, createExcelTemplate } from '@/lib/excelUtils';
-import jsPDF from 'jspdf';
-import 'jspdf-autotable';
 
 interface AttendanceModalProps {
   open: boolean;
@@ -143,6 +140,7 @@ export function AttendanceModal({
     setUploadSuccess([]);
 
     try {
+      const { parseExcelFileRaw } = await import('@/lib/excelUtils');
       const jsonData = await parseExcelFileRaw(file);
 
       if (jsonData.length < 2) {
@@ -232,6 +230,7 @@ export function AttendanceModal({
       { Name: 'John Doe', Phone: '0712345678', Village: 'Sample Village' },
       { Name: 'Jane Doe', Phone: '0723456789', Village: 'Sample Village' },
     ];
+    const { createExcelTemplate } = await import('@/lib/excelUtils');
     await createExcelTemplate(template, 'attendance_template', 'Attendance Template');
     toast.success('Template downloaded');
   };
@@ -251,17 +250,20 @@ export function AttendanceModal({
       return;
     }
 
+    const { exportToExcelFile } = await import('@/lib/excelUtils');
     await exportToExcelFile(selectedData, `${trainingTitle}_attendance`, 'Attendance');
     toast.success('Exported to Excel');
   };
 
-  const exportToPDF = () => {
+  const exportToPDF = async () => {
     const selectedData = attendees.filter(a => a.selected);
     if (selectedData.length === 0) {
       toast.error('No attendees selected to export');
       return;
     }
 
+    const { default: jsPDF } = await import('jspdf');
+    await import('jspdf-autotable');
     const doc = new jsPDF();
     doc.setFontSize(16);
     doc.text(`Training Attendance: ${trainingTitle}`, 14, 20);

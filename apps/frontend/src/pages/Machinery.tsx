@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
+import { ErrorState, EmptyState } from '@/components/common/QueryState';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Plus, Tractor, CheckCircle, Clock, MoreVertical, Wrench, Calendar, History, CalendarPlus, Edit, Trash2, Upload } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
@@ -130,21 +131,28 @@ export function Machinery() {
   const isAdmin = user?.role === 'admin';
 
   // API hooks
-  const { data: machinery = [], isLoading } = useMachinery();
+  const { data: machinery = [], isLoading, error: machineryError, refetch: refetchMachinery } = useMachinery();
   const createMachinery = useCreateMachinery();
   const bulkCreateMachinery = useBulkCreateMachinery();
   const updateStatus = useUpdateMachineryStatus();
   const deleteMachinery = useDeleteMachinery();
 
   // Get unique categories from machinery for filter
-  const uniqueCategories = [...new Set(machinery.map(m => m.category))].filter(Boolean).sort();
+  const uniqueCategories = useMemo(
+    () => [...new Set(machinery.map(m => m.category))].filter(Boolean).sort(),
+    [machinery]
+  );
 
-  const filteredMachinery = machinery.filter(m => {
-    const matchesSearch = m.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      m.category.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = categoryFilter === 'all' || m.category === categoryFilter;
-    return matchesSearch && matchesCategory;
-  });
+  const filteredMachinery = useMemo(
+    () =>
+      machinery.filter(m => {
+        const matchesSearch = m.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          m.category.toLowerCase().includes(searchQuery.toLowerCase());
+        const matchesCategory = categoryFilter === 'all' || m.category === categoryFilter;
+        return matchesSearch && matchesCategory;
+      }),
+    [machinery, searchQuery, categoryFilter]
+  );
   const {
     page,
     pageSize,
@@ -210,7 +218,7 @@ export function Machinery() {
           <Skeleton className="h-8 w-48" />
           <Skeleton className="h-10 w-32" />
         </div>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
           {[1, 2, 3].map(i => <Skeleton key={i} className="h-24" />)}
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -218,6 +226,10 @@ export function Machinery() {
         </div>
       </div>
     );
+  }
+
+  if (machineryError) {
+    return <ErrorState message="Failed to load machinery." onRetry={() => refetchMachinery()} />;
   }
 
   const handleBulkUpload = async (data: any[]) => {
@@ -240,7 +252,7 @@ export function Machinery() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between gap-4">
         <div>
-          <h1 className="font-heading text-2xl font-bold">Machinery Management</h1>
+          <h1 className="font-heading text-xl sm:text-2xl font-bold">Machinery Management</h1>
           <p className="text-muted-foreground">
             {isAdmin ? 'Manage fleet, bookings & maintenance' : 'View machinery availability'}
           </p>
@@ -260,12 +272,12 @@ export function Machinery() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
         <Card>
           <CardContent className="p-4 flex items-center gap-3">
             <CheckCircle className="w-5 h-5 text-green-600" />
             <div>
-              <p className="font-heading text-2xl font-bold">{availableCount}</p>
+              <p className="font-heading text-lg sm:text-2xl font-bold">{availableCount}</p>
               <p className="text-sm text-muted-foreground">Available</p>
             </div>
           </CardContent>
@@ -274,7 +286,7 @@ export function Machinery() {
           <CardContent className="p-4 flex items-center gap-3">
             <Clock className="w-5 h-5 text-yellow-600" />
             <div>
-              <p className="font-heading text-2xl font-bold">{inUseCount}</p>
+              <p className="font-heading text-lg sm:text-2xl font-bold">{inUseCount}</p>
               <p className="text-sm text-muted-foreground">In Use</p>
             </div>
           </CardContent>
@@ -283,7 +295,7 @@ export function Machinery() {
           <CardContent className="p-4 flex items-center gap-3">
             <Wrench className="w-5 h-5 text-red-600" />
             <div>
-              <p className="font-heading text-2xl font-bold">{maintenanceCount}</p>
+              <p className="font-heading text-lg sm:text-2xl font-bold">{maintenanceCount}</p>
               <p className="text-sm text-muted-foreground">Maintenance</p>
             </div>
           </CardContent>
@@ -333,8 +345,11 @@ export function Machinery() {
           {/* Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {filteredMachinery.length === 0 ? (
-              <div className="col-span-full text-center py-8 text-muted-foreground">
-                No machinery found matching your filters
+              <div className="col-span-full">
+                <EmptyState
+                  title="No machinery found"
+                  description="Try adjusting your search or filters."
+                />
               </div>
             ) : paginatedMachinery.map(machine => (
               <Card key={machine.id}>
@@ -370,7 +385,7 @@ export function Machinery() {
                     {isAdmin && (
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon">
+                          <Button variant="ghost" size="icon" aria-label={`Actions for ${machine.name}`}>
                             <MoreVertical className="w-4 h-4" />
                           </Button>
                         </DropdownMenuTrigger>

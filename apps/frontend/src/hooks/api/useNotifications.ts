@@ -1,5 +1,6 @@
 // src/hooks/api/useNotifications.ts
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { STALE_TIME } from '@/lib/queryConfig';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
@@ -52,7 +53,7 @@ export function useNotificationsQuery(filters?: NotificationFilters) {
       if (error) throw error;
       return data || [];
     },
-    staleTime: 1000 * 60 * 2,
+    staleTime: STALE_TIME.BRIEF,
   });
 }
 
@@ -85,7 +86,7 @@ export function useMyNotifications(filters?: Omit<NotificationFilters, 'userId'>
       return data || [];
     },
     enabled: !!user?.id,
-    staleTime: 1000 * 30,
+    staleTime: STALE_TIME.SHORT,
     refetchInterval: 60000,
   });
 }
@@ -112,7 +113,7 @@ export function useUnreadCount() {
     },
     enabled: !!user?.id,
     refetchInterval: 30000,
-    staleTime: 10000,
+    staleTime: STALE_TIME.FAST,
   });
 }
 

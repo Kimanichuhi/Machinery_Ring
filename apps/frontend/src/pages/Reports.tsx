@@ -28,25 +28,8 @@ import { useMachineryBookings } from '@/hooks/api/useMachineryBookings';
 import { useTrainings } from '@/hooks/api/useTrainings';
 import { useVisits } from '@/hooks/api/useVisits';
 
-// Export utilities
-import {
-  exportFarmersToExcel,
-  exportFarmersToPDF,
-  exportSalesToExcel,
-  exportSalesToPDF,
-  exportMechanisationToExcel,
-  exportMechanisationToPDF,
-  exportTrainingsToExcel,
-  exportTrainingsToPDF,
-  exportVisitsToExcel,
-  exportVisitsToPDF,
-  exportCommissionToExcel,
-  exportCommissionToPDF,
-  exportPerformanceToExcel,
-  exportPerformanceToPDF,
-  CommissionData,
-  PerformanceData,
-} from '@/lib/exportUtils';
+// Export utilities (loaded on demand from the export handler — see handleExport)
+import type { CommissionData, PerformanceData } from '@/lib/exportUtils';
 
 const reportTypes = [
   { id: 'sales', title: 'Sales Report', description: 'Sales transactions, revenue, and commissions', icon: ShoppingCart, color: 'forest' },
@@ -214,10 +197,26 @@ export function Reports() {
 
   const handleExport = async (reportId: string, format: 'pdf' | 'excel') => {
     setLoadingReport(`${reportId}-${format}`);
-    
+
     try {
       const userName = user?.name || 'System User';
-      
+      const {
+        exportFarmersToExcel,
+        exportFarmersToPDF,
+        exportSalesToExcel,
+        exportSalesToPDF,
+        exportMechanisationToExcel,
+        exportMechanisationToPDF,
+        exportTrainingsToExcel,
+        exportTrainingsToPDF,
+        exportVisitsToExcel,
+        exportVisitsToPDF,
+        exportCommissionToExcel,
+        exportCommissionToPDF,
+        exportPerformanceToExcel,
+        exportPerformanceToPDF,
+      } = await import('@/lib/exportUtils');
+
       switch (reportId) {
         case 'farmers':
           if (format === 'pdf') {

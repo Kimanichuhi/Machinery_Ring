@@ -184,6 +184,17 @@ export async function fetchRecentActivity(limit = 10) {
   return backendFetch(`/api/dashboard/recent-activity?limit=${encodeURIComponent(String(limit))}`);
 }
 
+export type CommunicationStats = {
+  smsToday: number;
+  delivered: number;
+  scheduled: number;
+  warning?: string | null;
+};
+
+export async function fetchCommunicationStats() {
+  return backendFetch<CommunicationStats>("/api/communication/stats");
+}
+
 export type SendSmsPayload = {
   title: string;
   message: string;

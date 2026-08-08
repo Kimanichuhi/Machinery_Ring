@@ -8,7 +8,6 @@ import { useMachineryBookings } from '@/hooks/api/useMachineryBookings';
 import { ArrowLeft, Phone, Mail, MapPin, Calendar, ShoppingCart, Tractor, GraduationCap, Users, Star, TrendingUp, Download } from 'lucide-react';
 import { Farmer, Sale, Visit } from '@/types';
 import { toast } from 'sonner';
-import { exportToExcelFile } from '@/lib/excelUtils';
 export function FarmerProfile() {
   const {
     id
@@ -100,6 +99,7 @@ export function FarmerProfile() {
       'Follow-up Required': visit.follow_up_required ? 'Yes' : 'No',
       'Follow-up Date': visit.follow_up_date ? formatDate(visit.follow_up_date) : ''
     }));
+    const { exportToExcelFile } = await import('@/lib/excelUtils');
     await exportToExcelFile(exportData, `${farmer.name}_visit_history`, 'Visit History');
     toast.success('Visit history exported');
   };

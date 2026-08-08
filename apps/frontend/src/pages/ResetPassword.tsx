@@ -7,6 +7,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Loader2, ArrowLeft, Lock, Eye, EyeOff, CheckCircle } from 'lucide-react';
+import { passwordSchema } from '@/lib/validation/password';
+import { PasswordStrengthIndicator } from '@/components/ui/password-strength';
 
 export const ResetPassword = () => {
   const navigate = useNavigate();
@@ -47,10 +49,11 @@ export const ResetPassword = () => {
       return;
     }
 
-    if (password.length < 6) {
+    const validation = passwordSchema.safeParse(password);
+    if (!validation.success) {
       toast({
-        title: 'Password too short',
-        description: 'Password must be at least 6 characters long',
+        title: 'Password too weak',
+        description: validation.error.issues[0]?.message ?? 'Please choose a stronger password.',
         variant: 'destructive',
       });
       return;
@@ -171,8 +174,9 @@ export const ResetPassword = () => {
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
               </div>
+              <PasswordStrengthIndicator password={password} />
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="confirmPassword">Confirm Password</Label>
               <div className="relative">

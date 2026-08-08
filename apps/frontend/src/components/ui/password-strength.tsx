@@ -1,26 +1,16 @@
 import { useMemo } from 'react';
 import { Check, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { getPasswordRequirements } from '@/lib/validation/password';
 
 interface PasswordStrengthIndicatorProps {
   password: string;
   className?: string;
 }
 
-interface PasswordRequirement {
-  label: string;
-  met: boolean;
-}
-
 export function usePasswordValidation(password: string) {
   return useMemo(() => {
-    const requirements: PasswordRequirement[] = [
-      { label: 'At least 8 characters', met: password.length >= 8 },
-      { label: 'Contains uppercase letter', met: /[A-Z]/.test(password) },
-      { label: 'Contains lowercase letter', met: /[a-z]/.test(password) },
-      { label: 'Contains a number', met: /[0-9]/.test(password) },
-      { label: 'Contains special character (!@#$%^&*)', met: /[!@#$%^&*(),.?":{}|<>]/.test(password) },
-    ];
+    const requirements = getPasswordRequirements(password);
 
     const metCount = requirements.filter(r => r.met).length;
     const strength = metCount === 0 ? 0 : metCount <= 2 ? 1 : metCount <= 4 ? 2 : 3;

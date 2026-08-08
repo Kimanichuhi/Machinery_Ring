@@ -32,6 +32,7 @@ import { Bar, BarChart, CartesianGrid, Cell, Line, LineChart, Pie, PieChart, Res
 import { useAuth } from '@/contexts/AuthContext';
 import { useFarmers } from '@/hooks/api/useFarmers';
 import { useLocalMRs } from '@/hooks/api/useLocalMRs';
+import { useCommunicationStats } from '@/hooks/api/useCommunicationStats';
 import { useClientPagination } from '@/hooks/useClientPagination';
 import {
   archiveSmsTemplate,
@@ -241,6 +242,7 @@ function EmptyNotice({ title, description }: { title: string; description: strin
 
 function CommunicationDashboard() {
   const [snapshot, setSnapshot] = useState<WeatherSnapshot>(initialWeatherSnapshot);
+  const { data: stats, isLoading: statsLoading } = useCommunicationStats();
 
   useEffect(() => {
     let active = true;
@@ -273,9 +275,26 @@ function CommunicationDashboard() {
       />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <MetricCard title="SMS Today" value="0" subtitle="No live messages yet" icon={MessageSquare} />
-        <MetricCard title="Scheduled" value="0" subtitle="No pending jobs" icon={CalendarClock} tone="warning" />
-        <MetricCard title="Delivered" value="0" subtitle="No delivery data yet" icon={CheckCircle2} tone="success" />
+        <MetricCard
+          title="SMS Today"
+          value={statsLoading ? '…' : stats?.smsToday ?? 0}
+          subtitle={stats?.smsToday ? 'Sent today' : 'No messages sent yet today'}
+          icon={MessageSquare}
+        />
+        <MetricCard
+          title="Scheduled"
+          value={statsLoading ? '…' : stats?.scheduled ?? 0}
+          subtitle={stats?.scheduled ? 'Pending jobs' : 'No pending jobs'}
+          icon={CalendarClock}
+          tone="warning"
+        />
+        <MetricCard
+          title="Delivered"
+          value={statsLoading ? '…' : stats?.delivered ?? 0}
+          subtitle={stats?.delivered ? 'Delivered today' : 'No delivery data yet'}
+          icon={CheckCircle2}
+          tone="success"
+        />
         <MetricCard title="Weather Status" value={snapshot.status === 'configured' ? 'Synced' : snapshot.status === 'error' ? 'Error' : 'Pending'} subtitle={snapshot.lastUpdated ? new Date(snapshot.lastUpdated).toLocaleString() : 'Automatic sync'} icon={CloudSun} />
       </div>
 

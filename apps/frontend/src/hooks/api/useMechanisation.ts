@@ -1,5 +1,6 @@
 // src/hooks/api/useMechanisation.ts
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { STALE_TIME } from '@/lib/queryConfig';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
@@ -132,7 +133,7 @@ export function useMechanisationJobs(filters: MechanisationFilters = {}) {
         } : null,
       }));
     },
-    staleTime: 1000 * 60 * 3,
+    staleTime: STALE_TIME.STANDARD,
   });
 }
 
@@ -211,7 +212,7 @@ export function usePendingMechanisation(localMrId?: string) {
         local_mrs: { name: localMrsMap[j.local_mr_id] || '' },
       }));
     },
-    staleTime: 1000 * 60 * 2,
+    staleTime: STALE_TIME.BRIEF,
   });
 }
 

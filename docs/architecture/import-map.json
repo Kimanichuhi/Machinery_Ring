@@ -61,6 +61,16 @@
       "external": false
     },
     {
+      "specifier": "@/lib/queryConfig",
+      "resolved": "apps/frontend/src/lib/queryConfig.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/lib/permissions",
+      "resolved": "apps/frontend/src/lib/permissions.ts",
+      "external": false
+    },
+    {
       "specifier": "@/pages/Auth",
       "resolved": "apps/frontend/src/pages/Auth.tsx",
       "external": false
@@ -151,6 +161,11 @@
       "external": false
     },
     {
+      "specifier": "@/pages/AIAssistant",
+      "resolved": "apps/frontend/src/pages/AIAssistant.tsx",
+      "external": false
+    },
+    {
       "specifier": "@/pages/Settings",
       "resolved": "apps/frontend/src/pages/Settings.tsx",
       "external": false
@@ -201,6 +216,46 @@
       "external": false
     },
     {
+      "specifier": "@/pages/communication/Communication",
+      "resolved": "apps/frontend/src/pages/communication/Communication.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/communication/Communication",
+      "resolved": "apps/frontend/src/pages/communication/Communication.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/communication/Communication",
+      "resolved": "apps/frontend/src/pages/communication/Communication.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/communication/Communication",
+      "resolved": "apps/frontend/src/pages/communication/Communication.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/communication/Communication",
+      "resolved": "apps/frontend/src/pages/communication/Communication.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/communication/Communication",
+      "resolved": "apps/frontend/src/pages/communication/Communication.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/communication/Communication",
+      "resolved": "apps/frontend/src/pages/communication/Communication.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/communication/Communication",
+      "resolved": "apps/frontend/src/pages/communication/Communication.tsx",
+      "external": false
+    },
+    {
       "specifier": "@/pages/NotFound",
       "resolved": "apps/frontend/src/pages/NotFound.tsx",
       "external": false
@@ -209,6 +264,93 @@
       "specifier": "@/pages/Install",
       "resolved": "apps/frontend/src/pages/Install.tsx",
       "external": false
+    }
+  ],
+  "apps/frontend/src/components/admin/AuditLogTable.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/input",
+      "resolved": "apps/frontend/src/components/ui/input.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/badge",
+      "resolved": "apps/frontend/src/components/ui/badge.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/skeleton",
+      "resolved": "apps/frontend/src/components/ui/skeleton.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/select",
+      "resolved": "apps/frontend/src/components/ui/select.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/table",
+      "resolved": "apps/frontend/src/components/ui/table.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/dropdown-menu",
+      "resolved": "apps/frontend/src/components/ui/dropdown-menu.tsx",
+      "external": false
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/hooks/api/useSystemLogs",
+      "resolved": "apps/frontend/src/hooks/api/useSystemLogs.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/table-pagination",
+      "resolved": "apps/frontend/src/components/ui/table-pagination.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/useClientPagination",
+      "resolved": "apps/frontend/src/hooks/useClientPagination.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/lib/excelUtils",
+      "resolved": "apps/frontend/src/lib/excelUtils.ts",
+      "external": false
+    },
+    {
+      "specifier": "jspdf",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "jspdf-autotable",
+      "resolved": null,
+      "external": true
     }
   ],
   "apps/frontend/src/components/auth/ProtectedRoute.tsx": [
@@ -287,6 +429,28 @@
     {
       "specifier": "@/lib/excelUtils",
       "resolved": "apps/frontend/src/lib/excelUtils.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/lib/excelUtils",
+      "resolved": "apps/frontend/src/lib/excelUtils.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/components/common/QueryState.tsx": [
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/skeleton",
+      "resolved": "apps/frontend/src/components/ui/skeleton.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
       "external": false
     }
   ],
@@ -445,6 +609,11 @@
   ],
   "apps/frontend/src/components/dashboard/GlobalRecentActivity.tsx": [
     {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
       "specifier": "@/components/ui/card",
       "resolved": "apps/frontend/src/components/ui/card.tsx",
       "external": false
@@ -457,6 +626,11 @@
     {
       "specifier": "@/components/ui/skeleton",
       "resolved": "apps/frontend/src/components/ui/skeleton.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
       "external": false
     },
     {
@@ -1358,6 +1532,11 @@
       "specifier": "@/contexts/AuthContext",
       "resolved": "apps/frontend/src/contexts/AuthContext.tsx",
       "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useGlobalSearch",
+      "resolved": "apps/frontend/src/hooks/api/useGlobalSearch.ts",
+      "external": false
     }
   ],
   "apps/frontend/src/components/layout/MobileNav.tsx": [
@@ -1894,6 +2073,16 @@
       "specifier": "sonner",
       "resolved": null,
       "external": true
+    },
+    {
+      "specifier": "@/lib/excelUtils",
+      "resolved": "apps/frontend/src/lib/excelUtils.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/lib/excelUtils",
+      "resolved": "apps/frontend/src/lib/excelUtils.ts",
+      "external": false
     },
     {
       "specifier": "@/lib/excelUtils",
@@ -2497,6 +2686,11 @@
       "specifier": "@/lib/utils",
       "resolved": "apps/frontend/src/lib/utils.ts",
       "external": false
+    },
+    {
+      "specifier": "@/lib/validation/password",
+      "resolved": "apps/frontend/src/lib/validation/password.ts",
+      "external": false
     }
   ],
   "apps/frontend/src/components/ui/popover.tsx": [
@@ -3098,6 +3292,23 @@
       "external": false
     }
   ],
+  "apps/frontend/src/hooks/api/useCommunicationStats.ts": [
+    {
+      "specifier": "@tanstack/react-query",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/lib/queryConfig",
+      "resolved": "apps/frontend/src/lib/queryConfig.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/lib/backend",
+      "resolved": "apps/frontend/src/lib/backend.ts",
+      "external": false
+    }
+  ],
   "apps/frontend/src/hooks/api/useDashboard.ts": [
     {
       "specifier": "@tanstack/react-query",
@@ -3105,8 +3316,13 @@
       "external": true
     },
     {
-      "specifier": "@/lib/backend",
-      "resolved": "apps/frontend/src/lib/backend.ts",
+      "specifier": "@/lib/queryConfig",
+      "resolved": "apps/frontend/src/lib/queryConfig.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/lib/supabase/dashboardQueries",
+      "resolved": "apps/frontend/src/lib/supabase/dashboardQueries.ts",
       "external": false
     }
   ],
@@ -3139,6 +3355,11 @@
       "external": true
     },
     {
+      "specifier": "@/lib/queryConfig",
+      "resolved": "apps/frontend/src/lib/queryConfig.ts",
+      "external": false
+    },
+    {
       "specifier": "@/integrations/supabase/client",
       "resolved": "apps/frontend/src/integrations/supabase/client.ts",
       "external": false
@@ -3156,6 +3377,11 @@
       "external": true
     },
     {
+      "specifier": "@/lib/queryConfig",
+      "resolved": "apps/frontend/src/lib/queryConfig.ts",
+      "external": false
+    },
+    {
       "specifier": "@/integrations/supabase/client",
       "resolved": "apps/frontend/src/integrations/supabase/client.ts",
       "external": false
@@ -3166,6 +3392,11 @@
       "specifier": "@tanstack/react-query",
       "resolved": null,
       "external": true
+    },
+    {
+      "specifier": "@/lib/queryConfig",
+      "resolved": "apps/frontend/src/lib/queryConfig.ts",
+      "external": false
     },
     {
       "specifier": "@/integrations/supabase/client",
@@ -3221,6 +3452,11 @@
       "external": true
     },
     {
+      "specifier": "@/lib/queryConfig",
+      "resolved": "apps/frontend/src/lib/queryConfig.ts",
+      "external": false
+    },
+    {
       "specifier": "@/integrations/supabase/client",
       "resolved": "apps/frontend/src/integrations/supabase/client.ts",
       "external": false
@@ -3236,6 +3472,11 @@
       "specifier": "@tanstack/react-query",
       "resolved": null,
       "external": true
+    },
+    {
+      "specifier": "@/lib/queryConfig",
+      "resolved": "apps/frontend/src/lib/queryConfig.ts",
+      "external": false
     },
     {
       "specifier": "@/integrations/supabase/client",
@@ -3255,6 +3496,11 @@
       "external": true
     },
     {
+      "specifier": "@/lib/queryConfig",
+      "resolved": "apps/frontend/src/lib/queryConfig.ts",
+      "external": false
+    },
+    {
       "specifier": "@/integrations/supabase/client",
       "resolved": "apps/frontend/src/integrations/supabase/client.ts",
       "external": false
@@ -3272,6 +3518,11 @@
       "external": true
     },
     {
+      "specifier": "@/lib/queryConfig",
+      "resolved": "apps/frontend/src/lib/queryConfig.ts",
+      "external": false
+    },
+    {
       "specifier": "@/integrations/supabase/client",
       "resolved": "apps/frontend/src/integrations/supabase/client.ts",
       "external": false
@@ -3287,6 +3538,11 @@
       "specifier": "@tanstack/react-query",
       "resolved": null,
       "external": true
+    },
+    {
+      "specifier": "@/lib/queryConfig",
+      "resolved": "apps/frontend/src/lib/queryConfig.ts",
+      "external": false
     },
     {
       "specifier": "@/integrations/supabase/client",
@@ -3338,6 +3594,11 @@
       "external": true
     },
     {
+      "specifier": "@/lib/queryConfig",
+      "resolved": "apps/frontend/src/lib/queryConfig.ts",
+      "external": false
+    },
+    {
       "specifier": "@/integrations/supabase/client",
       "resolved": "apps/frontend/src/integrations/supabase/client.ts",
       "external": false
@@ -3382,6 +3643,11 @@
       "external": true
     },
     {
+      "specifier": "@/lib/queryConfig",
+      "resolved": "apps/frontend/src/lib/queryConfig.ts",
+      "external": false
+    },
+    {
       "specifier": "@/integrations/supabase/client",
       "resolved": "apps/frontend/src/integrations/supabase/client.ts",
       "external": false
@@ -3399,6 +3665,11 @@
       "external": true
     },
     {
+      "specifier": "@/lib/queryConfig",
+      "resolved": "apps/frontend/src/lib/queryConfig.ts",
+      "external": false
+    },
+    {
       "specifier": "@/integrations/supabase/client",
       "resolved": "apps/frontend/src/integrations/supabase/client.ts",
       "external": false
@@ -3409,6 +3680,11 @@
       "specifier": "@tanstack/react-query",
       "resolved": null,
       "external": true
+    },
+    {
+      "specifier": "@/lib/queryConfig",
+      "resolved": "apps/frontend/src/lib/queryConfig.ts",
+      "external": false
     },
     {
       "specifier": "@/integrations/supabase/client",
@@ -3450,6 +3726,11 @@
       "external": true
     },
     {
+      "specifier": "@/lib/queryConfig",
+      "resolved": "apps/frontend/src/lib/queryConfig.ts",
+      "external": false
+    },
+    {
       "specifier": "@/integrations/supabase/client",
       "resolved": "apps/frontend/src/integrations/supabase/client.ts",
       "external": false
@@ -3467,6 +3748,11 @@
       "external": true
     },
     {
+      "specifier": "@/lib/queryConfig",
+      "resolved": "apps/frontend/src/lib/queryConfig.ts",
+      "external": false
+    },
+    {
       "specifier": "@/lib/supabase/dashboardQueries",
       "resolved": "apps/frontend/src/lib/supabase/dashboardQueries.ts",
       "external": false
@@ -3477,6 +3763,11 @@
       "specifier": "@tanstack/react-query",
       "resolved": null,
       "external": true
+    },
+    {
+      "specifier": "@/lib/queryConfig",
+      "resolved": "apps/frontend/src/lib/queryConfig.ts",
+      "external": false
     }
   ],
   "apps/frontend/src/hooks/api/useSystemLogs.ts": [
@@ -3486,8 +3777,18 @@
       "external": true
     },
     {
+      "specifier": "@/lib/queryConfig",
+      "resolved": "apps/frontend/src/lib/queryConfig.ts",
+      "external": false
+    },
+    {
       "specifier": "@/integrations/supabase/client",
       "resolved": "apps/frontend/src/integrations/supabase/client.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/lib/auditSeverity",
+      "resolved": "apps/frontend/src/lib/auditSeverity.ts",
       "external": false
     }
   ],
@@ -3496,6 +3797,11 @@
       "specifier": "@tanstack/react-query",
       "resolved": null,
       "external": true
+    },
+    {
+      "specifier": "@/lib/queryConfig",
+      "resolved": "apps/frontend/src/lib/queryConfig.ts",
+      "external": false
     },
     {
       "specifier": "@/integrations/supabase/client",
@@ -3508,6 +3814,11 @@
       "specifier": "@tanstack/react-query",
       "resolved": null,
       "external": true
+    },
+    {
+      "specifier": "@/lib/queryConfig",
+      "resolved": "apps/frontend/src/lib/queryConfig.ts",
+      "external": false
     },
     {
       "specifier": "@/integrations/supabase/client",
@@ -3527,6 +3838,11 @@
       "external": true
     },
     {
+      "specifier": "@/lib/queryConfig",
+      "resolved": "apps/frontend/src/lib/queryConfig.ts",
+      "external": false
+    },
+    {
       "specifier": "@/integrations/supabase/client",
       "resolved": "apps/frontend/src/integrations/supabase/client.ts",
       "external": false
@@ -3542,6 +3858,11 @@
       "specifier": "@tanstack/react-query",
       "resolved": null,
       "external": true
+    },
+    {
+      "specifier": "@/lib/queryConfig",
+      "resolved": "apps/frontend/src/lib/queryConfig.ts",
+      "external": false
     },
     {
       "specifier": "@/integrations/supabase/client",
@@ -3573,6 +3894,13 @@
       "external": false
     }
   ],
+  "apps/frontend/src/hooks/useClientPagination.ts": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    }
+  ],
   "apps/frontend/src/hooks/useNotificationAlerts.ts": [
     {
       "specifier": "react",
@@ -3598,6 +3926,23 @@
       "specifier": "sonner",
       "resolved": null,
       "external": true
+    }
+  ],
+  "apps/frontend/src/hooks/usePermissions.ts": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/contexts/AuthContext",
+      "resolved": "apps/frontend/src/contexts/AuthContext.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/lib/permissions",
+      "resolved": "apps/frontend/src/lib/permissions.ts",
+      "external": false
     }
   ],
   "apps/frontend/src/hooks/useRoutePrefetch.ts": [
@@ -3682,6 +4027,66 @@
       "external": false
     },
     {
+      "specifier": "@/pages/communication/Communication",
+      "resolved": "apps/frontend/src/pages/communication/Communication.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/communication/Communication",
+      "resolved": "apps/frontend/src/pages/communication/Communication.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/communication/Communication",
+      "resolved": "apps/frontend/src/pages/communication/Communication.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/communication/Communication",
+      "resolved": "apps/frontend/src/pages/communication/Communication.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/communication/Communication",
+      "resolved": "apps/frontend/src/pages/communication/Communication.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/communication/Communication",
+      "resolved": "apps/frontend/src/pages/communication/Communication.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/communication/Communication",
+      "resolved": "apps/frontend/src/pages/communication/Communication.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/communication/Communication",
+      "resolved": "apps/frontend/src/pages/communication/Communication.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/communication/Communication",
+      "resolved": "apps/frontend/src/pages/communication/Communication.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/communication/Communication",
+      "resolved": "apps/frontend/src/pages/communication/Communication.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/communication/Communication",
+      "resolved": "apps/frontend/src/pages/communication/Communication.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/pages/communication/Communication",
+      "resolved": "apps/frontend/src/pages/communication/Communication.tsx",
+      "external": false
+    },
+    {
       "specifier": "@/pages/TOTManagement",
       "resolved": "apps/frontend/src/pages/TOTManagement.tsx",
       "external": false
@@ -3732,6 +4137,7 @@
       "external": false
     }
   ],
+  "apps/frontend/src/lib/auditSeverity.ts": [],
   "apps/frontend/src/lib/backend.ts": [
     {
       "specifier": "@/integrations/supabase/client",
@@ -3739,6 +4145,8 @@
       "external": false
     }
   ],
+  "apps/frontend/src/lib/communication/sms.ts": [],
+  "apps/frontend/src/lib/communication/weather.ts": [],
   "apps/frontend/src/lib/excelUtils.ts": [
     {
       "specifier": "exceljs",
@@ -3802,10 +4210,18 @@
       "external": true
     }
   ],
+  "apps/frontend/src/lib/permissions.ts": [
+    {
+      "specifier": "@/integrations/supabase/types",
+      "resolved": "apps/frontend/src/integrations/supabase/types.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/lib/queryConfig.ts": [],
   "apps/frontend/src/lib/supabase/dashboardQueries.ts": [
     {
-      "specifier": "@/lib/backend",
-      "resolved": "apps/frontend/src/lib/backend.ts",
+      "specifier": "@/integrations/supabase/client",
+      "resolved": "apps/frontend/src/integrations/supabase/client.ts",
       "external": false
     }
   ],
@@ -3817,6 +4233,20 @@
     },
     {
       "specifier": "tailwind-merge",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/lib/validation/farmer.ts": [
+    {
+      "specifier": "zod",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "apps/frontend/src/lib/validation/password.ts": [
+    {
+      "specifier": "zod",
       "resolved": null,
       "external": true
     }
@@ -3845,131 +4275,9 @@
   ],
   "apps/frontend/src/pages/admin/AuditLog.tsx": [
     {
-      "specifier": "react",
-      "resolved": null,
-      "external": true
-    },
-    {
-      "specifier": "@/components/ui/card",
-      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "specifier": "@/components/admin/AuditLogTable",
+      "resolved": "apps/frontend/src/components/admin/AuditLogTable.tsx",
       "external": false
-    },
-    {
-      "specifier": "@/components/ui/button",
-      "resolved": "apps/frontend/src/components/ui/button.tsx",
-      "external": false
-    },
-    {
-      "specifier": "@/components/ui/input",
-      "resolved": "apps/frontend/src/components/ui/input.tsx",
-      "external": false
-    },
-    {
-      "specifier": "@/components/ui/badge",
-      "resolved": "apps/frontend/src/components/ui/badge.tsx",
-      "external": false
-    },
-    {
-      "specifier": "@/components/ui/skeleton",
-      "resolved": "apps/frontend/src/components/ui/skeleton.tsx",
-      "external": false
-    },
-    {
-      "specifier": "@/components/ui/select",
-      "resolved": "apps/frontend/src/components/ui/select.tsx",
-      "external": false
-    },
-    {
-      "specifier": "@/components/ui/table",
-      "resolved": "apps/frontend/src/components/ui/table.tsx",
-      "external": false
-    },
-    {
-      "specifier": "@/components/ui/dropdown-menu",
-      "resolved": "apps/frontend/src/components/ui/dropdown-menu.tsx",
-      "external": false
-    },
-    {
-      "specifier": "lucide-react",
-      "resolved": null,
-      "external": true
-    },
-    {
-      "specifier": "sonner",
-      "resolved": null,
-      "external": true
-    },
-    {
-      "specifier": "@/lib/excelUtils",
-      "resolved": "apps/frontend/src/lib/excelUtils.ts",
-      "external": false
-    },
-    {
-      "specifier": "jspdf",
-      "resolved": null,
-      "external": true
-    },
-    {
-      "specifier": "jspdf-autotable",
-      "resolved": null,
-      "external": true
-    },
-    {
-      "specifier": "@/hooks/api/useSystemLogs",
-      "resolved": "apps/frontend/src/hooks/api/useSystemLogs.ts",
-      "external": false
-    }
-  ],
-  "apps/frontend/src/pages/admin/CreateUserForm.tsx": [
-    {
-      "specifier": "react",
-      "resolved": null,
-      "external": true
-    },
-    {
-      "specifier": "@/components/ui/button",
-      "resolved": "apps/frontend/src/components/ui/button.tsx",
-      "external": false
-    },
-    {
-      "specifier": "@/components/ui/input",
-      "resolved": "apps/frontend/src/components/ui/input.tsx",
-      "external": false
-    },
-    {
-      "specifier": "@/components/ui/label",
-      "resolved": "apps/frontend/src/components/ui/label.tsx",
-      "external": false
-    },
-    {
-      "specifier": "@/components/ui/select",
-      "resolved": "apps/frontend/src/components/ui/select.tsx",
-      "external": false
-    },
-    {
-      "specifier": "@/hooks/use-toast",
-      "resolved": "apps/frontend/src/hooks/use-toast.ts",
-      "external": false
-    },
-    {
-      "specifier": "@/types",
-      "resolved": "apps/frontend/src/types",
-      "external": false
-    },
-    {
-      "specifier": "@/hooks/api/useUsers",
-      "resolved": "apps/frontend/src/hooks/api/useUsers.ts",
-      "external": false
-    },
-    {
-      "specifier": "@/hooks/api/useLocalMRs",
-      "resolved": "apps/frontend/src/hooks/api/useLocalMRs.ts",
-      "external": false
-    },
-    {
-      "specifier": "lucide-react",
-      "resolved": null,
-      "external": true
     }
   ],
   "apps/frontend/src/pages/admin/LocalMRDetails.tsx": [
@@ -4143,73 +4451,8 @@
   ],
   "apps/frontend/src/pages/admin/SystemLogs.tsx": [
     {
-      "specifier": "react",
-      "resolved": null,
-      "external": true
-    },
-    {
-      "specifier": "@/components/ui/card",
-      "resolved": "apps/frontend/src/components/ui/card.tsx",
-      "external": false
-    },
-    {
-      "specifier": "@/components/ui/button",
-      "resolved": "apps/frontend/src/components/ui/button.tsx",
-      "external": false
-    },
-    {
-      "specifier": "@/components/ui/input",
-      "resolved": "apps/frontend/src/components/ui/input.tsx",
-      "external": false
-    },
-    {
-      "specifier": "@/components/ui/badge",
-      "resolved": "apps/frontend/src/components/ui/badge.tsx",
-      "external": false
-    },
-    {
-      "specifier": "@/components/ui/select",
-      "resolved": "apps/frontend/src/components/ui/select.tsx",
-      "external": false
-    },
-    {
-      "specifier": "@/components/ui/table",
-      "resolved": "apps/frontend/src/components/ui/table.tsx",
-      "external": false
-    },
-    {
-      "specifier": "@/components/ui/dropdown-menu",
-      "resolved": "apps/frontend/src/components/ui/dropdown-menu.tsx",
-      "external": false
-    },
-    {
-      "specifier": "lucide-react",
-      "resolved": null,
-      "external": true
-    },
-    {
-      "specifier": "sonner",
-      "resolved": null,
-      "external": true
-    },
-    {
-      "specifier": "@/lib/excelUtils",
-      "resolved": "apps/frontend/src/lib/excelUtils.ts",
-      "external": false
-    },
-    {
-      "specifier": "jspdf",
-      "resolved": null,
-      "external": true
-    },
-    {
-      "specifier": "jspdf-autotable",
-      "resolved": null,
-      "external": true
-    },
-    {
-      "specifier": "@/hooks/api/useSystemLogs",
-      "resolved": "apps/frontend/src/hooks/api/useSystemLogs.ts",
+      "specifier": "@/components/admin/AuditLogTable",
+      "resolved": "apps/frontend/src/components/admin/AuditLogTable.tsx",
       "external": false
     }
   ],
@@ -4297,6 +4540,98 @@
     {
       "specifier": "@/components/ui/password-strength",
       "resolved": "apps/frontend/src/components/ui/password-strength.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/table-pagination",
+      "resolved": "apps/frontend/src/components/ui/table-pagination.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/useClientPagination",
+      "resolved": "apps/frontend/src/hooks/useClientPagination.ts",
+      "external": false
+    }
+  ],
+  "apps/frontend/src/pages/AIAssistant.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/textarea",
+      "resolved": "apps/frontend/src/components/ui/textarea.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/contexts/AuthContext",
+      "resolved": "apps/frontend/src/contexts/AuthContext.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useFarmers",
+      "resolved": "apps/frontend/src/hooks/api/useFarmers.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useMachineryBookings",
+      "resolved": "apps/frontend/src/hooks/api/useMachineryBookings.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useProducts",
+      "resolved": "apps/frontend/src/hooks/api/useProducts.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useSales",
+      "resolved": "apps/frontend/src/hooks/api/useSales.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useTrainings",
+      "resolved": "apps/frontend/src/hooks/api/useTrainings.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useVisits",
+      "resolved": "apps/frontend/src/hooks/api/useVisits.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/lib/backend",
+      "resolved": "apps/frontend/src/lib/backend.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
       "external": false
     }
   ],
@@ -4394,6 +4729,11 @@
       "external": false
     },
     {
+      "specifier": "@/hooks/usePermissions",
+      "resolved": "apps/frontend/src/hooks/usePermissions.ts",
+      "external": false
+    },
+    {
       "specifier": "@/hooks/api",
       "resolved": "apps/frontend/src/hooks/api",
       "external": false
@@ -4407,6 +4747,148 @@
       "specifier": "jspdf",
       "resolved": null,
       "external": true
+    }
+  ],
+  "apps/frontend/src/pages/communication/Communication.tsx": [
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "react-router-dom",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "lucide-react",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "sonner",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "recharts",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "@/contexts/AuthContext",
+      "resolved": "apps/frontend/src/contexts/AuthContext.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useFarmers",
+      "resolved": "apps/frontend/src/hooks/api/useFarmers.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useLocalMRs",
+      "resolved": "apps/frontend/src/hooks/api/useLocalMRs.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useCommunicationStats",
+      "resolved": "apps/frontend/src/hooks/api/useCommunicationStats.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/useClientPagination",
+      "resolved": "apps/frontend/src/hooks/useClientPagination.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/lib/backend",
+      "resolved": "apps/frontend/src/lib/backend.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/lib/utils",
+      "resolved": "apps/frontend/src/lib/utils.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/lib/communication/sms",
+      "resolved": "apps/frontend/src/lib/communication/sms.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/lib/communication/weather",
+      "resolved": "apps/frontend/src/lib/communication/weather.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/alert-dialog",
+      "resolved": "apps/frontend/src/components/ui/alert-dialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/badge",
+      "resolved": "apps/frontend/src/components/ui/badge.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/button",
+      "resolved": "apps/frontend/src/components/ui/button.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/card",
+      "resolved": "apps/frontend/src/components/ui/card.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/dialog",
+      "resolved": "apps/frontend/src/components/ui/dialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/input",
+      "resolved": "apps/frontend/src/components/ui/input.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/label",
+      "resolved": "apps/frontend/src/components/ui/label.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/select",
+      "resolved": "apps/frontend/src/components/ui/select.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/skeleton",
+      "resolved": "apps/frontend/src/components/ui/skeleton.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/table",
+      "resolved": "apps/frontend/src/components/ui/table.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/table-pagination",
+      "resolved": "apps/frontend/src/components/ui/table-pagination.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/tabs",
+      "resolved": "apps/frontend/src/components/ui/tabs.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/textarea",
+      "resolved": "apps/frontend/src/components/ui/textarea.tsx",
+      "external": false
     }
   ],
   "apps/frontend/src/pages/dashboard/AdminDashboard.tsx": [
@@ -4558,8 +5040,8 @@
       "external": false
     },
     {
-      "specifier": "@/lib/backend",
-      "resolved": "apps/frontend/src/lib/backend.ts",
+      "specifier": "@/lib/supabase/dashboardQueries",
+      "resolved": "apps/frontend/src/lib/supabase/dashboardQueries.ts",
       "external": false
     },
     {
@@ -4838,6 +5320,11 @@
       "external": false
     },
     {
+      "specifier": "@/hooks/usePermissions",
+      "resolved": "apps/frontend/src/hooks/usePermissions.ts",
+      "external": false
+    },
+    {
       "specifier": "@/contexts/NotificationContext",
       "resolved": "apps/frontend/src/contexts/NotificationContext.tsx",
       "external": false
@@ -4863,19 +5350,14 @@
       "external": false
     },
     {
-      "specifier": "@/components/ui/skeleton",
-      "resolved": "apps/frontend/src/components/ui/skeleton.tsx",
+      "specifier": "@/components/common/QueryState",
+      "resolved": "apps/frontend/src/components/common/QueryState.tsx",
       "external": false
     },
     {
       "specifier": "sonner",
       "resolved": null,
       "external": true
-    },
-    {
-      "specifier": "@/lib/exportUtils",
-      "resolved": "apps/frontend/src/lib/exportUtils.ts",
-      "external": false
     },
     {
       "specifier": "@/components/forms/FarmerFormDialog",
@@ -4940,6 +5422,11 @@
     {
       "specifier": "@/components/ui/alert-dialog",
       "resolved": "apps/frontend/src/components/ui/alert-dialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/lib/exportUtils",
+      "resolved": "apps/frontend/src/lib/exportUtils.ts",
       "external": false
     }
   ],
@@ -5044,6 +5531,11 @@
       "external": false
     },
     {
+      "specifier": "@/components/common/QueryState",
+      "resolved": "apps/frontend/src/components/common/QueryState.tsx",
+      "external": false
+    },
+    {
       "specifier": "@/components/ui/tabs",
       "resolved": "apps/frontend/src/components/ui/tabs.tsx",
       "external": false
@@ -5132,6 +5624,16 @@
       "specifier": "@/components/bulk-upload/BulkUploadDialog",
       "resolved": "apps/frontend/src/components/bulk-upload/BulkUploadDialog.tsx",
       "external": false
+    },
+    {
+      "specifier": "@/components/ui/table-pagination",
+      "resolved": "apps/frontend/src/components/ui/table-pagination.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/useClientPagination",
+      "resolved": "apps/frontend/src/hooks/useClientPagination.ts",
+      "external": false
     }
   ],
   "apps/frontend/src/pages/NotFound.tsx": [
@@ -5191,6 +5693,16 @@
       "specifier": "@/types",
       "resolved": "apps/frontend/src/types",
       "external": false
+    },
+    {
+      "specifier": "@/components/ui/table-pagination",
+      "resolved": "apps/frontend/src/components/ui/table-pagination.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/useClientPagination",
+      "resolved": "apps/frontend/src/hooks/useClientPagination.ts",
+      "external": false
     }
   ],
   "apps/frontend/src/pages/Products.tsx": [
@@ -5232,6 +5744,11 @@
     {
       "specifier": "@/components/ui/skeleton",
       "resolved": "apps/frontend/src/components/ui/skeleton.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/common/QueryState",
+      "resolved": "apps/frontend/src/components/common/QueryState.tsx",
       "external": false
     },
     {
@@ -5277,6 +5794,16 @@
     {
       "specifier": "@/types",
       "resolved": "apps/frontend/src/types",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/table-pagination",
+      "resolved": "apps/frontend/src/components/ui/table-pagination.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/useClientPagination",
+      "resolved": "apps/frontend/src/hooks/useClientPagination.ts",
       "external": false
     }
   ],
@@ -5360,6 +5887,11 @@
       "specifier": "@/lib/exportUtils",
       "resolved": "apps/frontend/src/lib/exportUtils.ts",
       "external": false
+    },
+    {
+      "specifier": "@/lib/exportUtils",
+      "resolved": "apps/frontend/src/lib/exportUtils.ts",
+      "external": false
     }
   ],
   "apps/frontend/src/pages/ResetPassword.tsx": [
@@ -5407,6 +5939,16 @@
       "specifier": "lucide-react",
       "resolved": null,
       "external": true
+    },
+    {
+      "specifier": "@/lib/validation/password",
+      "resolved": "apps/frontend/src/lib/validation/password.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/password-strength",
+      "resolved": "apps/frontend/src/components/ui/password-strength.tsx",
+      "external": false
     }
   ],
   "apps/frontend/src/pages/Sales.tsx": [
@@ -5436,19 +5978,14 @@
       "external": false
     },
     {
-      "specifier": "@/components/ui/skeleton",
-      "resolved": "apps/frontend/src/components/ui/skeleton.tsx",
+      "specifier": "@/components/common/QueryState",
+      "resolved": "apps/frontend/src/components/common/QueryState.tsx",
       "external": false
     },
     {
       "specifier": "lucide-react",
       "resolved": null,
       "external": true
-    },
-    {
-      "specifier": "@/lib/exportUtils",
-      "resolved": "apps/frontend/src/lib/exportUtils.ts",
-      "external": false
     },
     {
       "specifier": "@/components/forms/SaleFormDialog",
@@ -5473,6 +6010,11 @@
     {
       "specifier": "@/contexts/AuthContext",
       "resolved": "apps/frontend/src/contexts/AuthContext.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/usePermissions",
+      "resolved": "apps/frontend/src/hooks/usePermissions.ts",
       "external": false
     },
     {
@@ -5511,6 +6053,16 @@
       "external": false
     },
     {
+      "specifier": "@/components/ui/table-pagination",
+      "resolved": "apps/frontend/src/components/ui/table-pagination.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/useClientPagination",
+      "resolved": "apps/frontend/src/hooks/useClientPagination.ts",
+      "external": false
+    },
+    {
       "specifier": "@/components/ui/dropdown-menu",
       "resolved": "apps/frontend/src/components/ui/dropdown-menu.tsx",
       "external": false
@@ -5518,6 +6070,16 @@
     {
       "specifier": "@/components/ui/select",
       "resolved": "apps/frontend/src/components/ui/select.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/lib/exportUtils",
+      "resolved": "apps/frontend/src/lib/exportUtils.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/lib/exportUtils",
+      "resolved": "apps/frontend/src/lib/exportUtils.ts",
       "external": false
     }
   ],
@@ -5536,6 +6098,11 @@
       "specifier": "next-themes",
       "resolved": null,
       "external": true
+    },
+    {
+      "specifier": "@/integrations/supabase/client",
+      "resolved": "apps/frontend/src/integrations/supabase/client.ts",
+      "external": false
     },
     {
       "specifier": "@/hooks/api/useNotificationSettings",
@@ -5596,6 +6163,16 @@
       "specifier": "sonner",
       "resolved": null,
       "external": true
+    },
+    {
+      "specifier": "@/lib/validation/password",
+      "resolved": "apps/frontend/src/lib/validation/password.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/password-strength",
+      "resolved": "apps/frontend/src/components/ui/password-strength.tsx",
+      "external": false
     },
     {
       "specifier": "lucide-react",
@@ -5722,8 +6299,18 @@
       "external": false
     },
     {
+      "specifier": "@/hooks/usePermissions",
+      "resolved": "apps/frontend/src/hooks/usePermissions.ts",
+      "external": false
+    },
+    {
       "specifier": "@/hooks/api",
       "resolved": "apps/frontend/src/hooks/api",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/api/useUsers",
+      "resolved": "apps/frontend/src/hooks/api/useUsers.ts",
       "external": false
     },
     {
@@ -5739,6 +6326,16 @@
     {
       "specifier": "@/components/dashboard/EditTOTDialog",
       "resolved": "apps/frontend/src/components/dashboard/EditTOTDialog.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/table-pagination",
+      "resolved": "apps/frontend/src/components/ui/table-pagination.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/useClientPagination",
+      "resolved": "apps/frontend/src/hooks/useClientPagination.ts",
       "external": false
     }
   ],
@@ -5836,14 +6433,14 @@
       "external": false
     },
     {
+      "specifier": "@/components/common/QueryState",
+      "resolved": "apps/frontend/src/components/common/QueryState.tsx",
+      "external": false
+    },
+    {
       "specifier": "lucide-react",
       "resolved": null,
       "external": true
-    },
-    {
-      "specifier": "@/lib/exportUtils",
-      "resolved": "apps/frontend/src/lib/exportUtils.ts",
-      "external": false
     },
     {
       "specifier": "@/components/ui/dropdown-menu",
@@ -5876,6 +6473,11 @@
       "external": false
     },
     {
+      "specifier": "@/hooks/usePermissions",
+      "resolved": "apps/frontend/src/hooks/usePermissions.ts",
+      "external": false
+    },
+    {
       "specifier": "sonner",
       "resolved": null,
       "external": true
@@ -5888,6 +6490,26 @@
     {
       "specifier": "@/hooks/api/useTrainings",
       "resolved": "apps/frontend/src/hooks/api/useTrainings.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/components/ui/table-pagination",
+      "resolved": "apps/frontend/src/components/ui/table-pagination.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/useClientPagination",
+      "resolved": "apps/frontend/src/hooks/useClientPagination.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/lib/exportUtils",
+      "resolved": "apps/frontend/src/lib/exportUtils.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/lib/exportUtils",
+      "resolved": "apps/frontend/src/lib/exportUtils.ts",
       "external": false
     }
   ],
@@ -5985,14 +6607,14 @@
       "external": false
     },
     {
+      "specifier": "@/components/common/QueryState",
+      "resolved": "apps/frontend/src/components/common/QueryState.tsx",
+      "external": false
+    },
+    {
       "specifier": "lucide-react",
       "resolved": null,
       "external": true
-    },
-    {
-      "specifier": "@/lib/exportUtils",
-      "resolved": "apps/frontend/src/lib/exportUtils.ts",
-      "external": false
     },
     {
       "specifier": "@/components/ui/dropdown-menu",
@@ -6020,6 +6642,11 @@
       "external": false
     },
     {
+      "specifier": "@/hooks/usePermissions",
+      "resolved": "apps/frontend/src/hooks/usePermissions.ts",
+      "external": false
+    },
+    {
       "specifier": "sonner",
       "resolved": null,
       "external": true
@@ -6033,6 +6660,26 @@
       "specifier": "@/hooks/api",
       "resolved": "apps/frontend/src/hooks/api",
       "external": false
+    },
+    {
+      "specifier": "@/components/ui/table-pagination",
+      "resolved": "apps/frontend/src/components/ui/table-pagination.tsx",
+      "external": false
+    },
+    {
+      "specifier": "@/hooks/useClientPagination",
+      "resolved": "apps/frontend/src/hooks/useClientPagination.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/lib/exportUtils",
+      "resolved": "apps/frontend/src/lib/exportUtils.ts",
+      "external": false
+    },
+    {
+      "specifier": "@/lib/exportUtils",
+      "resolved": "apps/frontend/src/lib/exportUtils.ts",
+      "external": false
     }
   ],
   "apps/frontend/src/types/index.ts": [],
@@ -6044,11 +6691,29 @@
       "external": false
     }
   ],
+  "apps/backend/src/communication/smsProviders.js": [],
+  "apps/backend/src/communication/weatherService.js": [
+    {
+      "specifier": "path",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "url",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "dotenv",
+      "resolved": null,
+      "external": true
+    }
+  ],
   "apps/backend/src/config/constants.ts": [],
   "apps/backend/src/config/database.ts": [],
   "apps/backend/src/config/env.ts": [],
   "apps/backend/src/config/supabase.ts": [],
-  "apps/backend/src/routes/dashboard.js": [
+  "apps/backend/src/routes/ai.js": [
     {
       "specifier": "express",
       "resolved": null,
@@ -6060,7 +6725,51 @@
       "external": false
     }
   ],
+  "apps/backend/src/routes/communication.js": [
+    {
+      "specifier": "express",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "../supabaseClient.js",
+      "resolved": "apps/backend/src/supabaseClient.js",
+      "external": false
+    },
+    {
+      "specifier": "../communication/smsProviders.js",
+      "resolved": "apps/backend/src/communication/smsProviders.js",
+      "external": false
+    },
+    {
+      "specifier": "../communication/weatherService.js",
+      "resolved": "apps/backend/src/communication/weatherService.js",
+      "external": false
+    }
+  ],
+  "apps/backend/src/routes/dashboard.js": [
+    {
+      "specifier": "express",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "../supabaseClient.js",
+      "resolved": "apps/backend/src/supabaseClient.js",
+      "external": false
+    },
+    {
+      "specifier": "../utils/cache.js",
+      "resolved": "apps/backend/src/utils/cache.js",
+      "external": false
+    }
+  ],
   "apps/backend/src/server.js": [
+    {
+      "specifier": "dotenv/config",
+      "resolved": null,
+      "external": true
+    },
     {
       "specifier": "express",
       "resolved": null,
@@ -6072,8 +6781,18 @@
       "external": true
     },
     {
+      "specifier": "./routes/ai.js",
+      "resolved": "apps/backend/src/routes/ai.js",
+      "external": false
+    },
+    {
       "specifier": "./routes/dashboard.js",
       "resolved": "apps/backend/src/routes/dashboard.js",
+      "external": false
+    },
+    {
+      "specifier": "./routes/communication.js",
+      "resolved": "apps/backend/src/routes/communication.js",
       "external": false
     }
   ],
@@ -6099,6 +6818,7 @@
       "external": true
     }
   ],
+  "apps/backend/src/utils/cache.js": [],
   "packages/shared-types/src/index.ts": [],
   "packages/shared-utils/src/index.ts": [],
   "packages/ui/src/index.ts": [],
@@ -6107,6 +6827,11 @@
       "specifier": "npm:@supabase/supabase-js@2",
       "resolved": null,
       "external": true
+    },
+    {
+      "specifier": "../_shared/auth.ts",
+      "resolved": "supabase/functions/_shared/auth.ts",
+      "external": false
     }
   ],
   "supabase/functions/create-user/index.ts": [
@@ -6135,6 +6860,40 @@
       "external": true
     }
   ],
+  "supabase/functions/generate-weather-alert/index.ts": [
+    {
+      "specifier": "https://deno.land/std@0.168.0/http/server.ts",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "npm:@supabase/supabase-js@2",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "../_shared/auth.ts",
+      "resolved": "supabase/functions/_shared/auth.ts",
+      "external": false
+    }
+  ],
+  "supabase/functions/generate-weather-report/index.ts": [
+    {
+      "specifier": "https://deno.land/std@0.168.0/http/server.ts",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "npm:@supabase/supabase-js@2",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "../_shared/auth.ts",
+      "resolved": "supabase/functions/_shared/auth.ts",
+      "external": false
+    }
+  ],
   "supabase/functions/purge-farmer/index.ts": [
     {
       "specifier": "npm:@supabase/supabase-js@2",
@@ -6143,6 +6902,35 @@
     }
   ],
   "supabase/functions/purge-user-by-email/index.ts": [
+    {
+      "specifier": "npm:@supabase/supabase-js@2",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "supabase/functions/retry-failed-sms/index.ts": [
+    {
+      "specifier": "https://deno.land/std@0.168.0/http/server.ts",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "npm:@supabase/supabase-js@2",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "../_shared/auth.ts",
+      "resolved": "supabase/functions/_shared/auth.ts",
+      "external": false
+    }
+  ],
+  "supabase/functions/schedule-sms/index.ts": [
+    {
+      "specifier": "https://deno.land/std@0.168.0/http/server.ts",
+      "resolved": null,
+      "external": true
+    },
     {
       "specifier": "npm:@supabase/supabase-js@2",
       "resolved": null,
@@ -6159,6 +6947,87 @@
       "specifier": "npm:@supabase/supabase-js@2",
       "resolved": null,
       "external": true
+    },
+    {
+      "specifier": "../_shared/auth.ts",
+      "resolved": "supabase/functions/_shared/auth.ts",
+      "external": false
     }
-  ]
+  ],
+  "supabase/functions/send-sms/index.ts": [
+    {
+      "specifier": "https://deno.land/std@0.168.0/http/server.ts",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "npm:@supabase/supabase-js@2",
+      "resolved": null,
+      "external": true
+    }
+  ],
+  "supabase/functions/sync-delivery-status/index.ts": [
+    {
+      "specifier": "https://deno.land/std@0.168.0/http/server.ts",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "npm:@supabase/supabase-js@2",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "../_shared/auth.ts",
+      "resolved": "supabase/functions/_shared/auth.ts",
+      "external": false
+    }
+  ],
+  "supabase/functions/sync-weather/index.ts": [
+    {
+      "specifier": "https://deno.land/std@0.168.0/http/server.ts",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "npm:@supabase/supabase-js@2",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "../_shared/auth.ts",
+      "resolved": "supabase/functions/_shared/auth.ts",
+      "external": false
+    }
+  ],
+  "supabase/functions/weekly-weather-sms/index.ts": [
+    {
+      "specifier": "https://deno.land/std@0.168.0/http/server.ts",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "npm:@supabase/supabase-js@2",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "../_shared/auth.ts",
+      "resolved": "supabase/functions/_shared/auth.ts",
+      "external": false
+    }
+  ],
+  "supabase/functions/_shared/auth.test.ts": [
+    {
+      "specifier": "https://deno.land/std@0.168.0/testing/asserts.ts",
+      "resolved": null,
+      "external": true
+    },
+    {
+      "specifier": "./auth.ts",
+      "resolved": "supabase/functions/_shared/auth.ts",
+      "external": false
+    }
+  ],
+  "supabase/functions/_shared/auth.ts": []
 }

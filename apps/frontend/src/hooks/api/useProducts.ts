@@ -1,5 +1,6 @@
 // src/hooks/api/useProducts.ts
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { STALE_TIME } from '@/lib/queryConfig';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
@@ -100,7 +101,7 @@ export function useProducts(filters: ProductFilters = {}) {
         };
       });
     },
-    staleTime: 1000 * 60 * 5,
+    staleTime: STALE_TIME.MEDIUM,
   });
 }
 

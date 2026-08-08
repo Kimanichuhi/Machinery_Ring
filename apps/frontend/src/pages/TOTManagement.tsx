@@ -32,7 +32,9 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
+import { usePermissions } from '@/hooks/usePermissions';
 import { useLocalMRs, useUsers, useFarmers } from '@/hooks/api';
+import { useToggleUserStatus } from '@/hooks/api/useUsers';
 import { format } from 'date-fns';
 import { AddTOTDialog } from '@/components/dashboard/AddTOTDialog';
 import { EditTOTDialog } from '@/components/dashboard/EditTOTDialog';
@@ -56,9 +58,8 @@ interface TOTPerformance {
 
 export function TOTManagement() {
   const { user } = useAuth();
-  const isAdmin = user?.role === 'admin';
-  const isManager = user?.role === 'manager';
-  const isCoordinator = user?.role === 'local_mr_coordinator';
+  const { isAdmin, isManager, isCoordinator } = usePermissions();
+  const toggleUserStatus = useToggleUserStatus();
 
   // API hooks - data is already normalized by select transforms
   const { data: localMRs = [] } = useLocalMRs();
@@ -126,7 +127,7 @@ export function TOTManagement() {
 
   const handleToggleStatus = (totId: string, currentStatus: string) => {
     const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
-    toast.success(`TOT status changed to ${newStatus}`);
+    toggleUserStatus.mutate({ id: totId, status: newStatus });
   };
 
   const handleViewDetails = (totId: string) => {
@@ -358,6 +359,11 @@ export function TOTManagement() {
                           {isAdmin && (
                             <DropdownMenuItem onClick={() => setEditingTOTId(tot.totId)}>
                               Edit TOT
+                            </DropdownMenuItem>
+                          )}
+                          {(isAdmin || isManager) && (
+                            <DropdownMenuItem onClick={() => handleToggleStatus(tot.totId, tot.status)}>
+                              {tot.status === 'active' ? 'Deactivate' : 'Activate'}
                             </DropdownMenuItem>
                           )}
                         </DropdownMenuContent>

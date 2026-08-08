@@ -1,5 +1,5 @@
 // src/components/Header.tsx
-import React, { useState } from 'react';
+import React from 'react';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { Search, Cloud, CloudOff, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -8,20 +8,14 @@ import { Badge } from '@/components/ui/badge';
 import { MobileNav } from './MobileNav';
 import { NotificationBell } from '@/components/notifications/NotificationBell';
 import { useAuth } from '@/contexts/AuthContext';
+import { useGlobalSearch } from '@/hooks/api/useGlobalSearch';
 
 export function Header() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const isOnline = navigator.onLine;
 
-  const [searchQuery, setSearchQuery] = useState('');
-
-  const handleSearch = () => {
-    if (searchQuery.trim()) {
-      // Navigate to search results or filter current page
-      console.log('Search:', searchQuery);
-    }
-  };
+  const { searchQuery, setSearchQuery, handleKeyDown } = useGlobalSearch();
 
   const getGreeting = () => {
     const hour = new Date().getHours();
@@ -83,7 +77,7 @@ export function Header() {
           <Input
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+            onKeyDown={handleKeyDown}
             placeholder="Search farmers, sales, visits..."
             className="pl-10 bg-background border-border h-9 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
           />

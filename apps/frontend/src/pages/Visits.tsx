@@ -1,12 +1,12 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
+import { ErrorState, EmptyState } from '@/components/common/QueryState';
 import { Search, Plus, MapPin, Calendar, MessageSquare, Download, FileSpreadsheet, FileText, Eye } from 'lucide-react';
-import { exportVisitsToExcel, exportVisitsToPDF } from '@/lib/exportUtils';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,6 +23,7 @@ import {
 import { VisitFormDialog } from '@/components/forms/VisitFormDialog';
 import { useNotifications } from '@/contexts/NotificationContext';
 import { useAuth } from '@/contexts/AuthContext';
+import { usePermissions } from '@/hooks/usePermissions';
 import { toast } from 'sonner';
 import { Visit } from '@/types';
 import { useVisits, useCreateVisit } from '@/hooks/api';
@@ -53,16 +54,20 @@ export function Visits() {
   const canLogVisit = isAdmin;
 
   // API hooks
-  const { data: visits = [], isLoading } = useVisits();
+  const { data: visits = [], isLoading, error: visitsError, refetch: refetchVisits } = useVisits();
   const createVisit = useCreateVisit();
 
-  const filteredVisits = visits.filter(visit => {
-    const farmerName = visit.farmerName ?? '';
-    const matchesSearch = farmerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      visit.purpose.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesPurpose = purposeFilter === 'all' || visit.purpose.toLowerCase().includes(purposeFilter.toLowerCase());
-    return matchesSearch && matchesPurpose;
-  });
+  const filteredVisits = useMemo(
+    () =>
+      visits.filter(visit => {
+        const farmerName = visit.farmerName ?? '';
+        const matchesSearch = farmerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          visit.purpose.toLowerCase().includes(searchQuery.toLowerCase());
+        const matchesPurpose = purposeFilter === 'all' || visit.purpose.toLowerCase().includes(purposeFilter.toLowerCase());
+        return matchesSearch && matchesPurpose;
+      }),
+    [visits, searchQuery, purposeFilter]
+  );
   const {
     page,
     pageSize,
@@ -109,7 +114,7 @@ export function Visits() {
   }).length;
 
   // Manager and Coordinator can export reports
-  const canExport = user?.role === 'admin' || user?.role === 'manager' || user?.role === 'local_mr_coordinator';
+  const { canViewOrgData: canExport } = usePermissions();
 
   if (isLoading) {
     return (
@@ -126,6 +131,10 @@ export function Visits() {
         </div>
       </div>
     );
+  }
+
+  if (visitsError) {
+    return <ErrorState message="Failed to load visits." onRetry={() => refetchVisits()} />;
   }
 
   return (
@@ -148,11 +157,11 @@ export function Visits() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuItem onClick={() => { exportVisitsToExcel(filteredVisits); toast.success('Exported to Excel'); }}>
+                <DropdownMenuItem onClick={async () => { const { exportVisitsToExcel } = await import('@/lib/exportUtils'); exportVisitsToExcel(filteredVisits); toast.success('Exported to Excel'); }}>
                   <FileSpreadsheet className="w-4 h-4 mr-2" />
                   Export to Excel
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => { exportVisitsToPDF(filteredVisits); toast.success('Exported to PDF'); }}>
+                <DropdownMenuItem onClick={async () => { const { exportVisitsToPDF } = await import('@/lib/exportUtils'); exportVisitsToPDF(filteredVisits); toast.success('Exported to PDF'); }}>
                   <FileText className="w-4 h-4 mr-2" />
                   Export to PDF
                 </DropdownMenuItem>
@@ -235,6 +244,9 @@ export function Visits() {
       </Card>
 
       {/* Visits List */}
+      {paginatedVisits.length === 0 ? (
+        <EmptyState title="No visits found" description="Try adjusting your search or filters." />
+      ) : (
       <div className="space-y-3 sm:space-y-4">
         {paginatedVisits.map((visit, index) => (
           <Card 
@@ -288,6 +300,7 @@ export function Visits() {
           </Card>
         ))}
       </div>
+      )}
       <TablePagination
         page={page}
         pageSize={pageSize}

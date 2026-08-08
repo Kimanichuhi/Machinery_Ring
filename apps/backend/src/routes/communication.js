@@ -55,6 +55,47 @@ router.get("/health", (_req, res) => {
   });
 });
 
+router.get("/stats", async (_req, res) => {
+  try {
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+
+    const [messagesResult, scheduledResult] = await Promise.all([
+      supabaseAdmin
+        .from("communication_messages")
+        .select("recipient_count, success_count")
+        .is("deleted_at", null)
+        .gte("created_at", todayStart.toISOString()),
+      supabaseAdmin
+        .from("scheduled_messages")
+        .select("id", { count: "exact", head: true })
+        .is("deleted_at", null)
+        .eq("status", "pending"),
+    ]);
+
+    if (messagesResult.error) {
+      if (isMissingCommunicationSchemaError(messagesResult.error)) {
+        return res.json({
+          smsToday: 0,
+          delivered: 0,
+          scheduled: 0,
+          warning: "SMS history tables are not installed in Supabase yet.",
+        });
+      }
+      throw messagesResult.error;
+    }
+    if (scheduledResult.error) throw scheduledResult.error;
+
+    const todaysMessages = messagesResult.data || [];
+    const smsToday = todaysMessages.reduce((sum, row) => sum + (row.recipient_count || 0), 0);
+    const delivered = todaysMessages.reduce((sum, row) => sum + (row.success_count || 0), 0);
+
+    res.json({ smsToday, delivered, scheduled: scheduledResult.count || 0 });
+  } catch (error) {
+    res.status(502).json({ error: error.message || "Could not load communication stats." });
+  }
+});
+
 function isMissingCommunicationSchemaError(error) {
   const message = String(error?.message || "");
   return (

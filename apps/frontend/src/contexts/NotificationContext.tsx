@@ -1,5 +1,5 @@
 // src/contexts/NotificationContext.tsx
-import React, { createContext, useContext, ReactNode, useEffect } from 'react';
+import React, { createContext, useContext, ReactNode, useEffect, useCallback, useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Notification } from '@/types';
@@ -167,35 +167,47 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
     },
   });
 
-  const addNotification = (data: Omit<Notification, 'id' | 'createdAt' | 'read'>) => {
-    addMutation.mutate(data);
-  };
+  const addNotification = useCallback(
+    (data: Omit<Notification, 'id' | 'createdAt' | 'read'>) => {
+      addMutation.mutate(data);
+    },
+    [addMutation]
+  );
 
-  const markAsRead = (id: string) => {
-    markReadMutation.mutate(id);
-  };
+  const markAsRead = useCallback(
+    (id: string) => {
+      markReadMutation.mutate(id);
+    },
+    [markReadMutation]
+  );
 
-  const markAllAsRead = () => {
+  const markAllAsRead = useCallback(() => {
     markAllReadMutation.mutate();
-  };
+  }, [markAllReadMutation]);
 
-  const deleteNotification = (id: string) => {
-    deleteMutation.mutate(id);
-  };
+  const deleteNotification = useCallback(
+    (id: string) => {
+      deleteMutation.mutate(id);
+    },
+    [deleteMutation]
+  );
+
+  const value = useMemo<NotificationContextType>(
+    () => ({
+      notifications,
+      unreadCount,
+      isLoading,
+      error,
+      addNotification,
+      markAsRead,
+      markAllAsRead,
+      deleteNotification,
+    }),
+    [notifications, unreadCount, isLoading, error, addNotification, markAsRead, markAllAsRead, deleteNotification]
+  );
 
   return (
-    <NotificationContext.Provider
-      value={{
-        notifications,
-        unreadCount,
-        isLoading,
-        error,
-        addNotification,
-        markAsRead,
-        markAllAsRead,
-        deleteNotification,
-      }}
-    >
+    <NotificationContext.Provider value={value}>
       {children}
     </NotificationContext.Provider>
   );

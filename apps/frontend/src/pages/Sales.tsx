@@ -3,14 +3,14 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Skeleton } from '@/components/ui/skeleton';
+import { PageSkeleton, ErrorState, EmptyState } from '@/components/common/QueryState';
 import { Search, Plus, TrendingUp, Calendar, Download, Package, FileSpreadsheet, FileText, MoreVertical, Upload } from 'lucide-react';
-import { exportSalesToExcel, exportSalesToPDF } from '@/lib/exportUtils';
 import { SaleFormDialog } from '@/components/forms/SaleFormDialog';
 import { EditSaleDialog } from '@/components/forms/EditSaleDialog';
 import { BulkUploadDialog } from '@/components/bulk-upload/BulkUploadDialog';
 import { useNotifications } from '@/contexts/NotificationContext';
 import { useAuth } from '@/contexts/AuthContext';
+import { usePermissions } from '@/hooks/usePermissions';
 import { toast } from 'sonner';
 import { Sale } from '@/types';
 import { useSales, useCreateSale, useProducts, useCompleteSale, useCancelSale, useUncancelSale, useBulkCreateSales } from '@/hooks/api';
@@ -47,7 +47,7 @@ export function Sales() {
   const { user, isAdmin, canEdit } = useAuth();
 
   // API hooks
-  const { data: sales = [], isLoading } = useSales();
+  const { data: sales = [], isLoading, error: salesError, refetch: refetchSales } = useSales();
   const { data: products = [] } = useProducts();
   const { data: farmers = [] } = useFarmers();
   const { data: users = [] } = useUsers();
@@ -153,7 +153,7 @@ export function Sales() {
   };
 
   // Manager and Coordinator can export reports
-  const canExport = user?.role === 'admin' || user?.role === 'manager' || user?.role === 'local_mr_coordinator';
+  const { canViewOrgData: canExport } = usePermissions();
 
   const handleBulkUpload = async (data: any[]) => {
     // Resolve names to IDs
@@ -232,18 +232,11 @@ export function Sales() {
   };
 
   if (isLoading) {
-    return (
-      <div className="space-y-6">
-        <div className="flex justify-between items-center">
-          <Skeleton className="h-8 w-48" />
-          <Skeleton className="h-10 w-32" />
-        </div>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {[1, 2, 3, 4].map(i => <Skeleton key={i} className="h-24" />)}
-        </div>
-        <Skeleton className="h-64" />
-      </div>
-    );
+    return <PageSkeleton />;
+  }
+
+  if (salesError) {
+    return <ErrorState message="Failed to load sales." onRetry={() => refetchSales()} />;
   }
 
   return (
@@ -266,11 +259,11 @@ export function Sales() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuItem onClick={() => { exportSalesToExcel(filteredSales); toast.success('Exported to Excel'); }}>
+                <DropdownMenuItem onClick={async () => { const { exportSalesToExcel } = await import('@/lib/exportUtils'); exportSalesToExcel(filteredSales); toast.success('Exported to Excel'); }}>
                   <FileSpreadsheet className="w-4 h-4 mr-2" />
                   Export to Excel
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => { exportSalesToPDF(filteredSales); toast.success('Exported to PDF'); }}>
+                <DropdownMenuItem onClick={async () => { const { exportSalesToPDF } = await import('@/lib/exportUtils'); exportSalesToPDF(filteredSales); toast.success('Exported to PDF'); }}>
                   <FileText className="w-4 h-4 mr-2" />
                   Export to PDF
                 </DropdownMenuItem>
@@ -422,7 +415,17 @@ export function Sales() {
                 </tr>
               </thead>
               <tbody>
-                {paginatedSales.map((sale: any, index) => {
+                {paginatedSales.length === 0 ? (
+                  <tr>
+                    <td colSpan={isAdmin ? 12 : 11}>
+                      <EmptyState
+                        title="No sales found"
+                        description="Try adjusting your search or filters."
+                      />
+                    </td>
+                  </tr>
+                ) : (
+                paginatedSales.map((sale: any, index) => {
                   const farmerLabel = sale.farmerId ? (sale.farmerName || 'Unknown') : 'Walk-in';
                   return (
                   <tr
@@ -454,7 +457,7 @@ export function Sales() {
                       <td className="py-3 px-4">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
+                            <Button variant="ghost" className="h-8 w-8 p-0" aria-label={`Actions for sale ${sale.deliveryNoteNumber || sale.id}`}>
                               <MoreVertical className="h-4 w-4" />
                             </Button>
                           </DropdownMenuTrigger>
@@ -493,7 +496,8 @@ export function Sales() {
                     )}
                   </tr>
                   );
-                })}
+                })
+                )}
               </tbody>
             </table>
           </div>

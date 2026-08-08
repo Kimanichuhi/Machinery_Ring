@@ -8,7 +8,6 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Upload, FileSpreadsheet, AlertCircle, CheckCircle, Download, X } from 'lucide-react';
 import { toast } from 'sonner';
-import { parseExcelFile, createExcelTemplate } from '@/lib/excelUtils';
 
 interface BulkUploadDialogProps {
   open: boolean;
@@ -84,6 +83,7 @@ export function BulkUploadDialog({ open, onOpenChange, entityType, onUpload }: B
 
   const parseFileData = async (file: File) => {
     try {
+      const { parseExcelFile } = await import('@/lib/excelUtils');
       const jsonData = await parseExcelFile(file);
 
       if (jsonData.length === 0) {
@@ -164,6 +164,7 @@ export function BulkUploadDialog({ open, onOpenChange, entityType, onUpload }: B
 
   const downloadTemplate = async () => {
     const data = sampleData[entityType];
+    const { createExcelTemplate } = await import('@/lib/excelUtils');
     await createExcelTemplate(data, `${entityType}_template`, entityType);
     toast.success('Template downloaded');
   };

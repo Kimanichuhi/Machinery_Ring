@@ -20,9 +20,7 @@ export function useProductsRealtime() {
           schema: 'public',
           table: 'products',
         },
-        (payload) => {
-          console.log('Product change detected:', payload.eventType);
-          // Invalidate all product queries to trigger refetch
+        () => {
           queryClient.invalidateQueries({ queryKey: productKeys.all });
         }
       )

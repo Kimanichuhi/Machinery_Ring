@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Skeleton } from '@/components/ui/skeleton';
+import { ErrorState, EmptyState } from '@/components/common/QueryState';
 import { Search, Plus, Package, Filter, AlertTriangle, TrendingUp, Edit, RefreshCw, Upload } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useProducts, useCreateProduct, useUpdateProductStock, useUpdateProduct, useProductsRealtime } from '@/hooks/api';
@@ -52,20 +53,24 @@ export function Products() {
     description: '',
   });
   // API hooks
-  const { data: products = [], isLoading } = useProducts();
+  const { data: products = [], isLoading, error: productsError, refetch: refetchProducts } = useProducts();
   const createProduct = useCreateProduct();
   const updateProduct = useUpdateProduct();
   const updateStock = useUpdateProductStock();
-  
+
   // Enable real-time updates
   useProductsRealtime();
 
-  const filteredProducts = products.filter(product => {
-    const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      product.category.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = categoryFilter === 'all' || product.category === categoryFilter;
-    return matchesSearch && matchesCategory;
-  });
+  const filteredProducts = useMemo(
+    () =>
+      products.filter(product => {
+        const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          product.category.toLowerCase().includes(searchQuery.toLowerCase());
+        const matchesCategory = categoryFilter === 'all' || product.category === categoryFilter;
+        return matchesSearch && matchesCategory;
+      }),
+    [products, searchQuery, categoryFilter]
+  );
   const {
     page,
     pageSize,
@@ -191,6 +196,11 @@ export function Products() {
       </div>
     );
   }
+
+  if (productsError) {
+    return <ErrorState message="Failed to load products." onRetry={() => refetchProducts()} />;
+  }
+
   return (
     <div className="space-y-4 sm:space-y-6">
       {/* Page Header */}
@@ -290,6 +300,9 @@ export function Products() {
         </CardContent>
       </Card>
       {/* Products Grid */}
+      {paginatedProducts.length === 0 ? (
+        <EmptyState title="No products found" description="Try adjusting your search or filters." />
+      ) : (
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-4">
         {paginatedProducts.map((product, index) => {
           const stockStatus = getStockStatus(product.inStock);
@@ -346,6 +359,7 @@ export function Products() {
           );
         })}
       </div>
+      )}
       <TablePagination
         page={page}
         pageSize={pageSize}

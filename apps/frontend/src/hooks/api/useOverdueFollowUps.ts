@@ -1,4 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { STALE_TIME } from '@/lib/queryConfig';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
@@ -79,7 +80,7 @@ export function useOverdueFollowUps(filters: OverdueFilters = {}) {
         parent_visit_id: v.parent_visit_id || null,
       })) as OverdueVisit[];
     },
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: STALE_TIME.MEDIUM, // 5 minutes
   });
 }
 
@@ -167,6 +168,6 @@ export function usePendingFollowUps(filters: OverdueFilters = {}) {
         parent_visit_id: v.parent_visit_id || null,
       })) as OverdueVisit[];
     },
-    staleTime: 1000 * 60 * 5,
+    staleTime: STALE_TIME.MEDIUM,
   });
 }

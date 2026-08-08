@@ -24,9 +24,8 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
+import { usePermissions } from '@/hooks/usePermissions';
 import { useLocalMRs, useUsers, useSales } from '@/hooks/api';
-import { exportToExcelFile } from '@/lib/excelUtils';
-import jsPDF from 'jspdf';
 
 /* ---------------- TYPES ---------------- */
 type ViewMode = 'local-mrs' | 'tots';
@@ -66,9 +65,7 @@ export function Commission() {
   const { data: users = [] } = useUsers();
   const { data: sales = [] } = useSales({ status: 'completed' });
 
-  const isTot = user?.role === 'tot';
-  const isCoordinator = user?.role === 'local_mr_coordinator';
-  const canViewFullReport = user?.role === 'admin' || user?.role === 'manager' || isCoordinator;
+  const { isTot, isCoordinator, canViewOrgData: canViewFullReport } = usePermissions();
 
   /* ---------------- HELPERS ---------------- */
   const formatCurrency = (v: number) =>
@@ -188,10 +185,12 @@ export function Commission() {
 
   /* ---------------- EXPORTS ---------------- */
   const exportExcel = async () => {
+    const { exportToExcelFile } = await import('@/lib/excelUtils');
     await exportToExcelFile(localMRSummaries, 'commission_report', 'Commission Report');
     toast.success('Excel report downloaded');
   };
-  const exportPDF = () => {
+  const exportPDF = async () => {
+    const { default: jsPDF } = await import('jspdf');
     const doc = new jsPDF();
     doc.text('COMMISSION REPORT', 10, 10);
     localMRSummaries.forEach((mr, i) => {

@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { usePermissions } from '@/hooks/usePermissions';
 import { useNotifications } from '@/contexts/NotificationContext';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Skeleton } from '@/components/ui/skeleton';
+import { PageSkeleton, ErrorState, EmptyState } from '@/components/common/QueryState';
 import { toast } from 'sonner';
-import { exportFarmersToExcel, exportFarmersToPDF } from '@/lib/exportUtils';
 import { FarmerFormDialog } from '@/components/forms/FarmerFormDialog';
 import { BulkUploadDialog } from '@/components/bulk-upload/BulkUploadDialog';
 import { TablePagination } from '@/components/ui/table-pagination';
@@ -135,6 +135,8 @@ export function Farmers() {
     totalPages,
     isLoading,
     isFetching,
+    error: farmersError,
+    refetch: refetchFarmers,
   } = usePaginatedFarmers(filters, { page, pageSize });
 
   // Stats query (efficient count-based)
@@ -162,10 +164,10 @@ export function Farmers() {
   }, [searchParams, setSearchParams, isAdmin]);
 
   // Client-side filter for rating (applied after server-side pagination)
-  const filteredFarmers = farmers.filter(farmer => {
-    const matchesRating = ratingFilter === 'all' || farmer.farmerRating === ratingFilter;
-    return matchesRating;
-  });
+  const filteredFarmers = useMemo(
+    () => farmers.filter(farmer => ratingFilter === 'all' || farmer.farmerRating === ratingFilter),
+    [farmers, ratingFilter]
+  );
 
   const getRatingColor = (rating: string) => {
     switch (rating) {
@@ -298,6 +300,7 @@ export function Farmers() {
       return;
     }
     try {
+      const { exportFarmersToExcel, exportFarmersToPDF } = await import('@/lib/exportUtils');
       if (format === 'excel') exportFarmersToExcel(farmersToExport, 'farmers_export');
       else exportFarmersToPDF(farmersToExport, 'farmers_export');
       toast.success(`Exported ${farmersToExport.length} farmers to ${format.toUpperCase()}`);
@@ -318,21 +321,14 @@ export function Farmers() {
   };
 
   // Manager and Coordinator can export reports
-  const canExport = user?.role === 'admin' || user?.role === 'manager' || user?.role === 'local_mr_coordinator';
+  const { canViewOrgData: canExport } = usePermissions();
 
   if (isLoading && !isFetching) {
-    return (
-      <div className="space-y-6">
-        <div className="flex justify-between items-center">
-          <Skeleton className="h-8 w-48" />
-          <Skeleton className="h-10 w-32" />
-        </div>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {[1, 2, 3, 4].map(i => <Skeleton key={i} className="h-24" />)}
-        </div>
-        <Skeleton className="h-64" />
-      </div>
-    );
+    return <PageSkeleton />;
+  }
+
+  if (farmersError) {
+    return <ErrorState message="Failed to load farmers." onRetry={() => refetchFarmers()} />;
   }
 
   return (
@@ -501,8 +497,11 @@ export function Farmers() {
               <tbody>
                 {filteredFarmers.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="text-center py-8 text-muted-foreground">
-                      {isLoading ? 'Loading farmers...' : 'No farmers found'}
+                    <td colSpan={5}>
+                      <EmptyState
+                        title="No farmers found"
+                        description="Try adjusting your search or filters."
+                      />
                     </td>
                   </tr>
                 ) : (
@@ -552,11 +551,12 @@ export function Farmers() {
                               }}>
                                 Edit
                               </Button>
-                              <Button 
-                                variant="ghost" 
-                                size="sm" 
+                              <Button
+                                variant="ghost"
+                                size="sm"
                                 className="text-destructive hover:text-destructive hover:bg-destructive/10"
                                 onClick={() => setDeletingFarmer(farmer as any)}
+                                aria-label={`Delete ${farmer.name}`}
                               >
                                 <Trash2 className="w-4 h-4" />
                               </Button>

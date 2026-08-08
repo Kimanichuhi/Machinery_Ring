@@ -1,5 +1,6 @@
 // src/hooks/api/useSyncStatus.ts
 import { useQuery } from '@tanstack/react-query';
+import { STALE_TIME } from '@/lib/queryConfig';
 
 // Simple sync status hook - returns pending sync count
 export function useSyncStatus() {
@@ -11,6 +12,6 @@ export function useSyncStatus() {
       return { pending: 0 };
     },
     refetchInterval: false,
-    staleTime: 5000,
+    staleTime: STALE_TIME.REALTIME,
   });
 }

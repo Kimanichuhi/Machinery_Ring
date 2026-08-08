@@ -1,5 +1,6 @@
 ﻿// src/hooks/api/useDashboard.ts
 import { useQuery } from '@tanstack/react-query';
+import { STALE_TIME, GC_TIME } from '@/lib/queryConfig';
 import {
   fetchAdminStats,
   fetchManagerStats,
@@ -69,8 +70,8 @@ export function useAdminDashboard() {
   return useQuery({
     queryKey: dashboardKeys.admin(),
     queryFn: fetchAdminStats,
-    staleTime: 1000 * 60 * 10,
-    gcTime: 1000 * 60 * 30,
+    staleTime: STALE_TIME.EXTENDED,
+    gcTime: GC_TIME.EXTENDED,
   });
 }
 
@@ -79,7 +80,7 @@ export function useManagerDashboard(localMrId: string) {
     queryKey: dashboardKeys.manager(localMrId),
     queryFn: () => fetchManagerStats(localMrId),
     enabled: !!localMrId,
-    staleTime: 1000 * 60 * 5,
+    staleTime: STALE_TIME.MEDIUM,
   });
 }
 
@@ -88,7 +89,7 @@ export function useTotDashboard(totId: string) {
     queryKey: dashboardKeys.tot(totId),
     queryFn: () => fetchTotStats(totId),
     enabled: !!totId,
-    staleTime: 1000 * 60 * 3,
+    staleTime: STALE_TIME.STANDARD,
   });
 }
 
@@ -96,7 +97,7 @@ export function useMonthlySalesData(params?: { localMrId?: string; totId?: strin
   return useQuery({
     queryKey: dashboardKeys.monthlySales(params),
     queryFn: () => fetchMonthlySalesData(params),
-    staleTime: 1000 * 60 * 15,
+    staleTime: STALE_TIME.VERY_LONG,
   });
 }
 
@@ -104,7 +105,7 @@ export function useProductPerformance(localMrId?: string) {
   return useQuery({
     queryKey: dashboardKeys.productPerformance(localMrId),
     queryFn: () => fetchProductPerformance(localMrId),
-    staleTime: 1000 * 60 * 10,
+    staleTime: STALE_TIME.EXTENDED,
   });
 }
 
@@ -112,6 +113,6 @@ export function useTopPerformers(type: 'tots' | 'farmers', localMrId?: string) {
   return useQuery({
     queryKey: dashboardKeys.topPerformers(type, localMrId),
     queryFn: () => fetchTopPerformers(type, localMrId),
-    staleTime: 1000 * 60 * 8,
+    staleTime: STALE_TIME.LONG,
   });
 }

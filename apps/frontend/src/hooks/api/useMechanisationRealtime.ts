@@ -20,8 +20,6 @@ export function useMechanisationRealtime() {
           table: 'mechanisation_jobs',
         },
         (payload) => {
-          console.log('Mechanisation change:', payload);
-          
           // Invalidate all mechanisation queries
           queryClient.invalidateQueries({ queryKey: mechanisationKeys.all });
           
@@ -50,8 +48,7 @@ export function useMechanisationRealtime() {
           schema: 'public',
           table: 'machinery_bookings',
         },
-        (payload) => {
-          console.log('Booking change:', payload);
+        () => {
           queryClient.invalidateQueries({ queryKey: bookingKeys.all });
           queryClient.invalidateQueries({ queryKey: ['machinery'] });
         }
@@ -68,8 +65,7 @@ export function useMechanisationRealtime() {
           schema: 'public',
           table: 'machinery',
         },
-        (payload) => {
-          console.log('Machinery change:', payload);
+        () => {
           queryClient.invalidateQueries({ queryKey: ['machinery'] });
         }
       )

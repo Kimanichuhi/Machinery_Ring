@@ -1,5 +1,6 @@
 // src/hooks/api/useSupabaseDashboard.ts
 import { useQuery } from "@tanstack/react-query";
+import { STALE_TIME, GC_TIME } from '@/lib/queryConfig';
 import {
   fetchAdminStats,
   fetchTotStats,
@@ -54,8 +55,8 @@ export function useSupabaseAdminStats() {
   return useQuery<AdminStats>({
     queryKey: supabaseDashboardKeys.adminStats(),
     queryFn: fetchAdminStats,
-    staleTime: 1000 * 60 * 5, // 5 minutes
-    gcTime: 1000 * 60 * 15,
+    staleTime: STALE_TIME.MEDIUM, // 5 minutes
+    gcTime: GC_TIME.STANDARD,
   });
 }
 
@@ -67,7 +68,7 @@ export function useSupabaseTotStats(totId: string) {
     queryKey: supabaseDashboardKeys.totStats(totId),
     queryFn: () => fetchTotStats(totId),
     enabled: !!totId,
-    staleTime: 1000 * 60 * 3,
+    staleTime: STALE_TIME.STANDARD,
   });
 }
 
@@ -78,7 +79,7 @@ export function useSupabaseLocalMRs() {
   return useQuery<LocalMRWithStats[]>({
     queryKey: supabaseDashboardKeys.localMRs(),
     queryFn: fetchLocalMRsWithStats,
-    staleTime: 1000 * 60 * 5,
+    staleTime: STALE_TIME.MEDIUM,
   });
 }
 
@@ -93,7 +94,7 @@ export function useSupabaseMonthlySales(params?: {
   return useQuery<MonthlySalesData[]>({
     queryKey: supabaseDashboardKeys.monthlySales(params),
     queryFn: () => fetchMonthlySalesData(params),
-    staleTime: 1000 * 60 * 10,
+    staleTime: STALE_TIME.EXTENDED,
   });
 }
 
@@ -104,7 +105,7 @@ export function useSupabaseProductPerformance(localMrId?: string) {
   return useQuery<ProductPerformance[]>({
     queryKey: supabaseDashboardKeys.productPerformance(localMrId),
     queryFn: () => fetchProductPerformance(localMrId),
-    staleTime: 1000 * 60 * 10,
+    staleTime: STALE_TIME.EXTENDED,
   });
 }
 
@@ -115,7 +116,7 @@ export function useSupabaseTopPerformers(type: "tots" | "farmers", localMrId?: s
   return useQuery<TopPerformer[]>({
     queryKey: supabaseDashboardKeys.topPerformers(type, localMrId),
     queryFn: () => fetchTopPerformers(type, localMrId),
-    staleTime: 1000 * 60 * 8,
+    staleTime: STALE_TIME.LONG,
   });
 }
 
@@ -130,7 +131,7 @@ export function useSupabaseFarmers(filters?: {
   return useQuery({
     queryKey: supabaseDashboardKeys.farmers(filters),
     queryFn: () => fetchFarmers(filters),
-    staleTime: 1000 * 60 * 5,
+    staleTime: STALE_TIME.MEDIUM,
   });
 }
 
@@ -146,7 +147,7 @@ export function useSupabaseSales(filters?: {
   return useQuery({
     queryKey: supabaseDashboardKeys.sales(filters),
     queryFn: () => fetchSales(filters),
-    staleTime: 1000 * 60 * 3,
+    staleTime: STALE_TIME.STANDARD,
   });
 }
 
@@ -157,7 +158,7 @@ export function useSupabaseVisits(filters?: { localMrId?: string; totId?: string
   return useQuery({
     queryKey: supabaseDashboardKeys.visits(filters),
     queryFn: () => fetchVisits(filters),
-    staleTime: 1000 * 60 * 5,
+    staleTime: STALE_TIME.MEDIUM,
   });
 }
 
@@ -172,7 +173,7 @@ export function useSupabaseMechanisation(filters?: {
   return useQuery({
     queryKey: supabaseDashboardKeys.mechanisation(filters),
     queryFn: () => fetchMechanisationJobs(filters),
-    staleTime: 1000 * 60 * 5,
+    staleTime: STALE_TIME.MEDIUM,
   });
 }
 
@@ -183,7 +184,7 @@ export function useSupabaseTrainings(filters?: { localMrId?: string; trainerId?:
   return useQuery({
     queryKey: supabaseDashboardKeys.trainings(filters),
     queryFn: () => fetchTrainings(filters),
-    staleTime: 1000 * 60 * 5,
+    staleTime: STALE_TIME.MEDIUM,
   });
 }
 
@@ -194,7 +195,7 @@ export function useSupabaseUsers() {
   return useQuery({
     queryKey: supabaseDashboardKeys.users(),
     queryFn: fetchUsers,
-    staleTime: 1000 * 60 * 5,
+    staleTime: STALE_TIME.MEDIUM,
   });
 }
 
@@ -205,7 +206,7 @@ export function useSupabaseRecentActivity(limit = 10) {
   return useQuery({
     queryKey: supabaseDashboardKeys.recentActivity(limit),
     queryFn: () => fetchRecentActivity(limit),
-    staleTime: 1000 * 60 * 2,
+    staleTime: STALE_TIME.BRIEF,
   });
 }
 

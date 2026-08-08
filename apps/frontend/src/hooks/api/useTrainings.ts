@@ -1,5 +1,6 @@
 // src/hooks/api/useTrainings.ts
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { STALE_TIME } from '@/lib/queryConfig';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
@@ -127,7 +128,7 @@ export function useTrainings(filters: TrainingFilters = {}) {
         topics: t.description ? t.description.split(',').map((s: string) => s.trim()) : [],
       }));
     },
-    staleTime: 1000 * 60 * 5,
+    staleTime: STALE_TIME.MEDIUM,
   });
 }
 

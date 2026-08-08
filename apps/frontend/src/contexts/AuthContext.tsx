@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
 import { Session, User as SupabaseUser } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { Database } from '@/integrations/supabase/types';
@@ -37,7 +37,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Fetch user profile and role. If the profile row is missing, fall back to auth metadata
   // so a valid Supabase session does not get trapped on the login screen.
-  const fetchUserData = async (authUser: SupabaseUser): Promise<AuthUser | null> => {
+  const fetchUserData = useCallback(async (authUser: SupabaseUser): Promise<AuthUser | null> => {
     try {
       const userId = authUser.id;
 
@@ -111,7 +111,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       console.error('Error fetching user data:', error);
       return null;
     }
-  };
+  }, []);
 
   useEffect(() => {
     let isMounted = true;
@@ -168,7 +168,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  const signIn = async (email: string, password: string) => {
+  const signIn = useCallback(async (email: string, password: string) => {
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
@@ -210,9 +210,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } catch (error) {
       return { error: error as Error };
     }
-  };
+  }, [fetchUserData]);
 
-  const signUp = async (email: string, password: string, name: string, phone?: string) => {
+  const signUp = useCallback(async (email: string, password: string, name: string, phone?: string) => {
     try {
       const redirectUrl = `${window.location.origin}/`;
       
@@ -236,34 +236,37 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } catch (error) {
       return { error: error as Error };
     }
-  };
+  }, []);
 
-  const signOut = async () => {
+  const signOut = useCallback(async () => {
     setIsLoading(true);
     await supabase.auth.signOut();
     setUser(null);
     setSession(null);
     setIsLoading(false);
-  };
+  }, []);
 
   // Admin is the ONLY role that can create/edit/delete data
   const isAdmin = user?.role === 'admin';
   const canEdit = isAdmin;
 
+  const value = useMemo<AuthContextType>(
+    () => ({
+      user,
+      session,
+      isLoading,
+      isAuthenticated: !!session && !!user,
+      isAdmin,
+      canEdit,
+      signIn,
+      signUp,
+      signOut,
+    }),
+    [user, session, isLoading, isAdmin, canEdit, signIn, signUp, signOut]
+  );
+
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        session,
-        isLoading,
-        isAuthenticated: !!session && !!user,
-        isAdmin,
-        canEdit,
-        signIn,
-        signUp,
-        signOut,
-      }}
-    >
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );

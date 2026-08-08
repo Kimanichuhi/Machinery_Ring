@@ -1,5 +1,6 @@
 // src/hooks/api/useVisits.ts
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { STALE_TIME } from '@/lib/queryConfig';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
@@ -74,7 +75,7 @@ export function useVisits(filters: VisitFilters = {}) {
         date: v.visit_date,
       }));
     },
-    staleTime: 1000 * 60 * 3,
+    staleTime: STALE_TIME.STANDARD,
   });
 }
 

@@ -14,6 +14,8 @@ import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from 'sonner';
+import { passwordSchema } from '@/lib/validation/password';
+import { PasswordStrengthIndicator } from '@/components/ui/password-strength';
 import {
   User,
   Bell,
@@ -180,8 +182,9 @@ export function Settings() {
       toast.error('Passwords do not match');
       return;
     }
-    if (securityData.newPassword.length < 8) {
-      toast.error('Password must be at least 8 characters');
+    const validation = passwordSchema.safeParse(securityData.newPassword);
+    if (!validation.success) {
+      toast.error(validation.error.issues[0]?.message ?? 'Please choose a stronger password.');
       return;
     }
 
@@ -568,6 +571,7 @@ export function Settings() {
                     value={securityData.newPassword}
                     onChange={(e) => setSecurityData({ ...securityData, newPassword: e.target.value })}
                   />
+                  <PasswordStrengthIndicator password={securityData.newPassword} />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="confirmPassword">Confirm New Password</Label>

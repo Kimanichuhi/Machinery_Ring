@@ -1,5 +1,6 @@
 // src/hooks/api/useTotsByLocalMR.ts
 import { useQuery } from '@tanstack/react-query';
+import { STALE_TIME } from '@/lib/queryConfig';
 import { supabase } from '@/integrations/supabase/client';
 
 export interface TotUser {
@@ -50,6 +51,6 @@ export function useTotsByLocalMR(localMrId: string) {
       }));
     },
     enabled: !!localMrId,
-    staleTime: 1000 * 60 * 5,
+    staleTime: STALE_TIME.MEDIUM,
   });
 }

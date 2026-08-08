@@ -1,5 +1,6 @@
 // src/hooks/api/useSales.ts
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { STALE_TIME } from '@/lib/queryConfig';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
@@ -121,7 +122,7 @@ export function useSales(filters: SaleFilters = {}) {
         deliveryNoteNumber: s.delivery_note_number || '',
       }));
     },
-    staleTime: 1000 * 60 * 3,
+    staleTime: STALE_TIME.STANDARD,
   });
 }
 

@@ -8,6 +8,8 @@
     "apps/frontend/src/components/layout/DashboardLayout.tsx",
     "apps/frontend/src/components/auth/ProtectedRoute.tsx",
     "apps/frontend/src/components/errors/RouteErrorBoundary.tsx",
+    "apps/frontend/src/lib/queryConfig.ts",
+    "apps/frontend/src/lib/permissions.ts",
     "apps/frontend/src/pages/Auth.tsx",
     "apps/frontend/src/pages/ForgotPassword.tsx",
     "apps/frontend/src/pages/ResetPassword.tsx",
@@ -26,6 +28,7 @@
     "apps/frontend/src/pages/Trainings.tsx",
     "apps/frontend/src/pages/TrainingDetails.tsx",
     "apps/frontend/src/pages/Reports.tsx",
+    "apps/frontend/src/pages/AIAssistant.tsx",
     "apps/frontend/src/pages/Settings.tsx",
     "apps/frontend/src/pages/Support.tsx",
     "apps/frontend/src/pages/admin/Users.tsx",
@@ -36,8 +39,30 @@
     "apps/frontend/src/pages/Commission.tsx",
     "apps/frontend/src/pages/TOTManagement.tsx",
     "apps/frontend/src/pages/Notifications.tsx",
+    "apps/frontend/src/pages/communication/Communication.tsx",
+    "apps/frontend/src/pages/communication/Communication.tsx",
+    "apps/frontend/src/pages/communication/Communication.tsx",
+    "apps/frontend/src/pages/communication/Communication.tsx",
+    "apps/frontend/src/pages/communication/Communication.tsx",
+    "apps/frontend/src/pages/communication/Communication.tsx",
+    "apps/frontend/src/pages/communication/Communication.tsx",
+    "apps/frontend/src/pages/communication/Communication.tsx",
     "apps/frontend/src/pages/NotFound.tsx",
     "apps/frontend/src/pages/Install.tsx"
+  ],
+  "apps/frontend/src/components/admin/AuditLogTable.tsx": [
+    "apps/frontend/src/components/ui/card.tsx",
+    "apps/frontend/src/components/ui/button.tsx",
+    "apps/frontend/src/components/ui/input.tsx",
+    "apps/frontend/src/components/ui/badge.tsx",
+    "apps/frontend/src/components/ui/skeleton.tsx",
+    "apps/frontend/src/components/ui/select.tsx",
+    "apps/frontend/src/components/ui/table.tsx",
+    "apps/frontend/src/components/ui/dropdown-menu.tsx",
+    "apps/frontend/src/hooks/api/useSystemLogs.ts",
+    "apps/frontend/src/components/ui/table-pagination.tsx",
+    "apps/frontend/src/hooks/useClientPagination.ts",
+    "apps/frontend/src/lib/excelUtils.ts"
   ],
   "apps/frontend/src/components/auth/ProtectedRoute.tsx": [
     "apps/frontend/src/contexts/AuthContext.tsx"
@@ -50,7 +75,12 @@
     "apps/frontend/src/components/ui/badge.tsx",
     "apps/frontend/src/components/ui/scroll-area.tsx",
     "apps/frontend/src/components/ui/alert.tsx",
+    "apps/frontend/src/lib/excelUtils.ts",
     "apps/frontend/src/lib/excelUtils.ts"
+  ],
+  "apps/frontend/src/components/common/QueryState.tsx": [
+    "apps/frontend/src/components/ui/skeleton.tsx",
+    "apps/frontend/src/components/ui/button.tsx"
   ],
   "apps/frontend/src/components/dashboard/AddTOTDialog.tsx": [
     "apps/frontend/src/components/ui/dialog.tsx",
@@ -84,6 +114,7 @@
     "apps/frontend/src/components/ui/card.tsx",
     "apps/frontend/src/components/ui/scroll-area.tsx",
     "apps/frontend/src/components/ui/skeleton.tsx",
+    "apps/frontend/src/components/ui/button.tsx",
     "apps/frontend/src/hooks/api/useGlobalActivity.ts",
     "apps/frontend/src/hooks/api/useGlobalActivityRealtime.ts"
   ],
@@ -252,7 +283,8 @@
     "apps/frontend/src/components/ui/badge.tsx",
     "apps/frontend/src/components/layout/MobileNav.tsx",
     "apps/frontend/src/components/notifications/NotificationBell.tsx",
-    "apps/frontend/src/contexts/AuthContext.tsx"
+    "apps/frontend/src/contexts/AuthContext.tsx",
+    "apps/frontend/src/hooks/api/useGlobalSearch.ts"
   ],
   "apps/frontend/src/components/layout/MobileNav.tsx": [
     "apps/frontend/src/lib/utils.ts",
@@ -349,6 +381,8 @@
     "apps/frontend/src/components/ui/alert.tsx",
     "apps/frontend/src/hooks/api/useFarmersAndTots.ts",
     "apps/frontend/src/hooks/api/useTrainings.ts",
+    "apps/frontend/src/lib/excelUtils.ts",
+    "apps/frontend/src/lib/excelUtils.ts",
     "apps/frontend/src/lib/excelUtils.ts"
   ],
   "apps/frontend/src/components/ui/accordion.tsx": [
@@ -438,7 +472,8 @@
     "apps/frontend/src/components/ui/button.tsx"
   ],
   "apps/frontend/src/components/ui/password-strength.tsx": [
-    "apps/frontend/src/lib/utils.ts"
+    "apps/frontend/src/lib/utils.ts",
+    "apps/frontend/src/lib/validation/password.ts"
   ],
   "apps/frontend/src/components/ui/popover.tsx": [
     "apps/frontend/src/lib/utils.ts"
@@ -549,20 +584,28 @@
     "apps/frontend/src/hooks/api/useDashboardRealtime.ts",
     "apps/frontend/src/hooks/api/useOverdueFollowUps.ts"
   ],
-  "apps/frontend/src/hooks/api/useDashboard.ts": [
+  "apps/frontend/src/hooks/api/useCommunicationStats.ts": [
+    "apps/frontend/src/lib/queryConfig.ts",
     "apps/frontend/src/lib/backend.ts"
+  ],
+  "apps/frontend/src/hooks/api/useDashboard.ts": [
+    "apps/frontend/src/lib/queryConfig.ts",
+    "apps/frontend/src/lib/supabase/dashboardQueries.ts"
   ],
   "apps/frontend/src/hooks/api/useDashboardRealtime.ts": [
     "apps/frontend/src/integrations/supabase/client.ts",
     "apps/frontend/src/hooks/api/useSupabaseDashboard.ts"
   ],
   "apps/frontend/src/hooks/api/useFarmers.ts": [
+    "apps/frontend/src/lib/queryConfig.ts",
     "apps/frontend/src/integrations/supabase/client.ts"
   ],
   "apps/frontend/src/hooks/api/useFarmersAndTots.ts": [
+    "apps/frontend/src/lib/queryConfig.ts",
     "apps/frontend/src/integrations/supabase/client.ts"
   ],
   "apps/frontend/src/hooks/api/useFarmerTrainings.ts": [
+    "apps/frontend/src/lib/queryConfig.ts",
     "apps/frontend/src/integrations/supabase/client.ts"
   ],
   "apps/frontend/src/hooks/api/useGlobalActivity.ts": [
@@ -573,18 +616,23 @@
   ],
   "apps/frontend/src/hooks/api/useGlobalSearch.ts": [],
   "apps/frontend/src/hooks/api/useLocalMRs.ts": [
+    "apps/frontend/src/lib/queryConfig.ts",
     "apps/frontend/src/integrations/supabase/client.ts"
   ],
   "apps/frontend/src/hooks/api/useMachinery.ts": [
+    "apps/frontend/src/lib/queryConfig.ts",
     "apps/frontend/src/integrations/supabase/client.ts"
   ],
   "apps/frontend/src/hooks/api/useMachineryBookings.ts": [
+    "apps/frontend/src/lib/queryConfig.ts",
     "apps/frontend/src/integrations/supabase/client.ts"
   ],
   "apps/frontend/src/hooks/api/useMachineryService.ts": [
+    "apps/frontend/src/lib/queryConfig.ts",
     "apps/frontend/src/integrations/supabase/client.ts"
   ],
   "apps/frontend/src/hooks/api/useMechanisation.ts": [
+    "apps/frontend/src/lib/queryConfig.ts",
     "apps/frontend/src/integrations/supabase/client.ts"
   ],
   "apps/frontend/src/hooks/api/useMechanisationRealtime.ts": [
@@ -593,6 +641,7 @@
     "apps/frontend/src/hooks/api/useMachineryBookings.ts"
   ],
   "apps/frontend/src/hooks/api/useNotifications.ts": [
+    "apps/frontend/src/lib/queryConfig.ts",
     "apps/frontend/src/integrations/supabase/client.ts",
     "apps/frontend/src/contexts/AuthContext.tsx"
   ],
@@ -601,12 +650,15 @@
     "apps/frontend/src/contexts/AuthContext.tsx"
   ],
   "apps/frontend/src/hooks/api/useOverdueFollowUps.ts": [
+    "apps/frontend/src/lib/queryConfig.ts",
     "apps/frontend/src/integrations/supabase/client.ts"
   ],
   "apps/frontend/src/hooks/api/usePaginatedFarmers.ts": [
+    "apps/frontend/src/lib/queryConfig.ts",
     "apps/frontend/src/integrations/supabase/client.ts"
   ],
   "apps/frontend/src/hooks/api/useProducts.ts": [
+    "apps/frontend/src/lib/queryConfig.ts",
     "apps/frontend/src/integrations/supabase/client.ts"
   ],
   "apps/frontend/src/hooks/api/useProductsRealtime.ts": [
@@ -614,34 +666,49 @@
     "apps/frontend/src/hooks/api/useProducts.ts"
   ],
   "apps/frontend/src/hooks/api/useSales.ts": [
+    "apps/frontend/src/lib/queryConfig.ts",
     "apps/frontend/src/integrations/supabase/client.ts"
   ],
   "apps/frontend/src/hooks/api/useSupabaseDashboard.ts": [
+    "apps/frontend/src/lib/queryConfig.ts",
     "apps/frontend/src/lib/supabase/dashboardQueries.ts"
   ],
-  "apps/frontend/src/hooks/api/useSyncStatus.ts": [],
+  "apps/frontend/src/hooks/api/useSyncStatus.ts": [
+    "apps/frontend/src/lib/queryConfig.ts"
+  ],
   "apps/frontend/src/hooks/api/useSystemLogs.ts": [
-    "apps/frontend/src/integrations/supabase/client.ts"
+    "apps/frontend/src/lib/queryConfig.ts",
+    "apps/frontend/src/integrations/supabase/client.ts",
+    "apps/frontend/src/lib/auditSeverity.ts"
   ],
   "apps/frontend/src/hooks/api/useTotsByLocalMR.ts": [
+    "apps/frontend/src/lib/queryConfig.ts",
     "apps/frontend/src/integrations/supabase/client.ts"
   ],
   "apps/frontend/src/hooks/api/useTrainings.ts": [
+    "apps/frontend/src/lib/queryConfig.ts",
     "apps/frontend/src/integrations/supabase/client.ts"
   ],
   "apps/frontend/src/hooks/api/useUsers.ts": [
+    "apps/frontend/src/lib/queryConfig.ts",
     "apps/frontend/src/integrations/supabase/client.ts"
   ],
   "apps/frontend/src/hooks/api/useVisits.ts": [
+    "apps/frontend/src/lib/queryConfig.ts",
     "apps/frontend/src/integrations/supabase/client.ts"
   ],
   "apps/frontend/src/hooks/use-mobile.tsx": [],
   "apps/frontend/src/hooks/use-toast.ts": [
     "apps/frontend/src/components/ui/toast.tsx"
   ],
+  "apps/frontend/src/hooks/useClientPagination.ts": [],
   "apps/frontend/src/hooks/useNotificationAlerts.ts": [
     "apps/frontend/src/integrations/supabase/client.ts",
     "apps/frontend/src/contexts/AuthContext.tsx"
+  ],
+  "apps/frontend/src/hooks/usePermissions.ts": [
+    "apps/frontend/src/contexts/AuthContext.tsx",
+    "apps/frontend/src/lib/permissions.ts"
   ],
   "apps/frontend/src/hooks/useRoutePrefetch.ts": [
     "apps/frontend/src/pages/Dashboard",
@@ -659,6 +726,18 @@
     "apps/frontend/src/pages/Settings.tsx",
     "apps/frontend/src/pages/Commission.tsx",
     "apps/frontend/src/pages/Notifications.tsx",
+    "apps/frontend/src/pages/communication/Communication.tsx",
+    "apps/frontend/src/pages/communication/Communication.tsx",
+    "apps/frontend/src/pages/communication/Communication.tsx",
+    "apps/frontend/src/pages/communication/Communication.tsx",
+    "apps/frontend/src/pages/communication/Communication.tsx",
+    "apps/frontend/src/pages/communication/Communication.tsx",
+    "apps/frontend/src/pages/communication/Communication.tsx",
+    "apps/frontend/src/pages/communication/Communication.tsx",
+    "apps/frontend/src/pages/communication/Communication.tsx",
+    "apps/frontend/src/pages/communication/Communication.tsx",
+    "apps/frontend/src/pages/communication/Communication.tsx",
+    "apps/frontend/src/pages/communication/Communication.tsx",
     "apps/frontend/src/pages/TOTManagement.tsx",
     "apps/frontend/src/pages/admin/LocalMRs.tsx",
     "apps/frontend/src/pages/admin/Users.tsx",
@@ -673,9 +752,12 @@
   "apps/frontend/src/lib/api/index.ts": [
     "apps/frontend/src/hooks/api/useDashboard.ts"
   ],
+  "apps/frontend/src/lib/auditSeverity.ts": [],
   "apps/frontend/src/lib/backend.ts": [
     "apps/frontend/src/integrations/supabase/client.ts"
   ],
+  "apps/frontend/src/lib/communication/sms.ts": [],
+  "apps/frontend/src/lib/communication/weather.ts": [],
   "apps/frontend/src/lib/excelUtils.ts": [],
   "apps/frontend/src/lib/exportUtils.ts": [
     "apps/frontend/src/types",
@@ -686,36 +768,23 @@
     "apps/frontend/src/types"
   ],
   "apps/frontend/src/lib/pdfChartUtils.tsx": [],
+  "apps/frontend/src/lib/permissions.ts": [
+    "apps/frontend/src/integrations/supabase/types.ts"
+  ],
+  "apps/frontend/src/lib/queryConfig.ts": [],
   "apps/frontend/src/lib/supabase/dashboardQueries.ts": [
-    "apps/frontend/src/lib/backend.ts"
+    "apps/frontend/src/integrations/supabase/client.ts"
   ],
   "apps/frontend/src/lib/utils.ts": [],
+  "apps/frontend/src/lib/validation/farmer.ts": [],
+  "apps/frontend/src/lib/validation/password.ts": [],
   "apps/frontend/src/main.tsx": [
     "apps/frontend/src/App.tsx",
     "apps/frontend/src/index.css",
     "apps/frontend/src/contexts/AuthContext.tsx"
   ],
   "apps/frontend/src/pages/admin/AuditLog.tsx": [
-    "apps/frontend/src/components/ui/card.tsx",
-    "apps/frontend/src/components/ui/button.tsx",
-    "apps/frontend/src/components/ui/input.tsx",
-    "apps/frontend/src/components/ui/badge.tsx",
-    "apps/frontend/src/components/ui/skeleton.tsx",
-    "apps/frontend/src/components/ui/select.tsx",
-    "apps/frontend/src/components/ui/table.tsx",
-    "apps/frontend/src/components/ui/dropdown-menu.tsx",
-    "apps/frontend/src/lib/excelUtils.ts",
-    "apps/frontend/src/hooks/api/useSystemLogs.ts"
-  ],
-  "apps/frontend/src/pages/admin/CreateUserForm.tsx": [
-    "apps/frontend/src/components/ui/button.tsx",
-    "apps/frontend/src/components/ui/input.tsx",
-    "apps/frontend/src/components/ui/label.tsx",
-    "apps/frontend/src/components/ui/select.tsx",
-    "apps/frontend/src/hooks/use-toast.ts",
-    "apps/frontend/src/types",
-    "apps/frontend/src/hooks/api/useUsers.ts",
-    "apps/frontend/src/hooks/api/useLocalMRs.ts"
+    "apps/frontend/src/components/admin/AuditLogTable.tsx"
   ],
   "apps/frontend/src/pages/admin/LocalMRDetails.tsx": [
     "apps/frontend/src/components/ui/card.tsx",
@@ -749,15 +818,7 @@
     "apps/frontend/src/hooks/api/useMachineryBookings.ts"
   ],
   "apps/frontend/src/pages/admin/SystemLogs.tsx": [
-    "apps/frontend/src/components/ui/card.tsx",
-    "apps/frontend/src/components/ui/button.tsx",
-    "apps/frontend/src/components/ui/input.tsx",
-    "apps/frontend/src/components/ui/badge.tsx",
-    "apps/frontend/src/components/ui/select.tsx",
-    "apps/frontend/src/components/ui/table.tsx",
-    "apps/frontend/src/components/ui/dropdown-menu.tsx",
-    "apps/frontend/src/lib/excelUtils.ts",
-    "apps/frontend/src/hooks/api/useSystemLogs.ts"
+    "apps/frontend/src/components/admin/AuditLogTable.tsx"
   ],
   "apps/frontend/src/pages/admin/Users.tsx": [
     "apps/frontend/src/components/ui/card.tsx",
@@ -773,7 +834,23 @@
     "apps/frontend/src/hooks/api",
     "apps/frontend/src/integrations/supabase/client.ts",
     "apps/frontend/src/types",
-    "apps/frontend/src/components/ui/password-strength.tsx"
+    "apps/frontend/src/components/ui/password-strength.tsx",
+    "apps/frontend/src/components/ui/table-pagination.tsx",
+    "apps/frontend/src/hooks/useClientPagination.ts"
+  ],
+  "apps/frontend/src/pages/AIAssistant.tsx": [
+    "apps/frontend/src/components/ui/button.tsx",
+    "apps/frontend/src/components/ui/card.tsx",
+    "apps/frontend/src/components/ui/textarea.tsx",
+    "apps/frontend/src/contexts/AuthContext.tsx",
+    "apps/frontend/src/hooks/api/useFarmers.ts",
+    "apps/frontend/src/hooks/api/useMachineryBookings.ts",
+    "apps/frontend/src/hooks/api/useProducts.ts",
+    "apps/frontend/src/hooks/api/useSales.ts",
+    "apps/frontend/src/hooks/api/useTrainings.ts",
+    "apps/frontend/src/hooks/api/useVisits.ts",
+    "apps/frontend/src/lib/backend.ts",
+    "apps/frontend/src/lib/utils.ts"
   ],
   "apps/frontend/src/pages/Auth.tsx": [
     "apps/frontend/src/components/ui/card.tsx",
@@ -788,8 +865,33 @@
     "apps/frontend/src/components/ui/badge.tsx",
     "apps/frontend/src/components/ui/table.tsx",
     "apps/frontend/src/contexts/AuthContext.tsx",
+    "apps/frontend/src/hooks/usePermissions.ts",
     "apps/frontend/src/hooks/api",
     "apps/frontend/src/lib/excelUtils.ts"
+  ],
+  "apps/frontend/src/pages/communication/Communication.tsx": [
+    "apps/frontend/src/contexts/AuthContext.tsx",
+    "apps/frontend/src/hooks/api/useFarmers.ts",
+    "apps/frontend/src/hooks/api/useLocalMRs.ts",
+    "apps/frontend/src/hooks/api/useCommunicationStats.ts",
+    "apps/frontend/src/hooks/useClientPagination.ts",
+    "apps/frontend/src/lib/backend.ts",
+    "apps/frontend/src/lib/utils.ts",
+    "apps/frontend/src/lib/communication/sms.ts",
+    "apps/frontend/src/lib/communication/weather.ts",
+    "apps/frontend/src/components/ui/alert-dialog.tsx",
+    "apps/frontend/src/components/ui/badge.tsx",
+    "apps/frontend/src/components/ui/button.tsx",
+    "apps/frontend/src/components/ui/card.tsx",
+    "apps/frontend/src/components/ui/dialog.tsx",
+    "apps/frontend/src/components/ui/input.tsx",
+    "apps/frontend/src/components/ui/label.tsx",
+    "apps/frontend/src/components/ui/select.tsx",
+    "apps/frontend/src/components/ui/skeleton.tsx",
+    "apps/frontend/src/components/ui/table.tsx",
+    "apps/frontend/src/components/ui/table-pagination.tsx",
+    "apps/frontend/src/components/ui/tabs.tsx",
+    "apps/frontend/src/components/ui/textarea.tsx"
   ],
   "apps/frontend/src/pages/dashboard/AdminDashboard.tsx": [
     "apps/frontend/src/components/dashboard/StatCard.tsx",
@@ -819,7 +921,7 @@
     "apps/frontend/src/components/dashboard/PerformanceSummary.tsx",
     "apps/frontend/src/contexts/AuthContext.tsx",
     "apps/frontend/src/hooks/api/useDashboardRealtime.ts",
-    "apps/frontend/src/lib/backend.ts",
+    "apps/frontend/src/lib/supabase/dashboardQueries.ts",
     "apps/frontend/src/components/ui/card.tsx",
     "apps/frontend/src/components/ui/badge.tsx"
   ],
@@ -872,13 +974,13 @@
   ],
   "apps/frontend/src/pages/Farmers.tsx": [
     "apps/frontend/src/contexts/AuthContext.tsx",
+    "apps/frontend/src/hooks/usePermissions.ts",
     "apps/frontend/src/contexts/NotificationContext.tsx",
     "apps/frontend/src/components/ui/card.tsx",
     "apps/frontend/src/components/ui/button.tsx",
     "apps/frontend/src/components/ui/input.tsx",
     "apps/frontend/src/components/ui/badge.tsx",
-    "apps/frontend/src/components/ui/skeleton.tsx",
-    "apps/frontend/src/lib/exportUtils.ts",
+    "apps/frontend/src/components/common/QueryState.tsx",
     "apps/frontend/src/components/forms/FarmerFormDialog.tsx",
     "apps/frontend/src/components/bulk-upload/BulkUploadDialog.tsx",
     "apps/frontend/src/components/ui/table-pagination.tsx",
@@ -890,7 +992,8 @@
     "apps/frontend/src/components/ui/dialog.tsx",
     "apps/frontend/src/components/ui/dropdown-menu.tsx",
     "apps/frontend/src/components/ui/select.tsx",
-    "apps/frontend/src/components/ui/alert-dialog.tsx"
+    "apps/frontend/src/components/ui/alert-dialog.tsx",
+    "apps/frontend/src/lib/exportUtils.ts"
   ],
   "apps/frontend/src/pages/ForgotPassword.tsx": [
     "apps/frontend/src/components/ui/button.tsx",
@@ -910,6 +1013,7 @@
     "apps/frontend/src/components/ui/input.tsx",
     "apps/frontend/src/components/ui/badge.tsx",
     "apps/frontend/src/components/ui/skeleton.tsx",
+    "apps/frontend/src/components/common/QueryState.tsx",
     "apps/frontend/src/components/ui/tabs.tsx",
     "apps/frontend/src/contexts/AuthContext.tsx",
     "apps/frontend/src/contexts/NotificationContext.tsx",
@@ -925,7 +1029,9 @@
     "apps/frontend/src/components/machinery/MachineryServiceHistory.tsx",
     "apps/frontend/src/components/machinery/UpcomingMaintenance.tsx",
     "apps/frontend/src/components/machinery/EditMachineryDialog.tsx",
-    "apps/frontend/src/components/bulk-upload/BulkUploadDialog.tsx"
+    "apps/frontend/src/components/bulk-upload/BulkUploadDialog.tsx",
+    "apps/frontend/src/components/ui/table-pagination.tsx",
+    "apps/frontend/src/hooks/useClientPagination.ts"
   ],
   "apps/frontend/src/pages/NotFound.tsx": [],
   "apps/frontend/src/pages/Notifications.tsx": [
@@ -934,7 +1040,9 @@
     "apps/frontend/src/components/ui/badge.tsx",
     "apps/frontend/src/components/ui/checkbox.tsx",
     "apps/frontend/src/contexts/NotificationContext.tsx",
-    "apps/frontend/src/types"
+    "apps/frontend/src/types",
+    "apps/frontend/src/components/ui/table-pagination.tsx",
+    "apps/frontend/src/hooks/useClientPagination.ts"
   ],
   "apps/frontend/src/pages/Products.tsx": [
     "apps/frontend/src/components/ui/card.tsx",
@@ -944,13 +1052,16 @@
     "apps/frontend/src/components/ui/label.tsx",
     "apps/frontend/src/components/ui/textarea.tsx",
     "apps/frontend/src/components/ui/skeleton.tsx",
+    "apps/frontend/src/components/common/QueryState.tsx",
     "apps/frontend/src/contexts/AuthContext.tsx",
     "apps/frontend/src/hooks/api",
     "apps/frontend/src/components/bulk-upload/BulkUploadDialog.tsx",
     "apps/frontend/src/integrations/supabase/client.ts",
     "apps/frontend/src/components/ui/dialog.tsx",
     "apps/frontend/src/components/ui/select.tsx",
-    "apps/frontend/src/types"
+    "apps/frontend/src/types",
+    "apps/frontend/src/components/ui/table-pagination.tsx",
+    "apps/frontend/src/hooks/useClientPagination.ts"
   ],
   "apps/frontend/src/pages/Reports.tsx": [
     "apps/frontend/src/components/ui/card.tsx",
@@ -964,6 +1075,7 @@
     "apps/frontend/src/hooks/api/useMachineryBookings.ts",
     "apps/frontend/src/hooks/api/useTrainings.ts",
     "apps/frontend/src/hooks/api/useVisits.ts",
+    "apps/frontend/src/lib/exportUtils.ts",
     "apps/frontend/src/lib/exportUtils.ts"
   ],
   "apps/frontend/src/pages/ResetPassword.tsx": [
@@ -972,31 +1084,38 @@
     "apps/frontend/src/components/ui/label.tsx",
     "apps/frontend/src/components/ui/card.tsx",
     "apps/frontend/src/hooks/use-toast.ts",
-    "apps/frontend/src/integrations/supabase/client.ts"
+    "apps/frontend/src/integrations/supabase/client.ts",
+    "apps/frontend/src/lib/validation/password.ts",
+    "apps/frontend/src/components/ui/password-strength.tsx"
   ],
   "apps/frontend/src/pages/Sales.tsx": [
     "apps/frontend/src/components/ui/card.tsx",
     "apps/frontend/src/components/ui/button.tsx",
     "apps/frontend/src/components/ui/input.tsx",
     "apps/frontend/src/components/ui/badge.tsx",
-    "apps/frontend/src/components/ui/skeleton.tsx",
-    "apps/frontend/src/lib/exportUtils.ts",
+    "apps/frontend/src/components/common/QueryState.tsx",
     "apps/frontend/src/components/forms/SaleFormDialog.tsx",
     "apps/frontend/src/components/forms/EditSaleDialog.tsx",
     "apps/frontend/src/components/bulk-upload/BulkUploadDialog.tsx",
     "apps/frontend/src/contexts/NotificationContext.tsx",
     "apps/frontend/src/contexts/AuthContext.tsx",
+    "apps/frontend/src/hooks/usePermissions.ts",
     "apps/frontend/src/types",
     "apps/frontend/src/hooks/api",
     "apps/frontend/src/hooks/api/useFarmers.ts",
     "apps/frontend/src/hooks/api/useUsers.ts",
     "apps/frontend/src/hooks/api/useLocalMRs.ts",
     "apps/frontend/src/integrations/supabase/client.ts",
+    "apps/frontend/src/components/ui/table-pagination.tsx",
+    "apps/frontend/src/hooks/useClientPagination.ts",
     "apps/frontend/src/components/ui/dropdown-menu.tsx",
-    "apps/frontend/src/components/ui/select.tsx"
+    "apps/frontend/src/components/ui/select.tsx",
+    "apps/frontend/src/lib/exportUtils.ts",
+    "apps/frontend/src/lib/exportUtils.ts"
   ],
   "apps/frontend/src/pages/Settings.tsx": [
     "apps/frontend/src/contexts/AuthContext.tsx",
+    "apps/frontend/src/integrations/supabase/client.ts",
     "apps/frontend/src/hooks/api/useNotificationSettings.ts",
     "apps/frontend/src/components/ui/card.tsx",
     "apps/frontend/src/components/ui/button.tsx",
@@ -1007,7 +1126,9 @@
     "apps/frontend/src/components/ui/select.tsx",
     "apps/frontend/src/components/ui/separator.tsx",
     "apps/frontend/src/components/ui/badge.tsx",
-    "apps/frontend/src/components/ui/skeleton.tsx"
+    "apps/frontend/src/components/ui/skeleton.tsx",
+    "apps/frontend/src/lib/validation/password.ts",
+    "apps/frontend/src/components/ui/password-strength.tsx"
   ],
   "apps/frontend/src/pages/Support.tsx": [
     "apps/frontend/src/components/ui/card.tsx",
@@ -1030,9 +1151,13 @@
     "apps/frontend/src/components/ui/dialog.tsx",
     "apps/frontend/src/components/ui/label.tsx",
     "apps/frontend/src/contexts/AuthContext.tsx",
+    "apps/frontend/src/hooks/usePermissions.ts",
     "apps/frontend/src/hooks/api",
+    "apps/frontend/src/hooks/api/useUsers.ts",
     "apps/frontend/src/components/dashboard/AddTOTDialog.tsx",
-    "apps/frontend/src/components/dashboard/EditTOTDialog.tsx"
+    "apps/frontend/src/components/dashboard/EditTOTDialog.tsx",
+    "apps/frontend/src/components/ui/table-pagination.tsx",
+    "apps/frontend/src/hooks/useClientPagination.ts"
   ],
   "apps/frontend/src/pages/TrainingDetails.tsx": [
     "apps/frontend/src/components/ui/card.tsx",
@@ -1050,15 +1175,20 @@
     "apps/frontend/src/components/ui/input.tsx",
     "apps/frontend/src/components/ui/badge.tsx",
     "apps/frontend/src/components/ui/skeleton.tsx",
-    "apps/frontend/src/lib/exportUtils.ts",
+    "apps/frontend/src/components/common/QueryState.tsx",
     "apps/frontend/src/components/ui/dropdown-menu.tsx",
     "apps/frontend/src/components/ui/select.tsx",
     "apps/frontend/src/components/forms/TrainingFormDialog.tsx",
     "apps/frontend/src/components/trainings/AttendanceModal.tsx",
     "apps/frontend/src/contexts/NotificationContext.tsx",
     "apps/frontend/src/contexts/AuthContext.tsx",
+    "apps/frontend/src/hooks/usePermissions.ts",
     "apps/frontend/src/types",
-    "apps/frontend/src/hooks/api/useTrainings.ts"
+    "apps/frontend/src/hooks/api/useTrainings.ts",
+    "apps/frontend/src/components/ui/table-pagination.tsx",
+    "apps/frontend/src/hooks/useClientPagination.ts",
+    "apps/frontend/src/lib/exportUtils.ts",
+    "apps/frontend/src/lib/exportUtils.ts"
   ],
   "apps/frontend/src/pages/VisitDetails.tsx": [
     "apps/frontend/src/components/ui/card.tsx",
@@ -1076,39 +1206,86 @@
     "apps/frontend/src/components/ui/input.tsx",
     "apps/frontend/src/components/ui/badge.tsx",
     "apps/frontend/src/components/ui/skeleton.tsx",
-    "apps/frontend/src/lib/exportUtils.ts",
+    "apps/frontend/src/components/common/QueryState.tsx",
     "apps/frontend/src/components/ui/dropdown-menu.tsx",
     "apps/frontend/src/components/ui/select.tsx",
     "apps/frontend/src/components/forms/VisitFormDialog.tsx",
     "apps/frontend/src/contexts/NotificationContext.tsx",
     "apps/frontend/src/contexts/AuthContext.tsx",
+    "apps/frontend/src/hooks/usePermissions.ts",
     "apps/frontend/src/types",
-    "apps/frontend/src/hooks/api"
+    "apps/frontend/src/hooks/api",
+    "apps/frontend/src/components/ui/table-pagination.tsx",
+    "apps/frontend/src/hooks/useClientPagination.ts",
+    "apps/frontend/src/lib/exportUtils.ts",
+    "apps/frontend/src/lib/exportUtils.ts"
   ],
   "apps/frontend/src/types/index.ts": [],
   "apps/frontend/src/types/supabase-js-shim.d.ts": [],
   "apps/frontend/src/vite-env.d.ts": [
     "apps/frontend/src/types/supabase-js-shim.d.ts"
   ],
+  "apps/backend/src/communication/smsProviders.js": [],
+  "apps/backend/src/communication/weatherService.js": [],
   "apps/backend/src/config/constants.ts": [],
   "apps/backend/src/config/database.ts": [],
   "apps/backend/src/config/env.ts": [],
   "apps/backend/src/config/supabase.ts": [],
-  "apps/backend/src/routes/dashboard.js": [
+  "apps/backend/src/routes/ai.js": [
     "apps/backend/src/supabaseClient.js"
   ],
+  "apps/backend/src/routes/communication.js": [
+    "apps/backend/src/supabaseClient.js",
+    "apps/backend/src/communication/smsProviders.js",
+    "apps/backend/src/communication/weatherService.js"
+  ],
+  "apps/backend/src/routes/dashboard.js": [
+    "apps/backend/src/supabaseClient.js",
+    "apps/backend/src/utils/cache.js"
+  ],
   "apps/backend/src/server.js": [
-    "apps/backend/src/routes/dashboard.js"
+    "apps/backend/src/routes/ai.js",
+    "apps/backend/src/routes/dashboard.js",
+    "apps/backend/src/routes/communication.js"
   ],
   "apps/backend/src/supabaseClient.js": [],
+  "apps/backend/src/utils/cache.js": [],
   "packages/shared-types/src/index.ts": [],
   "packages/shared-utils/src/index.ts": [],
   "packages/ui/src/index.ts": [],
-  "supabase/functions/bootstrap-admin/index.ts": [],
+  "supabase/functions/bootstrap-admin/index.ts": [
+    "supabase/functions/_shared/auth.ts"
+  ],
   "supabase/functions/create-user/index.ts": [],
   "supabase/functions/delete-user/index.ts": [],
   "supabase/functions/followup-reminders/index.ts": [],
+  "supabase/functions/generate-weather-alert/index.ts": [
+    "supabase/functions/_shared/auth.ts"
+  ],
+  "supabase/functions/generate-weather-report/index.ts": [
+    "supabase/functions/_shared/auth.ts"
+  ],
   "supabase/functions/purge-farmer/index.ts": [],
   "supabase/functions/purge-user-by-email/index.ts": [],
-  "supabase/functions/send-notification-email/index.ts": []
+  "supabase/functions/retry-failed-sms/index.ts": [
+    "supabase/functions/_shared/auth.ts"
+  ],
+  "supabase/functions/schedule-sms/index.ts": [],
+  "supabase/functions/send-notification-email/index.ts": [
+    "supabase/functions/_shared/auth.ts"
+  ],
+  "supabase/functions/send-sms/index.ts": [],
+  "supabase/functions/sync-delivery-status/index.ts": [
+    "supabase/functions/_shared/auth.ts"
+  ],
+  "supabase/functions/sync-weather/index.ts": [
+    "supabase/functions/_shared/auth.ts"
+  ],
+  "supabase/functions/weekly-weather-sms/index.ts": [
+    "supabase/functions/_shared/auth.ts"
+  ],
+  "supabase/functions/_shared/auth.test.ts": [
+    "supabase/functions/_shared/auth.ts"
+  ],
+  "supabase/functions/_shared/auth.ts": []
 }

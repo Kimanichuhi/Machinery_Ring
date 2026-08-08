@@ -1,12 +1,12 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
+import { ErrorState, EmptyState } from '@/components/common/QueryState';
 import { Search, Plus, GraduationCap, Calendar, MapPin, Users, Clock, Download, FileSpreadsheet, FileText, CheckCircle, Eye, UserPlus } from 'lucide-react';
-import { exportTrainingsToExcel, exportTrainingsToPDF } from '@/lib/exportUtils';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,6 +24,7 @@ import { TrainingFormDialog } from '@/components/forms/TrainingFormDialog';
 import { AttendanceModal } from '@/components/trainings/AttendanceModal';
 import { useNotifications } from '@/contexts/NotificationContext';
 import { useAuth } from '@/contexts/AuthContext';
+import { usePermissions } from '@/hooks/usePermissions';
 import { toast } from 'sonner';
 import { Training } from '@/types';
 import { useTrainings, useCreateTraining } from '@/hooks/api/useTrainings';
@@ -44,17 +45,21 @@ export function Trainings() {
   const { user, isAdmin, canEdit } = useAuth();
 
   // API hooks
-  const { data: trainings = [], isLoading } = useTrainings();
+  const { data: trainings = [], isLoading, error: trainingsError, refetch: refetchTrainings } = useTrainings();
   const createTraining = useCreateTraining();
 
-  const filteredTrainings = trainings.filter(training => {
-    const trainingType = training.type ?? '';
-    const matchesSearch = training.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      trainingType.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (training.trainer || '').toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesType = typeFilter === 'all' || trainingType.toLowerCase() === typeFilter.toLowerCase();
-    return matchesSearch && matchesType;
-  });
+  const filteredTrainings = useMemo(
+    () =>
+      trainings.filter(training => {
+        const trainingType = training.type ?? '';
+        const matchesSearch = training.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          trainingType.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          (training.trainer || '').toLowerCase().includes(searchQuery.toLowerCase());
+        const matchesType = typeFilter === 'all' || trainingType.toLowerCase() === typeFilter.toLowerCase();
+        return matchesSearch && matchesType;
+      }),
+    [trainings, searchQuery, typeFilter]
+  );
   const {
     page,
     pageSize,
@@ -105,7 +110,7 @@ export function Trainings() {
   };
 
   // Manager and Coordinator can export reports
-  const canExport = user?.role === 'admin' || user?.role === 'manager' || user?.role === 'local_mr_coordinator';
+  const { canViewOrgData: canExport } = usePermissions();
 
   if (isLoading) {
     return (
@@ -122,6 +127,10 @@ export function Trainings() {
         </div>
       </div>
     );
+  }
+
+  if (trainingsError) {
+    return <ErrorState message="Failed to load trainings." onRetry={() => refetchTrainings()} />;
   }
 
   return (
@@ -144,11 +153,11 @@ export function Trainings() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuItem onClick={() => { exportTrainingsToExcel(filteredTrainings); toast.success('Exported to Excel'); }}>
+                <DropdownMenuItem onClick={async () => { const { exportTrainingsToExcel } = await import('@/lib/exportUtils'); exportTrainingsToExcel(filteredTrainings); toast.success('Exported to Excel'); }}>
                   <FileSpreadsheet className="w-4 h-4 mr-2" />
                   Export to Excel
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => { exportTrainingsToPDF(filteredTrainings); toast.success('Exported to PDF'); }}>
+                <DropdownMenuItem onClick={async () => { const { exportTrainingsToPDF } = await import('@/lib/exportUtils'); exportTrainingsToPDF(filteredTrainings); toast.success('Exported to PDF'); }}>
                   <FileText className="w-4 h-4 mr-2" />
                   Export to PDF
                 </DropdownMenuItem>
@@ -231,6 +240,9 @@ export function Trainings() {
       </Card>
 
       {/* Trainings List */}
+      {paginatedTrainings.length === 0 ? (
+        <EmptyState title="No trainings found" description="Try adjusting your search or filters." />
+      ) : (
       <div className="space-y-3 sm:space-y-4">
         {paginatedTrainings.map((training, index) => (
           <Card 
@@ -312,6 +324,7 @@ export function Trainings() {
           </Card>
         ))}
       </div>
+      )}
       <TablePagination
         page={page}
         pageSize={pageSize}
