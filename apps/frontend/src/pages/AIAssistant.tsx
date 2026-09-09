@@ -439,6 +439,120 @@ export function AIAssistant() {
       return 'Hello there. What can I help you with today? You can ask me things like how to improve sales, which products are performing best, what stock needs attention, or what risks need action.';
     }
 
+    if (normalized.includes('report')) {
+      const leaders = intelligence.topProducts.length
+        ? intelligence.topProducts.map((item, index) => `${index + 1}. ${item.name}: ${formatCurrency(item.revenue)}`).join('\n')
+        : 'No product-level revenue leaders are available yet.';
+      const recentMachinery = (machineryBookings as Record<string, unknown>[])
+        .slice(0, 5)
+        .map((booking, index) => `${index + 1}. ${getName(booking, 'Machinery booking')} — ${getItemDate(booking) || 'Date not recorded'} (${getPersonName(booking)})`)
+        .join('\n');
+      const recentVisits = (visits as Record<string, unknown>[])
+        .slice(0, 5)
+        .map((visit, index) => `${index + 1}. ${getName(visit, 'Field visit')} — ${getItemDate(visit) || 'Date not recorded'} (${getPersonName(visit)})`)
+        .join('\n');
+      const recentTrainings = (trainings as Record<string, unknown>[])
+        .slice(0, 5)
+        .map((training, index) => `${index + 1}. ${getName(training, 'Training')} — ${getItemDate(training) || 'Date not recorded'} (${getPersonName(training)})`)
+        .join('\n');
+
+      let topic = 'Farm Performance';
+      let metrics = executiveSnapshot;
+      let findings = intelligence.briefing.length
+        ? intelligence.briefing.map((item) => `- ${item}`).join('\n')
+        : 'No standout trends are visible in the current records.';
+      let risks = riskSummary;
+      let recommendations = recommendationSummary;
+
+      if (normalized.includes('sale') || normalized.includes('revenue') || normalized.includes('financial') || normalized.includes('profit')) {
+        topic = 'Sales & Revenue';
+        metrics = [
+          `Total recorded revenue: ${formatCurrency(intelligence.totalRevenue)}`,
+          `Monthly revenue: ${formatCurrency(intelligence.monthlyRevenue)}`,
+          `Revenue movement: ${intelligence.revenueGrowth >= 0 ? 'up' : 'down'} ${formatPercent(intelligence.revenueGrowth)} vs previous comparable month`,
+          `Sales records: ${intelligence.summary.sales}`,
+        ].join('\n');
+        findings = `Revenue leaders:\n${leaders}`;
+        risks = intelligence.lowStock.length ? `- Stock risk to top sellers: ${lowStockNames.join(', ')}.` : '';
+        recommendations = [
+          `1. Protect availability of ${topProduct ? topProduct.name : 'top-selling products'}; avoid stockouts.`,
+          '2. Convert recent visits and trainings into follow-up orders.',
+          '3. Compare products by margin, not just revenue, before reallocating stock.',
+          '4. Investigate underperforming products for pricing, availability, or demand issues.',
+        ].join('\n');
+      } else if (normalized.includes('inventory') || normalized.includes('stock') || normalized.includes('fertilizer') || normalized.includes('product')) {
+        topic = 'Inventory';
+        metrics = [
+          `Products tracked: ${intelligence.summary.products}`,
+          `Low-stock alerts: ${intelligence.lowStock.length}`,
+        ].join('\n');
+        findings = lowStockNames.length
+          ? `Products needing stock attention:\n${lowStockNames.map((name) => `- ${name}`).join('\n')}`
+          : 'No critical low-stock products are visible in the current records.';
+        risks = lowStockNames.length ? '- Stockouts on the listed products can delay sales and farmer support.' : '';
+        recommendations = [
+          '1. Confirm physical stock for any item at or below reorder level.',
+          '2. Create procurement requests for items running low.',
+          '3. Keep reorder levels and supplier lead times up to date so this report stays accurate.',
+        ].join('\n');
+      } else if (normalized.includes('workforce') || normalized.includes('worker') || normalized.includes('staff') || normalized.includes('productivity')) {
+        topic = 'Workforce';
+        metrics = `Ranked by recorded sales, visits, trainings, and machinery activity:\n${workforceSummary || 'Not enough assigned activity data to rank workers yet.'}`;
+        findings = 'This ranking reflects recorded activity volume, not quality or outcomes.';
+        risks = '';
+        recommendations = [
+          '1. Attach a responsible staff member to every sale, visit, machinery task, and training.',
+          '2. Compare activity volume against revenue and farmer outcomes, not volume alone.',
+          '3. Follow up with low-activity staff to confirm whether work is missing or simply unrecorded.',
+        ].join('\n');
+      } else if (normalized.includes('machinery')) {
+        topic = 'Machinery';
+        metrics = `Machinery jobs recorded: ${intelligence.summary.machinery}`;
+        findings = recentMachinery ? `Recent bookings:\n${recentMachinery}` : 'No machinery bookings recorded yet.';
+        risks = '';
+        recommendations = [
+          '1. Confirm machinery utilization against demand to avoid idle equipment.',
+          '2. Record outcomes per booking (area covered, issues) for better planning.',
+        ].join('\n');
+      } else if (normalized.includes('visit')) {
+        topic = 'Field Visits';
+        metrics = `Visits recorded: ${intelligence.summary.visits}`;
+        findings = recentVisits ? `Recent visits:\n${recentVisits}` : 'No field visits recorded yet.';
+        risks = '';
+        recommendations = [
+          '1. Follow up on recent visits with the farmers involved to convert interest into sales.',
+          '2. Ensure every visit records a responsible person and outcome.',
+        ].join('\n');
+      } else if (normalized.includes('training')) {
+        topic = 'Training';
+        metrics = `Trainings recorded: ${intelligence.summary.trainings}`;
+        findings = recentTrainings ? `Recent trainings:\n${recentTrainings}` : 'No trainings recorded yet.';
+        risks = '';
+        recommendations = [
+          '1. Track attendance and follow-up adoption after each training.',
+          '2. Align upcoming trainings with low-performing regions or products.',
+        ].join('\n');
+      } else if (normalized.includes('risk')) {
+        topic = 'Risk';
+        findings = riskSummary || 'No significant risks are visible in the current records.';
+        risks = '';
+      } else if (normalized.includes('farmer')) {
+        topic = 'Farmers';
+        metrics = `Farmers recorded: ${intelligence.summary.farmers}`;
+      }
+
+      return [
+        `## ${topic} Report`,
+        `**Executive Summary**\nFarm Health Score: ${intelligence.farmHealthScore}/100. This report is scoped to ${topic.toLowerCase()} using currently recorded platform data.`,
+        `**Key Metrics**\n${metrics}`,
+        `**Findings**\n${findings}`,
+        risks ? `**Risks**\n${risks}` : '',
+        `**Recommended Actions**\n${recommendations}`,
+      ]
+        .filter(Boolean)
+        .join('\n\n');
+    }
+
     if ((asksHowMany || normalized.includes('total')) && normalized.includes('farmer')) {
       return `We currently have ${intelligence.summary.farmers} farmers recorded in the platform.`;
     }
@@ -513,10 +627,6 @@ export function AIAssistant() {
       return workforceSummary
         ? `Direct answer: the current productivity ranking from recorded sales, visits, trainings, and machinery activity is:\n${workforceSummary}\n\nInsight: this ranking reflects recorded activity volume, not quality or outcomes. It becomes stronger when each sale, visit, training, and machinery booking has a responsible person attached.\n\nRecommended actions:\n1. Compare activity volume with revenue and farmer outcomes.\n2. Follow up with low-activity staff to confirm whether work is missing or simply unrecorded.\n3. Use visits and trainings to balance workload across territories.`
         : `Direct answer: there is not enough assigned activity data to rank workers reliably.\n\nKey evidence:\n${executiveSnapshot}\n\nRecommended actions:\n1. Attach responsible staff to sales, visits, machinery tasks, and trainings.\n2. Record outcomes, not just activity counts.\n3. Re-run the ranking after the data is complete.`;
-    }
-
-    if (normalized.includes('report')) {
-      return `Executive report summary:\n${executiveSnapshot}\n\nKey insights:\n${intelligence.briefing.map((item) => `- ${item}`).join('\n')}\n\nRisks:\n${riskSummary}\n\nRecommended actions:\n${recommendationSummary}`;
     }
 
     if (normalized.includes('risk')) {

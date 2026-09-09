@@ -982,3 +982,71 @@ export const exportPerformanceToPDF = async (data: PerformanceData[], filename: 
     ],
   });
 };
+
+// ==================== EXPENSES ====================
+export interface ExpenseExportRow {
+  category: string;
+  description: string;
+  amount: number;
+  payment_method: string;
+  vendor?: string | null;
+  status: string;
+  expense_date: string;
+  recorded_by_name?: string;
+}
+
+export const exportExpensesToExcel = (expenses: ExpenseExportRow[], filename: string = 'expenses') => {
+  const data = expenses.map(expense => ({
+    'Date': formatDate(expense.expense_date),
+    'Category': expense.category,
+    'Description': expense.description,
+    'Paid To': expense.vendor || '',
+    'Amount (KES)': expense.amount,
+    'Payment Method': expense.payment_method,
+    'Status': expense.status,
+    'Recorded By': expense.recorded_by_name || '',
+  }));
+  exportToExcel(data, filename, 'Expenses');
+};
+
+export const exportExpensesToPDF = async (expenses: ExpenseExportRow[], filename: string = 'expenses', userName?: string) => {
+  const headers = ['Date', 'Category', 'Description', 'Paid To', 'Amount', 'Method', 'Status', 'Recorded By'];
+  const rows: (string | number)[][] = expenses.map(expense => [
+    formatDate(expense.expense_date),
+    expense.category,
+    truncateText(expense.description, 50),
+    expense.vendor || '',
+    formatMoney(expense.amount),
+    expense.payment_method,
+    expense.status,
+    expense.recorded_by_name || '',
+  ]);
+
+  const activeExpenses = expenses.filter(e => e.status !== 'voided');
+  const categoryTotals: Record<string, number> = {};
+  activeExpenses.forEach(e => {
+    categoryTotals[e.category] = (categoryTotals[e.category] || 0) + Number(e.amount || 0);
+  });
+  const categoryChartData: ChartDataItem[] = Object.entries(categoryTotals)
+    .map(([name, value]) => ({ name, value }))
+    .sort((a, b) => b.value - a.value);
+
+  const totalSpent = activeExpenses.reduce((sum, e) => sum + Number(e.amount || 0), 0);
+
+  await exportToPDFWithCharts({
+    title: 'Expenses Report',
+    headers,
+    rows,
+    filename,
+    userName,
+    summaryStats: [
+      { label: 'Total Expenses', value: expenses.length },
+      { label: 'Total Spent', value: `KES ${totalSpent.toLocaleString()}` },
+      { label: 'Categories', value: Object.keys(categoryTotals).length },
+    ],
+    charts: [
+      { type: 'horizontal-bar', data: categoryChartData, title: 'Spend by Category' },
+      { type: 'pie', data: categoryChartData, title: 'Category Share' },
+    ],
+  });
+};

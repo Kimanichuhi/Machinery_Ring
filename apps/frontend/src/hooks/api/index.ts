@@ -5,7 +5,7 @@ export * from './useFarmersAndTots';
 // Core entities
 export * from './useFarmers';
 export * from './useFarmerTrainings';
-export { useSales, useSale, useCreateSale, useBulkCreateSales, useCompleteSale, useCancelSale, useUncancelSale, useUpdateSale, saleKeys } from './useSales';
+export { useSales, useSale, useCreateSale, useBulkCreateSales, useCompleteSale, useCancelSale, useUncancelSale, useDeleteSale, useUpdateSale, saleKeys } from './useSales';
 export * from './useTrainings';
 export * from './useVisits';
 export { useMachinery, useMachineryItem, useCreateMachinery, useBulkCreateMachinery, useUpdateMachinery, useDeleteMachinery, useUpdateMachineryStatus, machineryKeys } from './useMachinery';
@@ -14,6 +14,7 @@ export * from './useMachineryService';
 export * from './useLocalMRs';
 export { useUsers, useUser, useCreateUser, useUpdateUser, useDeleteUser, useToggleUserStatus, userKeys } from './useUsers';
 export * from './useNotifications';
+export * from './useExpenses';
 
 // Dashboard hooks (note: useProductPerformance is also in useDashboard)
 export { 

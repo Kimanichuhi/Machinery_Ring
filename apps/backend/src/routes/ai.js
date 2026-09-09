@@ -69,6 +69,8 @@ function buildSystemInstruction({ webSearchAvailable }) {
     "If the manager asks how to improve sales, give a practical sales improvement plan using product performance, stock, farmer activity, visits, trainings, and revenue data where available.",
     "If data is missing, say what is missing and explain how that limits the answer.",
     "Structure substantial answers with short sections only when the question needs analysis: Direct answer, Key evidence, Insights, Recommended actions.",
+    "When the manager asks to 'generate a report' (with or without a named topic such as sales, revenue, inventory, stock, workforce, machinery, visits, trainings, risks, or farmers), produce a formal report instead of a short answer, using markdown headings. Structure: a '## <Topic> Report' title naming the specific topic asked about (use '## Farm Performance Report' when no topic is named); '**Executive Summary**' with 2-3 sentences giving the headline result; '**Key Metrics**' as a markdown table or tight list of the numbers relevant to that topic only; '**Findings**' with the notable trends, leaders, laggards, or standouts drawn strictly from platform data; '**Risks**' only if a real risk applies to that topic, omit the section otherwise; '**Recommended Actions**' with 3-5 concrete, prioritized, farm-specific actions.",
+    "Keep a report scoped to the topic asked: a sales report should not pad itself with unrelated workforce or training detail, and vice versa. Do not fabricate figures — if platform data for the requested topic is thin, say so in the Executive Summary and recommend what should be tracked to make future reports stronger.",
     "Use Kenyan Shillings where money appears, and do not invent exact records that are not in the context.",
   ].join(" ");
 }
@@ -186,12 +188,12 @@ async function callGemini({ prompt, farmContext, attachments }) {
 router.get("/health", (_req, res) => {
   res.json({
     ok: true,
-    defaultProvider: "openai",
-    openaiConfigured: Boolean(process.env.OPENAI_API_KEY),
-    openaiModel: process.env.OPENAI_MODEL || DEFAULT_OPENAI_MODEL,
-    fallbackProvider: "gemini",
+    defaultProvider: "gemini",
     geminiConfigured: Boolean(process.env.GEMINI_API_KEY),
     geminiModel: process.env.GEMINI_MODEL || DEFAULT_GEMINI_MODEL,
+    fallbackProvider: "openai",
+    openaiConfigured: Boolean(process.env.OPENAI_API_KEY),
+    openaiModel: process.env.OPENAI_MODEL || DEFAULT_OPENAI_MODEL,
   });
 });
 
@@ -204,27 +206,27 @@ router.post("/assistant", verifyAuth, async (req, res) => {
   const farmContext = buildFarmContext(req.body?.context);
   const attachments = validAttachments(req.body?.attachments);
   // OpenAI's chat completions endpoint only accepts images inline; anything else
-  // (PDF, spreadsheet, doc) goes straight to Gemini, which handles all file types.
+  // (PDF, spreadsheet, doc) can only be handled by Gemini's fallback path.
   const openaiCanHandleAttachments = attachments.every(isImageAttachment);
 
-  let openaiError = null;
+  let geminiError = null;
 
-  if (process.env.OPENAI_API_KEY && openaiCanHandleAttachments) {
+  if (process.env.GEMINI_API_KEY) {
     try {
-      const result = await callOpenAI({ prompt, farmContext, attachments });
+      const result = await callGemini({ prompt, farmContext, attachments });
       return res.json(result);
     } catch (error) {
-      openaiError = error;
-      console.error("MR Assistant: OpenAI request failed, falling back to Gemini:", error.message);
+      geminiError = error;
+      console.error("MR Assistant: Gemini request failed, falling back to OpenAI:", error.message);
     }
   }
 
-  if (!process.env.GEMINI_API_KEY) {
-    return res.status(500).json({ error: openaiError?.message || "No AI provider is configured on the backend." });
+  if (!process.env.OPENAI_API_KEY || !openaiCanHandleAttachments) {
+    return res.status(500).json({ error: geminiError?.message || "No AI provider is configured on the backend." });
   }
 
   try {
-    const result = await callGemini({ prompt, farmContext, attachments });
+    const result = await callOpenAI({ prompt, farmContext, attachments });
     return res.json(result);
   } catch (error) {
     return res.status(502).json({ error: error?.message || "Could not reach the AI provider." });

@@ -32,6 +32,7 @@ import {
   AlertCircle,
   BrainCircuit,
   MessageSquare,
+  Wallet,
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -70,6 +71,7 @@ const managerNavItems = [
   { to: '/tots', icon: UserCog, label: 'All TOTs' },
   { to: '/farmers', icon: Users, label: 'All Farmers' },
   { to: '/sales', icon: ShoppingCart, label: 'Sales Overview' },
+  { to: '/expenses', icon: Wallet, label: 'Expenses' },
   { to: '/machinery', icon: Tractor, label: 'Machinery' },
   { to: '/visits', icon: MapPin, label: 'All Visits' },
   { to: '/trainings', icon: GraduationCap, label: 'Trainings' },
@@ -91,6 +93,7 @@ const adminNavItems = [
   { to: '/machinery', icon: Tractor, label: 'Machinery' },
   { to: '/farmers', icon: Users, label: 'All Farmers' },
   { to: '/sales', icon: ShoppingCart, label: 'All Sales' },
+  { to: '/expenses', icon: Wallet, label: 'Expenses' },
   { to: '/trainings', icon: GraduationCap, label: 'Trainings' },
   { to: '/visits', icon: MapPin, label: 'Visits' },
   { to: '/reports', icon: FileText, label: 'Reports' },

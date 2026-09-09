@@ -26,6 +26,7 @@ const TotDashboard = lazy(() => import("@/pages/dashboard/TotDashboard").then(m 
 const Farmers = lazy(() => import("@/pages/Farmers").then(m => ({ default: m.Farmers })));
 const FarmerProfile = lazy(() => import("@/pages/FarmerProfile").then(m => ({ default: m.FarmerProfile })));
 const Sales = lazy(() => import("@/pages/Sales").then(m => ({ default: m.Sales })));
+const Expenses = lazy(() => import("@/pages/Expenses").then(m => ({ default: m.Expenses })));
 const Machinery = lazy(() => import("@/pages/Machinery").then(m => ({ default: m.Machinery })));
 const Products = lazy(() => import("@/pages/Products").then(m => ({ default: m.Products })));
 const Visits = lazy(() => import("@/pages/Visits").then(m => ({ default: m.Visits })));
@@ -129,6 +130,11 @@ const App = () => (
                     <Route path="/farmers" element={withRouteBoundary('Farmers', <Farmers />)} />
                     <Route path="/farmers/:id" element={withRouteBoundary('Farmer profile', <FarmerProfile />)} />
                     <Route path="/sales" element={withRouteBoundary('Sales', <Sales />)} />
+                    <Route path="/expenses" element={withRouteBoundary('Expenses',
+                      <ProtectedRoute allowedRoles={ROLE_GROUPS.MANAGER_AND_ADMIN}>
+                        <Expenses />
+                      </ProtectedRoute>
+                    )} />
                     <Route path="/machinery" element={withRouteBoundary('Machinery', <Machinery />)} />
                     <Route path="/products" element={withRouteBoundary('Products', <Products />)} />
                     <Route path="/visits" element={withRouteBoundary('Visits', <Visits />)} />

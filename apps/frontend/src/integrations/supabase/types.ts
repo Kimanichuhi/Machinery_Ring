@@ -107,6 +107,62 @@ export type Database = {
         }
         Relationships: []
       }
+      expenses: {
+        Row: {
+          amount: number
+          category: string
+          created_at: string
+          description: string
+          expense_date: string
+          id: string
+          local_mr_id: string | null
+          notes: string | null
+          payment_method: string
+          recorded_by: string
+          status: string
+          updated_at: string
+          vendor: string | null
+        }
+        Insert: {
+          amount: number
+          category: string
+          created_at?: string
+          description: string
+          expense_date?: string
+          id?: string
+          local_mr_id?: string | null
+          notes?: string | null
+          payment_method?: string
+          recorded_by?: string
+          status?: string
+          updated_at?: string
+          vendor?: string | null
+        }
+        Update: {
+          amount?: number
+          category?: string
+          created_at?: string
+          description?: string
+          expense_date?: string
+          id?: string
+          local_mr_id?: string | null
+          notes?: string | null
+          payment_method?: string
+          recorded_by?: string
+          status?: string
+          updated_at?: string
+          vendor?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "expenses_local_mr_id_fkey"
+            columns: ["local_mr_id"]
+            isOneToOne: false
+            referencedRelation: "local_mrs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       farmer_private_data: {
         Row: {
           created_at: string
