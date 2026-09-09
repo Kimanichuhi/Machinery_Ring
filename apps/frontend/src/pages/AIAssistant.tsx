@@ -1,10 +1,33 @@
 import type React from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { BrainCircuit, History, Loader2, Paperclip, Plus, Send, Trash2, X } from 'lucide-react';
+import {
+  AlertTriangle,
+  BrainCircuit,
+  Check,
+  ChevronDown,
+  Copy,
+  FileText,
+  History,
+  Package,
+  Paperclip,
+  Plus,
+  Search,
+  Send,
+  Sparkles,
+  ShoppingCart,
+  Sprout,
+  Tractor,
+  Trash2,
+  TrendingUp,
+  Users,
+  X,
+} from 'lucide-react';
 import { toast } from 'sonner';
 
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Textarea } from '@/components/ui/textarea';
 import { useAuth } from '@/contexts/AuthContext';
 import { useFarmers } from '@/hooks/api/useFarmers';
@@ -25,6 +48,7 @@ type AssistantMessage = {
   role: 'assistant' | 'user';
   content: string;
   attachments?: MessageAttachment[];
+  timestamp?: number;
 };
 
 type ChatSession = {
@@ -42,12 +66,22 @@ type Recommendation = {
 };
 
 const suggestedPrompts = [
-  'Generate today\'s executive briefing',
-  'Which products generate the highest revenue?',
-  'What inventory items are running low?',
-  'Show worker productivity rankings',
-  'Generate monthly farm report',
-  'What are our biggest operational risks?',
+  { icon: Sparkles, label: 'Generate today\'s executive briefing' },
+  { icon: TrendingUp, label: 'Which products generate the highest revenue?' },
+  { icon: Package, label: 'What inventory items are running low?' },
+  { icon: Users, label: 'Show worker productivity rankings' },
+  { icon: FileText, label: 'Generate monthly farm report' },
+  { icon: AlertTriangle, label: 'What are our biggest operational risks?' },
+];
+
+const capabilityChips = [
+  { icon: Sprout, label: 'Production' },
+  { icon: Package, label: 'Inventory' },
+  { icon: ShoppingCart, label: 'Sales' },
+  { icon: Tractor, label: 'Machinery' },
+  { icon: Users, label: 'Workforce' },
+  { icon: FileText, label: 'Reports' },
+  { icon: AlertTriangle, label: 'Risks' },
 ];
 
 const formatCurrency = (value: number) =>
@@ -56,6 +90,11 @@ const formatCurrency = (value: number) =>
     currency: 'KES',
     maximumFractionDigits: 0,
   }).format(value || 0);
+
+const formatTime = (timestamp?: number) => {
+  if (!timestamp) return '';
+  return new Intl.DateTimeFormat('en-KE', { hour: 'numeric', minute: '2-digit' }).format(new Date(timestamp));
+};
 
 const asDate = (value?: string) => (value ? new Date(value) : null);
 
@@ -81,11 +120,14 @@ const getPersonName = (item: Record<string, unknown>) =>
 
 const formatPercent = (value: number) => `${Math.abs(value).toFixed(0)}%`;
 
-const initialAssistantMessage: AssistantMessage = {
+const WELCOME_MESSAGE =
+  'Good morning. I am MR Assistant, here to help with production, inventory, sales, machinery, workforce, reports, and risks using the farm data currently available in the platform. You can also attach a file (image, PDF, spreadsheet) for me to analyze.';
+
+const createInitialMessage = (): AssistantMessage => ({
   role: 'assistant',
-  content:
-    'Good morning. I am MR Assistant, here to help with production, inventory, sales, machinery, workforce, reports, and risks using the farm data currently available in the platform. You can also attach a file (image, PDF, spreadsheet) for me to analyze.',
-};
+  content: WELCOME_MESSAGE,
+  timestamp: Date.now(),
+});
 
 const createChatId = () => `${Date.now()}-${Math.random().toString(36).slice(2)}`;
 
@@ -94,6 +136,34 @@ const getChatTitle = (messages: AssistantMessage[]) => {
   if (!firstQuestion) return 'New chat';
   return firstQuestion.length > 42 ? `${firstQuestion.slice(0, 42)}...` : firstQuestion;
 };
+
+type HistoryGroup = { label: string; sessions: ChatSession[] };
+
+function groupChatsByDate(sessions: ChatSession[]): HistoryGroup[] {
+  const startOfDay = (timestamp: number) => {
+    const date = new Date(timestamp);
+    date.setHours(0, 0, 0, 0);
+    return date.getTime();
+  };
+  const today = startOfDay(Date.now());
+  const oneDay = 24 * 60 * 60 * 1000;
+  const buckets: HistoryGroup[] = [
+    { label: 'Today', sessions: [] },
+    { label: 'Yesterday', sessions: [] },
+    { label: 'Previous 7 days', sessions: [] },
+    { label: 'Older', sessions: [] },
+  ];
+
+  sessions.forEach((session) => {
+    const day = startOfDay(session.updatedAt);
+    if (day === today) buckets[0].sessions.push(session);
+    else if (day === today - oneDay) buckets[1].sessions.push(session);
+    else if (day >= today - 7 * oneDay) buckets[2].sessions.push(session);
+    else buckets[3].sessions.push(session);
+  });
+
+  return buckets.filter((bucket) => bucket.sessions.length > 0);
+}
 
 const MAX_ATTACHMENTS = 4;
 const MAX_ATTACHMENT_BYTES = 8 * 1024 * 1024; // ~8MB raw, must stay in sync with the backend's limit
@@ -113,53 +183,72 @@ function fileToBase64(file: File): Promise<string> {
   });
 }
 
-const MARKDOWN_LINK_RE = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g;
+const INLINE_MARKDOWN_RE = /(\*\*([^*]+)\*\*)|(\[([^\]]+)\]\((https?:\/\/[^\s)]+)\))/g;
 
-function renderTextWithLinks(text: string) {
-  const parts: React.ReactNode[] = [];
+function renderInline(text: string): React.ReactNode[] {
+  const nodes: React.ReactNode[] = [];
   let lastIndex = 0;
   let match: RegExpExecArray | null;
   let key = 0;
 
-  MARKDOWN_LINK_RE.lastIndex = 0;
-  while ((match = MARKDOWN_LINK_RE.exec(text))) {
-    if (match.index > lastIndex) parts.push(text.slice(lastIndex, match.index));
-    parts.push(
-      <a
-        key={`link-${key++}`}
-        href={match[2]}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-primary underline underline-offset-2"
-      >
-        {match[1]}
-      </a>
-    );
+  INLINE_MARKDOWN_RE.lastIndex = 0;
+  while ((match = INLINE_MARKDOWN_RE.exec(text))) {
+    if (match.index > lastIndex) nodes.push(text.slice(lastIndex, match.index));
+    if (match[1]) {
+      nodes.push(
+        <strong key={`b-${key++}`} className="font-semibold">
+          {match[2]}
+        </strong>
+      );
+    } else if (match[3]) {
+      nodes.push(
+        <a
+          key={`l-${key++}`}
+          href={match[5]}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline underline-offset-2 opacity-90 hover:opacity-100"
+        >
+          {match[4]}
+        </a>
+      );
+    }
     lastIndex = match.index + match[0].length;
   }
-  if (lastIndex < text.length) parts.push(text.slice(lastIndex));
+  if (lastIndex < text.length) nodes.push(text.slice(lastIndex));
 
-  return parts;
+  return nodes;
 }
 
 function MessageContent({ content }: { content: string }) {
   const lines = content.split('\n');
-  const tableStart = lines.findIndex((line, index) => {
-    const next = lines[index + 1] || '';
-    return line.trim().startsWith('|') && next.includes('---');
-  });
+  const blocks: React.ReactNode[] = [];
+  let i = 0;
+  let key = 0;
 
-  if (tableStart >= 0) {
-    const before = lines.slice(0, tableStart).join('\n').trim();
-    const tableLines = lines.slice(tableStart).filter((line) => line.trim().startsWith('|'));
-    const [headerLine, _separator, ...rowLines] = tableLines;
-    const headers = headerLine.split('|').map((cell) => cell.trim()).filter(Boolean);
-    const rows = rowLines.map((line) => line.split('|').map((cell) => cell.trim()).filter(Boolean));
+  while (i < lines.length) {
+    const line = lines[i];
+    const trimmed = line.trim();
 
-    return (
-      <div className="space-y-3">
-        {before && <p className="whitespace-pre-line">{renderTextWithLinks(before)}</p>}
-        <div className="overflow-x-auto rounded-lg border border-border/50">
+    if (!trimmed) {
+      i++;
+      continue;
+    }
+
+    // Markdown table
+    const next = lines[i + 1] || '';
+    if (trimmed.startsWith('|') && next.includes('---')) {
+      const tableLines: string[] = [];
+      while (i < lines.length && lines[i].trim().startsWith('|')) {
+        tableLines.push(lines[i]);
+        i++;
+      }
+      const [headerLine, , ...rowLines] = tableLines;
+      const headers = headerLine.split('|').map((cell) => cell.trim()).filter(Boolean);
+      const rows = rowLines.map((row) => row.split('|').map((cell) => cell.trim()).filter(Boolean));
+
+      blocks.push(
+        <div key={`tbl-${key++}`} className="overflow-x-auto rounded-lg border border-border/50">
           <table className="min-w-full border-collapse text-left text-xs sm:text-sm">
             <thead className="bg-muted/70">
               <tr>
@@ -183,25 +272,196 @@ function MessageContent({ content }: { content: string }) {
             </tbody>
           </table>
         </div>
-      </div>
+      );
+      continue;
+    }
+
+    // Bold-only line used as a report section label, e.g. **Executive Summary**
+    const sectionLabelMatch = trimmed.match(/^\*\*(.+)\*\*$/);
+    if (sectionLabelMatch) {
+      blocks.push(
+        <p key={`sl-${key++}`} className="pt-1 text-[11px] font-bold uppercase tracking-wider text-primary first:pt-0">
+          {sectionLabelMatch[1]}
+        </p>
+      );
+      i++;
+      continue;
+    }
+
+    // Markdown heading
+    const headingMatch = trimmed.match(/^(#{1,3})\s+(.*)/);
+    if (headingMatch) {
+      blocks.push(
+        <p key={`h-${key++}`} className="font-heading text-[15px] font-bold text-foreground">
+          {renderInline(headingMatch[2])}
+        </p>
+      );
+      i++;
+      continue;
+    }
+
+    // Bullet list
+    if (/^[-*]\s+/.test(trimmed)) {
+      const items: string[] = [];
+      while (i < lines.length && /^[-*]\s+/.test(lines[i].trim())) {
+        items.push(lines[i].trim().replace(/^[-*]\s+/, ''));
+        i++;
+      }
+      blocks.push(
+        <ul key={`ul-${key++}`} className="list-disc space-y-1 pl-5 marker:text-muted-foreground">
+          {items.map((item, index) => (
+            <li key={index}>{renderInline(item)}</li>
+          ))}
+        </ul>
+      );
+      continue;
+    }
+
+    // Numbered list
+    if (/^\d+\.\s+/.test(trimmed)) {
+      const items: string[] = [];
+      while (i < lines.length && /^\d+\.\s+/.test(lines[i].trim())) {
+        items.push(lines[i].trim().replace(/^\d+\.\s+/, ''));
+        i++;
+      }
+      blocks.push(
+        <ol key={`ol-${key++}`} className="list-decimal space-y-1 pl-5 marker:text-muted-foreground">
+          {items.map((item, index) => (
+            <li key={index}>{renderInline(item)}</li>
+          ))}
+        </ol>
+      );
+      continue;
+    }
+
+    // Paragraph: gather consecutive plain lines
+    const paraLines: string[] = [];
+    while (
+      i < lines.length &&
+      lines[i].trim() &&
+      !lines[i].trim().startsWith('|') &&
+      !/^\*\*(.+)\*\*$/.test(lines[i].trim()) &&
+      !/^#{1,3}\s+/.test(lines[i].trim()) &&
+      !/^[-*]\s+/.test(lines[i].trim()) &&
+      !/^\d+\.\s+/.test(lines[i].trim())
+    ) {
+      paraLines.push(lines[i]);
+      i++;
+    }
+    blocks.push(
+      <p key={`p-${key++}`} className="leading-relaxed">
+        {renderInline(paraLines.join(' '))}
+      </p>
     );
   }
 
-  return <span className="whitespace-pre-line">{renderTextWithLinks(content)}</span>;
+  return <div className="space-y-2">{blocks}</div>;
+}
+
+function TypingIndicator() {
+  return (
+    <div className="flex items-start gap-2.5 sm:gap-3">
+      <Avatar className="mt-0.5 h-7 w-7 flex-shrink-0 sm:h-8 sm:w-8">
+        <AvatarFallback className="bg-primary text-primary-foreground">
+          <BrainCircuit className="h-4 w-4" />
+        </AvatarFallback>
+      </Avatar>
+      <div className="flex items-center gap-1.5 rounded-2xl rounded-tl-sm bg-muted/60 px-4 py-3.5">
+        <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground/50 [animation-delay:-0.3s]" />
+        <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground/50 [animation-delay:-0.15s]" />
+        <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground/50" />
+      </div>
+    </div>
+  );
+}
+
+function MessageBubble({ message, userInitial }: { message: AssistantMessage; userInitial: string }) {
+  const [copied, setCopied] = useState(false);
+  const isAssistant = message.role === 'assistant';
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(message.content);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch {
+      toast.error('Could not copy to clipboard');
+    }
+  };
+
+  return (
+    <div className={cn('group flex items-start gap-2.5 sm:gap-3', !isAssistant && 'flex-row-reverse')}>
+      <Avatar className="mt-0.5 h-7 w-7 flex-shrink-0 sm:h-8 sm:w-8">
+        {isAssistant ? (
+          <AvatarFallback className="bg-primary text-primary-foreground">
+            <BrainCircuit className="h-4 w-4" />
+          </AvatarFallback>
+        ) : (
+          <AvatarFallback className="bg-accent text-xs font-semibold text-accent-foreground">
+            {userInitial}
+          </AvatarFallback>
+        )}
+      </Avatar>
+      <div className={cn('flex min-w-0 max-w-[85%] flex-col gap-1 sm:max-w-[75%]', !isAssistant && 'items-end')}>
+        <div
+          className={cn(
+            'rounded-2xl px-3.5 py-2.5 text-sm shadow-sm',
+            isAssistant ? 'rounded-tl-sm bg-muted/60 text-foreground' : 'rounded-tr-sm bg-primary text-primary-foreground'
+          )}
+        >
+          {message.attachments && message.attachments.length > 0 && (
+            <div className="mb-2 flex flex-wrap gap-1.5">
+              {message.attachments.map((attachment) => (
+                <span
+                  key={attachment.name}
+                  className="inline-flex items-center gap-1 rounded-md bg-black/10 px-2 py-1 text-xs"
+                >
+                  <Paperclip className="h-3 w-3" />
+                  {attachment.name}
+                </span>
+              ))}
+            </div>
+          )}
+          <MessageContent content={message.content} />
+        </div>
+        <div className="flex items-center gap-2 px-1 text-[11px] text-muted-foreground">
+          {message.timestamp && <span>{formatTime(message.timestamp)}</span>}
+          {isAssistant && (
+            <button
+              type="button"
+              onClick={handleCopy}
+              className="inline-flex items-center gap-1 opacity-0 transition-opacity hover:text-foreground group-hover:opacity-100 focus-visible:opacity-100"
+            >
+              {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
+              {copied ? 'Copied' : 'Copy'}
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export function AIAssistant() {
   const { user } = useAuth();
   const [input, setInput] = useState('');
   const [isThinking, setIsThinking] = useState(false);
-  const [messages, setMessages] = useState<AssistantMessage[]>([initialAssistantMessage]);
+  const [messages, setMessages] = useState<AssistantMessage[]>(() => [createInitialMessage()]);
   const [activeChatId, setActiveChatId] = useState(() => createChatId());
   const [chatHistory, setChatHistory] = useState<ChatSession[]>([]);
   const [historyOpen, setHistoryOpen] = useState(false);
+  const [historySearch, setHistorySearch] = useState('');
   const [pendingAttachments, setPendingAttachments] = useState<FiaAttachment[]>([]);
+  const [isDraggingFile, setIsDraggingFile] = useState(false);
+  const [showScrollToBottom, setShowScrollToBottom] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const dragCounterRef = useRef(0);
 
   const historyStorageKey = user?.id ? `fia-chat-history-${user.id}` : null;
+  const userInitial = (user?.name?.[0] || 'U').toUpperCase();
 
   // Load this user's saved chat sessions once we know who they are.
   useEffect(() => {
@@ -719,6 +979,7 @@ export function AIAssistant() {
         role: 'user',
         content: cleanPrompt || 'Please analyze the attached file(s).',
         attachments: attachments.length > 0 ? attachments.map(({ name, mimeType }) => ({ name, mimeType })) : undefined,
+        timestamp: Date.now(),
       },
     ];
     setMessages(userMessages);
@@ -728,7 +989,7 @@ export function AIAssistant() {
 
     try {
       const response = await askFiaAssistant(cleanPrompt || 'Please analyze the attached file(s).', buildAssistantContext(), attachments);
-      setMessages([...userMessages, { role: 'assistant', content: response.content }]);
+      setMessages([...userMessages, { role: 'assistant', content: response.content, timestamp: Date.now() }]);
     } catch (error) {
       // Log the real error for debugging, but never surface API-provider details
       // (quota, billing, rate limits) to the user — show a clean, generic message.
@@ -741,6 +1002,7 @@ export function AIAssistant() {
           {
             role: 'assistant',
             content: 'Your session has expired. Please refresh the page and log in again, then ask me your question.',
+            timestamp: Date.now(),
           },
         ]);
       } else if (attachments.length > 0) {
@@ -750,12 +1012,13 @@ export function AIAssistant() {
           {
             role: 'assistant',
             content: "I couldn't analyze the attached file(s) right now — the live AI connection is temporarily unavailable. File analysis needs that connection, since offline analysis only covers platform data, not file contents. Please try again in a moment.",
+            timestamp: Date.now(),
           },
         ]);
       } else {
         const fallback = respondToPrompt(cleanPrompt);
         toast.error('Live AI is temporarily unavailable — showing offline analysis instead.');
-        setMessages([...userMessages, { role: 'assistant', content: fallback }]);
+        setMessages([...userMessages, { role: 'assistant', content: fallback, timestamp: Date.now() }]);
       }
     } finally {
       setIsThinking(false);
@@ -771,7 +1034,7 @@ export function AIAssistant() {
 
   const handleNewChat = () => {
     setActiveChatId(createChatId());
-    setMessages([initialAssistantMessage]);
+    setMessages([createInitialMessage()]);
     setInput('');
     setPendingAttachments([]);
     setHistoryOpen(false);
@@ -783,15 +1046,13 @@ export function AIAssistant() {
     setHistoryOpen(false);
   };
 
-  const handleDeleteChat = (event: React.MouseEvent, sessionId: string) => {
+  const handleDeleteChat = (event: React.MouseEvent | React.KeyboardEvent, sessionId: string) => {
     event.stopPropagation();
     setChatHistory((current) => current.filter((session) => session.id !== sessionId));
     if (sessionId === activeChatId) handleNewChat();
   };
 
-  const handleFilesSelected = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(event.target.files || []);
-    event.target.value = '';
+  const processFiles = async (files: File[]) => {
     if (files.length === 0) return;
 
     if (pendingAttachments.length + files.length > MAX_ATTACHMENTS) {
@@ -819,6 +1080,12 @@ export function AIAssistant() {
     }
   };
 
+  const handleFilesSelected = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(event.target.files || []);
+    event.target.value = '';
+    await processFiles(files);
+  };
+
   const handleRemoveAttachment = (index: number) => {
     setPendingAttachments((current) => current.filter((_, i) => i !== index));
   };
@@ -827,13 +1094,118 @@ export function AIAssistant() {
     setInput(prompt);
   };
 
+  const handleDragEnter = (event: React.DragEvent) => {
+    event.preventDefault();
+    if (!event.dataTransfer.types.includes('Files')) return;
+    dragCounterRef.current += 1;
+    setIsDraggingFile(true);
+  };
+
+  const handleDragOver = (event: React.DragEvent) => {
+    event.preventDefault();
+  };
+
+  const handleDragLeave = (event: React.DragEvent) => {
+    event.preventDefault();
+    dragCounterRef.current = Math.max(0, dragCounterRef.current - 1);
+    if (dragCounterRef.current === 0) setIsDraggingFile(false);
+  };
+
+  const handleDrop = (event: React.DragEvent) => {
+    event.preventDefault();
+    dragCounterRef.current = 0;
+    setIsDraggingFile(false);
+    void processFiles(Array.from(event.dataTransfer.files || []));
+  };
+
   const hasConversationStarted = messages.some((message) => message.role === 'user');
-  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!hasConversationStarted) return;
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
   }, [messages, isThinking, hasConversationStarted]);
+
+  // Auto-grow the composer textarea as the manager types.
+  useEffect(() => {
+    const el = textareaRef.current;
+    if (!el) return;
+    el.style.height = 'auto';
+    el.style.height = `${Math.min(el.scrollHeight, 160)}px`;
+  }, [input]);
+
+  const handleMessagesScroll = () => {
+    const el = scrollContainerRef.current;
+    if (!el) return;
+    const distanceFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
+    setShowScrollToBottom(distanceFromBottom > 200);
+  };
+
+  const scrollToBottom = () => messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+
+  const filteredHistory = useMemo(() => {
+    const query = historySearch.trim().toLowerCase();
+    if (!query) return chatHistory;
+    return chatHistory.filter((session) => session.title.toLowerCase().includes(query));
+  }, [chatHistory, historySearch]);
+
+  const historyGroups = useMemo(() => groupChatsByDate(filteredHistory), [filteredHistory]);
+
+  const historyList = (
+    <div className="space-y-3">
+      {chatHistory.length === 0 ? (
+        <div className="flex flex-col items-center gap-2 px-3 py-10 text-center">
+          <History className="h-8 w-8 text-muted-foreground/40" />
+          <p className="text-xs text-muted-foreground">No saved chats yet. Start a conversation to see it here.</p>
+        </div>
+      ) : historyGroups.length === 0 ? (
+        <p className="px-2 py-6 text-center text-xs text-muted-foreground">No chats match &quot;{historySearch}&quot;.</p>
+      ) : (
+        historyGroups.map((group) => (
+          <div key={group.label}>
+            <p className="mb-1 px-2 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground/70">{group.label}</p>
+            <div className="space-y-0.5">
+              {group.sessions.map((session) => (
+                <button
+                  key={session.id}
+                  type="button"
+                  onClick={() => handleSelectChat(session)}
+                  className={cn(
+                    'group/item flex w-full items-center justify-between gap-2 rounded-lg px-2.5 py-2 text-left text-sm transition-colors hover:bg-muted/60',
+                    session.id === activeChatId ? 'bg-primary/10 font-medium text-primary' : 'text-foreground'
+                  )}
+                >
+                  <span className="truncate">{session.title}</span>
+                  <span
+                    role="button"
+                    tabIndex={0}
+                    onClick={(event) => handleDeleteChat(event, session.id)}
+                    onKeyDown={(event) => {
+                      if (event.key === 'Enter' || event.key === ' ') handleDeleteChat(event, session.id);
+                    }}
+                    className="flex-shrink-0 rounded p-1 text-muted-foreground opacity-0 hover:bg-destructive/10 hover:text-destructive group-hover/item:opacity-100"
+                  >
+                    <Trash2 className="h-3.5 w-3.5" />
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+        ))
+      )}
+    </div>
+  );
+
+  const historySearchBox = (
+    <div className="relative">
+      <Search className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
+      <Input
+        value={historySearch}
+        onChange={(event) => setHistorySearch(event.target.value)}
+        placeholder="Search chats"
+        className="h-8 pl-8 text-xs"
+      />
+    </div>
+  );
 
   const attachmentChipsRow = pendingAttachments.length > 0 && (
     <div className="flex flex-wrap gap-2">
@@ -853,7 +1225,7 @@ export function AIAssistant() {
   );
 
   const inputRow = (
-    <div className="flex flex-col gap-2 sm:flex-row">
+    <div className="flex items-end gap-2">
       <input
         ref={fileInputRef}
         type="file"
@@ -862,173 +1234,189 @@ export function AIAssistant() {
         accept="image/*,application/pdf,.csv,.txt,.xlsx,.xls,.doc,.docx"
         onChange={handleFilesSelected}
       />
-      <div className="flex flex-1 items-end gap-2">
-        <Button
-          type="button"
-          variant="outline"
-          size="icon"
-          className="flex-shrink-0"
-          onClick={() => fileInputRef.current?.click()}
-          title="Attach a file"
-        >
-          <Paperclip className="h-4 w-4" />
-        </Button>
-        <Textarea
-          value={input}
-          onChange={(event) => setInput(event.target.value)}
-          onKeyDown={handleInputKeyDown}
-          placeholder="Message MR Assistant... (Enter to send, Shift+Enter for a new line)"
-          className="min-h-[76px] resize-none"
-        />
-      </div>
       <Button
         type="button"
-        className="sm:self-end"
+        variant="outline"
+        size="icon"
+        className="flex-shrink-0 rounded-full"
+        onClick={() => fileInputRef.current?.click()}
+        title="Attach a file"
+      >
+        <Paperclip className="h-4 w-4" />
+      </Button>
+      <Textarea
+        ref={textareaRef}
+        value={input}
+        onChange={(event) => setInput(event.target.value)}
+        onKeyDown={handleInputKeyDown}
+        placeholder="Message MR Assistant..."
+        rows={1}
+        className="max-h-[160px] min-h-[44px] resize-none py-2.5"
+      />
+      <Button
+        type="button"
+        size="icon"
+        variant="wheat"
+        className="flex-shrink-0 rounded-full"
         onClick={() => handleAsk()}
         disabled={(!input.trim() && pendingAttachments.length === 0) || isThinking}
+        title="Send"
       >
         <Send className="h-4 w-4" />
-        Ask
       </Button>
     </div>
   );
 
-  const quickPrompts = (
-    <div className="flex flex-wrap justify-center gap-2">
-      {suggestedPrompts.map((prompt) => (
-        <Button key={prompt} type="button" variant="outline" size="sm" onClick={() => handleQuickPrompt(prompt)}>
-          {prompt}
-        </Button>
-      ))}
+  const dropOverlay = isDraggingFile && (
+    <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center rounded-2xl border-2 border-dashed border-primary bg-primary/5 backdrop-blur-[1px]">
+      <div className="flex flex-col items-center gap-2 text-primary">
+        <Paperclip className="h-6 w-6" />
+        <p className="text-sm font-medium">Drop files to attach</p>
+      </div>
     </div>
   );
 
   return (
-    <div className="space-y-4 sm:space-y-6">
-      <div>
-        <h1 className="font-heading text-2xl font-bold text-foreground sm:text-3xl">MR Assistant</h1>
-        <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">
-          Ask MR Assistant about production, inventory, sales, machinery, workforce, reports, and risks.
-        </p>
+    <div className="flex h-[calc(100vh-9rem)] min-h-[560px] flex-col sm:h-[calc(100vh-10rem)] lg:h-[calc(100vh-11rem)]">
+      {/* Top bar */}
+      <div className="mb-4 flex flex-shrink-0 items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary/70 text-primary-foreground shadow-soft sm:h-11 sm:w-11">
+            <BrainCircuit className="h-5 w-5" />
+          </div>
+          <div>
+            <h1 className="font-heading text-xl font-bold leading-tight text-foreground sm:text-2xl">MR Assistant</h1>
+            <p className="hidden text-sm text-muted-foreground sm:block">Farm intelligence, on demand</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <Button type="button" variant="outline" size="icon" className="lg:hidden" onClick={() => setHistoryOpen(true)} title="Chat history">
+            <History className="h-4 w-4" />
+          </Button>
+          <Button type="button" variant="wheat" size="sm" onClick={handleNewChat}>
+            <Plus className="mr-1.5 h-4 w-4" />
+            New chat
+          </Button>
+        </div>
       </div>
 
-      <Card variant="elevated">
-        <CardHeader>
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <div>
-              <CardTitle className="flex items-center gap-2 text-lg">
-                <BrainCircuit className="h-5 w-5 text-primary" />
-                MR Assistant
-              </CardTitle>
-              <CardDescription>Ask operational, financial, inventory, workforce, sales, or report questions.</CardDescription>
-            </div>
-            <div className="flex gap-2">
-              <Button type="button" variant="outline" size="sm" onClick={() => setHistoryOpen((open) => !open)}>
-                <History className="mr-2 h-4 w-4" />
-                History
-              </Button>
-              <Button type="button" variant="outline" size="sm" onClick={handleNewChat}>
-                <Plus className="mr-2 h-4 w-4" />
-                New Chat
-              </Button>
-            </div>
+      <div className="flex min-h-0 flex-1 gap-4">
+        {/* Desktop history sidebar */}
+        <aside className="hidden w-72 flex-shrink-0 flex-col rounded-2xl border border-border/50 bg-card lg:flex">
+          <div className="flex-shrink-0 space-y-2 border-b border-border/50 p-3">
+            <Button type="button" variant="outline" size="sm" className="w-full justify-start" onClick={handleNewChat}>
+              <Plus className="mr-2 h-4 w-4" /> New chat
+            </Button>
+            {historySearchBox}
           </div>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex flex-col gap-4 sm:flex-row">
-            {historyOpen && (
-              <div className="w-full flex-shrink-0 rounded-xl border border-border/40 bg-muted/20 p-2 sm:w-64">
-                <p className="px-2 py-1 text-xs font-medium uppercase tracking-wide text-muted-foreground">Chat history</p>
-                <div className="max-h-[420px] space-y-1 overflow-y-auto">
-                  {chatHistory.length === 0 && (
-                    <p className="px-2 py-4 text-center text-xs text-muted-foreground">No saved chats yet.</p>
-                  )}
-                  {chatHistory.map((session) => (
-                    <button
-                      key={session.id}
-                      type="button"
-                      onClick={() => handleSelectChat(session)}
-                      className={cn(
-                        'group flex w-full items-center justify-between gap-2 rounded-lg px-2 py-2 text-left text-sm hover:bg-muted/60',
-                        session.id === activeChatId && 'bg-muted/60 font-medium'
-                      )}
-                    >
-                      <span className="truncate">{session.title}</span>
-                      <span
-                        role="button"
-                        tabIndex={0}
-                        onClick={(event) => handleDeleteChat(event, session.id)}
-                        className="flex-shrink-0 rounded p-1 text-muted-foreground opacity-0 hover:bg-destructive/10 hover:text-destructive group-hover:opacity-100"
-                      >
-                        <Trash2 className="h-3.5 w-3.5" />
-                      </span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
+          <div className="flex-1 overflow-y-auto p-3 scrollbar-thin">{historyList}</div>
+        </aside>
 
-            <div className="min-w-0 flex-1">
-              {hasConversationStarted ? (
-                <div className="space-y-4">
-                  <div className="h-[480px] space-y-3 overflow-y-auto rounded-xl border border-border/40 bg-muted/20 p-3 scrollbar-thin">
-                    {messages.map((message, index) => (
-                      <div
-                        key={`${message.role}-${index}`}
-                        className={cn(
-                          'max-w-[88%] whitespace-pre-line rounded-xl px-3 py-2 text-sm',
-                          message.role === 'assistant'
-                            ? 'bg-card text-card-foreground shadow-soft'
-                            : 'ml-auto bg-primary text-primary-foreground'
-                        )}
-                      >
-                        {message.attachments && message.attachments.length > 0 && (
-                          <div className="mb-2 flex flex-wrap gap-1.5">
-                            {message.attachments.map((attachment) => (
-                              <span
-                                key={attachment.name}
-                                className="inline-flex items-center gap-1 rounded-md bg-black/10 px-2 py-1 text-xs"
-                              >
-                                <Paperclip className="h-3 w-3" />
-                                {attachment.name}
-                              </span>
-                            ))}
-                          </div>
-                        )}
-                        <MessageContent content={message.content} />
-                      </div>
-                    ))}
-                    {isThinking && (
-                      <div className="inline-flex items-center gap-2 rounded-xl bg-card px-3 py-2 text-sm shadow-soft">
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                        MR Assistant is analyzing farm records
-                      </div>
-                    )}
-                    <div ref={messagesEndRef} />
+        {/* Chat panel */}
+        <div
+          className="relative flex min-w-0 flex-1 flex-col overflow-hidden rounded-2xl border border-border/50 bg-card shadow-soft"
+          onDragEnter={handleDragEnter}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+        >
+          {dropOverlay}
+
+          {hasConversationStarted ? (
+            <>
+              <div
+                ref={scrollContainerRef}
+                onScroll={handleMessagesScroll}
+                className="flex-1 space-y-4 overflow-y-auto px-3 py-4 scrollbar-thin sm:px-5"
+              >
+                {messages.map((message, index) => (
+                  <div key={`${message.role}-${index}`} className="animate-fade-in">
+                    <MessageBubble message={message} userInitial={userInitial} />
                   </div>
-                  {attachmentChipsRow}
-                  {inputRow}
-                </div>
-              ) : (
-                <div className="flex min-h-[420px] flex-col items-center justify-center gap-6 px-4 py-8 text-center">
-                  <div className="space-y-2">
-                    <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                      <BrainCircuit className="h-7 w-7" />
-                    </div>
-                    <h2 className="font-heading text-2xl font-semibold">MR Assistant</h2>
-                    <p className="mx-auto max-w-md text-sm text-muted-foreground">{initialAssistantMessage.content}</p>
-                  </div>
-                  <div className="w-full max-w-2xl space-y-3">
-                    {attachmentChipsRow}
-                    {inputRow}
-                    {quickPrompts}
-                  </div>
-                </div>
+                ))}
+                {isThinking && <TypingIndicator />}
+                <div ref={messagesEndRef} />
+              </div>
+
+              {showScrollToBottom && (
+                <button
+                  type="button"
+                  onClick={scrollToBottom}
+                  className="absolute bottom-24 right-4 z-10 flex h-9 w-9 items-center justify-center rounded-full border border-border/50 bg-card shadow-soft transition-transform hover:scale-105 sm:bottom-28"
+                  title="Scroll to latest"
+                >
+                  <ChevronDown className="h-4 w-4" />
+                </button>
               )}
+
+              <div className="flex-shrink-0 space-y-2 border-t border-border/50 bg-card p-3 sm:p-4">
+                {attachmentChipsRow}
+                {inputRow}
+                <p className="hidden text-center text-[11px] text-muted-foreground sm:block">
+                  Enter to send · Shift+Enter for a new line · Drag files anywhere in this panel to attach
+                </p>
+              </div>
+            </>
+          ) : (
+            <div className="flex flex-1 flex-col items-center justify-center overflow-y-auto px-4 py-8 text-center">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                <BrainCircuit className="h-7 w-7" />
+              </div>
+              <h2 className="mt-4 font-heading text-2xl font-semibold">MR Assistant</h2>
+              <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">{WELCOME_MESSAGE}</p>
+
+              <div className="mt-4 flex flex-wrap justify-center gap-1.5">
+                {capabilityChips.map(({ icon: Icon, label }) => (
+                  <span
+                    key={label}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-border/50 bg-muted/40 px-3 py-1 text-xs text-muted-foreground"
+                  >
+                    <Icon className="h-3 w-3" />
+                    {label}
+                  </span>
+                ))}
+              </div>
+
+              <div className="mt-6 w-full max-w-2xl space-y-3">
+                {attachmentChipsRow}
+                {inputRow}
+              </div>
+
+              <div className="mt-6 grid w-full max-w-2xl grid-cols-1 gap-2 sm:grid-cols-2">
+                {suggestedPrompts.map(({ icon: Icon, label }) => (
+                  <button
+                    key={label}
+                    type="button"
+                    onClick={() => handleQuickPrompt(label)}
+                    className="flex items-center gap-3 rounded-xl border border-border/50 bg-muted/20 px-3.5 py-3 text-left text-sm transition-colors hover:border-primary/40 hover:bg-primary/5"
+                  >
+                    <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                      <Icon className="h-4 w-4" />
+                    </span>
+                    <span className="text-foreground">{label}</span>
+                  </button>
+                ))}
+              </div>
             </div>
+          )}
+        </div>
+      </div>
+
+      {/* Mobile / tablet history drawer */}
+      <Sheet open={historyOpen} onOpenChange={setHistoryOpen}>
+        <SheetContent side="left" className="flex w-[300px] flex-col p-0">
+          <SheetHeader className="flex-shrink-0 border-b border-border/50 p-4 text-left">
+            <SheetTitle>Chat history</SheetTitle>
+          </SheetHeader>
+          <div className="flex-shrink-0 space-y-2 p-3">
+            <Button type="button" variant="outline" size="sm" className="w-full justify-start" onClick={handleNewChat}>
+              <Plus className="mr-2 h-4 w-4" /> New chat
+            </Button>
+            {historySearchBox}
           </div>
-        </CardContent>
-      </Card>
+          <div className="flex-1 overflow-y-auto p-3 scrollbar-thin">{historyList}</div>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }
