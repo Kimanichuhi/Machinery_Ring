@@ -27,6 +27,7 @@ const Farmers = lazy(() => import("@/pages/Farmers").then(m => ({ default: m.Far
 const FarmerProfile = lazy(() => import("@/pages/FarmerProfile").then(m => ({ default: m.FarmerProfile })));
 const Sales = lazy(() => import("@/pages/Sales").then(m => ({ default: m.Sales })));
 const Expenses = lazy(() => import("@/pages/Expenses").then(m => ({ default: m.Expenses })));
+const Library = lazy(() => import("@/pages/Library").then(m => ({ default: m.Library })));
 const Machinery = lazy(() => import("@/pages/Machinery").then(m => ({ default: m.Machinery })));
 const Products = lazy(() => import("@/pages/Products").then(m => ({ default: m.Products })));
 const Visits = lazy(() => import("@/pages/Visits").then(m => ({ default: m.Visits })));
@@ -135,6 +136,7 @@ const App = () => (
                         <Expenses />
                       </ProtectedRoute>
                     )} />
+                    <Route path="/library" element={withRouteBoundary('Library', <Library />)} />
                     <Route path="/machinery" element={withRouteBoundary('Machinery', <Machinery />)} />
                     <Route path="/products" element={withRouteBoundary('Products', <Products />)} />
                     <Route path="/visits" element={withRouteBoundary('Visits', <Visits />)} />

@@ -33,6 +33,7 @@ import {
   BrainCircuit,
   MessageSquare,
   Wallet,
+  BookOpen,
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -46,6 +47,7 @@ const totNavItems = [
   { to: '/trainings', icon: GraduationCap, label: 'Trainings' },
   { to: '/products', icon: Package, label: 'Products' },
   { to: '/commission', icon: Calculator, label: 'My Commission' },
+  { to: '/library', icon: BookOpen, label: 'Library' },
 ];
 
 // Local MR Coordinator: Read-only, scoped to their Local MR
@@ -61,6 +63,7 @@ const coordinatorNavItems = [
   { to: '/products', icon: Package, label: 'Products' },
   { to: '/reports', icon: FileText, label: 'Reports' },
   { to: '/commission', icon: Calculator, label: 'Commission' },
+  { to: '/library', icon: BookOpen, label: 'Library' },
 ];
 
 // Manager: Read-only, organization-wide access
@@ -80,6 +83,7 @@ const managerNavItems = [
   { to: '/reports', icon: FileText, label: 'Reports' },
   { to: '/communication', icon: MessageSquare, label: 'Communication' },
   { to: '/notifications', icon: Bell, label: 'Notifications' },
+  { to: '/library', icon: BookOpen, label: 'Library' },
 ];
 
 // Admin: Full data entry and management access
@@ -94,11 +98,13 @@ const adminNavItems = [
   { to: '/farmers', icon: Users, label: 'All Farmers' },
   { to: '/sales', icon: ShoppingCart, label: 'All Sales' },
   { to: '/expenses', icon: Wallet, label: 'Expenses' },
+  { to: '/commission', icon: Calculator, label: 'Commission' },
   { to: '/trainings', icon: GraduationCap, label: 'Trainings' },
   { to: '/visits', icon: MapPin, label: 'Visits' },
   { to: '/reports', icon: FileText, label: 'Reports' },
   { to: '/communication', icon: MessageSquare, label: 'Communication' },
   { to: '/notifications', icon: Bell, label: 'Notifications' },
+  { to: '/library', icon: BookOpen, label: 'Library' },
   { to: '/system-logs', icon: AlertCircle, label: 'System Logs' },
   { to: '/audit', icon: Shield, label: 'Audit Trail' },
   { to: '/settings', icon: Settings, label: 'Settings' },

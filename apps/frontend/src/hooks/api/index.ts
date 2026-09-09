@@ -15,6 +15,7 @@ export * from './useLocalMRs';
 export { useUsers, useUser, useCreateUser, useUpdateUser, useDeleteUser, useToggleUserStatus, userKeys } from './useUsers';
 export * from './useNotifications';
 export * from './useExpenses';
+export * from './useLibrary';
 
 // Dashboard hooks (note: useProductPerformance is also in useDashboard)
 export { 
