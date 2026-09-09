@@ -51,7 +51,7 @@ export function DashboardLayout() {
         <Header />
 
         <main
-          className="flex-1 overflow-y-auto bg-muted/15 backdrop-blur-sm"
+          className="flex-1 overflow-y-auto bg-muted/15"
           role="main"
           aria-label="Main content"
         >
@@ -63,7 +63,7 @@ export function DashboardLayout() {
 
           <footer className="py-3 px-4 text-center text-xs text-muted-foreground border-t border-border bg-card/50">
             &copy; {new Date().getFullYear()} Machinery Ring Nyandarua. Built by{' '}
-            <a href="https://qeemlabs.com" target="_blank" rel="noopener noreferrer" className="font-medium hover:text-primary transition-colors">
+            <a href="https://qeemlabs.co.ke" target="_blank" rel="noopener noreferrer" className="font-medium hover:text-primary transition-colors">
               Qeem Labs Ltd.
             </a>
           </footer>

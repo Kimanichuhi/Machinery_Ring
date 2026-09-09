@@ -13,7 +13,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { usePermissions } from '@/hooks/usePermissions';
 import { toast } from 'sonner';
 import { Sale } from '@/types';
-import { useSales, useCreateSale, useProducts, useCompleteSale, useCancelSale, useUncancelSale, useBulkCreateSales } from '@/hooks/api';
+import { useSales, useCreateSale, useProducts, useCompleteSale, useCancelSale, useUncancelSale, useDeleteSale, useBulkCreateSales } from '@/hooks/api';
 import { useFarmers } from '@/hooks/api/useFarmers';
 import { useUsers } from '@/hooks/api/useUsers';
 import { useLocalMRs } from '@/hooks/api/useLocalMRs';
@@ -27,6 +27,16 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -39,6 +49,7 @@ export function Sales() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isBulkUploadOpen, setIsBulkUploadOpen] = useState(false);
   const [editingSale, setEditingSale] = useState<any | null>(null);
+  const [deletingSale, setDeletingSale] = useState<any | null>(null);
   const [productFilter, setProductFilter] = useState<string>('all');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [startDate, setStartDate] = useState<string>('');
@@ -57,6 +68,7 @@ export function Sales() {
   const completeSale = useCompleteSale();
   const cancelSale = useCancelSale();
   const uncancelSale = useUncancelSale();
+  const deleteSale = useDeleteSale();
 
   const completedSales = sales.filter(s => s.status === 'completed');
   const trimmedSearch = searchQuery.trim().toLowerCase();
@@ -150,6 +162,13 @@ export function Sales() {
   const handleCancelSale = (id: string) => {
     if (!isAdmin) return;
     cancelSale.mutate({ id, reason: 'Cancelled by admin' });
+  };
+
+  const handleDeleteSale = () => {
+    if (!isAdmin || !deletingSale) return;
+    deleteSale.mutate(deletingSale.id, {
+      onSuccess: () => setDeletingSale(null),
+    });
   };
 
   // Manager and Coordinator can export reports
@@ -475,6 +494,12 @@ export function Sales() {
                                 <DropdownMenuItem onClick={() => uncancelSale.mutate({ id: sale.id, status: 'completed' })}>
                                   Uncancel → Completed
                                 </DropdownMenuItem>
+                                <DropdownMenuItem
+                                  onClick={() => setDeletingSale(sale)}
+                                  className="text-destructive focus:text-destructive"
+                                >
+                                  Delete
+                                </DropdownMenuItem>
                               </>
                             )}
                             {sale.status === 'pending' && (
@@ -532,6 +557,27 @@ export function Sales() {
             onOpenChange={(o) => { if (!o) setEditingSale(null); }}
             sale={editingSale}
           />
+          <AlertDialog open={!!deletingSale} onOpenChange={(o) => { if (!o) setDeletingSale(null); }}>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Delete this sale?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This will permanently delete the cancelled sale
+                  {deletingSale?.deliveryNoteNumber ? ` (${deletingSale.deliveryNoteNumber})` : ''}. Any reserved stock will be restored. This action cannot be undone.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={handleDeleteSale}
+                  disabled={deleteSale.isPending}
+                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                >
+                  Delete
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </>
       )}
     </div>

@@ -319,6 +319,29 @@ export function useUncancelSale() {
   });
 }
 
+export function useDeleteSale() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase
+        .from('sales')
+        .delete()
+        .eq('id', id)
+        .eq('payment_status', 'cancelled');
+
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: saleKeys.all });
+      toast.success('Sale deleted');
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || 'Failed to delete sale');
+    },
+  });
+}
+
 export interface UpdateSaleDto {
   farmer_id?: string | null;
   sale_date?: string;
